@@ -46,7 +46,6 @@ async function runPrompts(authorName) {
 
   // MVC and API force PHP backend — skip project type / complexity / php prompt
   if (framework === 'api' || framework === 'mvc') {
-    // Feature flags scoped to API/MVC
     const choices = [
       { name: 'Contact form  (api/contact.php, rate limiting)',    value: 'contactForm',   checked: false },
       { name: 'PHPMailer  (install via Composer)',                  value: 'phpMailer',     checked: false },
