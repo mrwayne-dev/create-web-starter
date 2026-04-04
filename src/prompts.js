@@ -47,11 +47,11 @@ async function runPrompts(authorName) {
   // MVC and API force PHP backend — skip project type / complexity / php prompt
   if (framework === 'api' || framework === 'mvc') {
     const choices = [
-      { name: 'Contact form  (api/contact.php, rate limiting)',    value: 'contactForm',   checked: false },
-      { name: 'PHPMailer  (install via Composer)',                  value: 'phpMailer',     checked: false },
-      { name: 'Authentication  (login / register / forgot / reset)', value: 'auth',         checked: false },
-      { name: 'Admin panel',                                         value: 'admin',         checked: false },
-      { name: 'Database layer  (SQL schema + config/database.php)',  value: 'database',      checked: false }
+      { name: 'Contact form  (api/contact.php, rate limiting)',      value: 'contactForm', checked: false },
+      { name: 'PHPMailer  (install via Composer)',                    value: 'phpMailer',   checked: false },
+      { name: 'Authentication  (login / register / forgot / reset)', value: 'auth',        checked: false },
+      { name: 'Admin panel',                                         value: 'admin',       checked: false },
+      { name: 'Database layer  (SQL schema + config/database.php)',  value: 'database',    checked: false }
     ];
 
     const { selected } = await inquirer.prompt([
@@ -135,7 +135,7 @@ async function runPrompts(authorName) {
     choices.push({ name: 'PHPMailer  (install via Composer)',                   value: 'phpMailer',     checked: false });
   }
 
-  choices.push({ name: 'Phosphor Icons  (download ZIP -> assets/icons/)',      value: 'phosphorIcons', checked: false });
+  choices.push({ name: 'Phosphor Icons  (adds CDN link to index.php)',         value: 'phosphorIcons', checked: false });
 
   if (phpBackend && isMediumOrComplex && !isComplex) {
     choices.push({ name: 'Authentication  (login / register / forgot / reset)', value: 'auth',          checked: false });
@@ -162,7 +162,7 @@ async function runPrompts(authorName) {
     contactForm:   phpBackend && selected.includes('contactForm'),
     phpMailer:     phpBackend && selected.includes('phpMailer'),
     phosphorIcons: selected.includes('phosphorIcons'),
-    auth:          phpBackend && (isComplex ? true  : selected.includes('auth')),
+    auth:          phpBackend && (isComplex ? true : selected.includes('auth')),
     admin:         phpBackend && selected.includes('admin'),
     database:      phpBackend && isComplex
   };

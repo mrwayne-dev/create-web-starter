@@ -9,8 +9,8 @@ const { createProject }             = require('./src/scaffold');
 
 async function start() {
   console.log(chalk.bold.cyan('\n+------------------------------------------+'));
-  console.log(chalk.bold.cyan('|') + chalk.bold('   create-php-starter  v1.1.0          ') + chalk.bold.cyan('|'));
-  console.log(chalk.bold.cyan('|') + chalk.dim('   Project analysed by alfred, shipped from the batcave.') + chalk.bold.cyan(' |'));
+  console.log(chalk.bold.cyan('|') + chalk.bold('   create-php-starter  v1.1.2          ') + chalk.bold.cyan('|'));
+  console.log(chalk.bold.cyan('|') + chalk.dim('   Alfred is on standby. Ready to scaffold your project.') + chalk.bold.cyan(' |'));
   console.log(chalk.bold.cyan('+------------------------------------------+\n'));
 
   const appConfig  = loadConfig();
