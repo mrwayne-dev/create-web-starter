@@ -1,10 +1,10 @@
 {
-  "name": "create-web-starter",
-  "version": "2.0.0",
-  "description": "Smart PHP + JS project scaffolding CLI with complexity-aware structure, Phosphor Icons, Composer, and PHPMailer",
+  "name": "create-php-starter",
+  "version": "1.0.0",
+  "description": "Complexity-aware PHP + JS project scaffolding CLI. Generates a clean SPA-ready structure with optional auth, admin, PHPMailer, and Phosphor Icons.",
   "main": "index.js",
   "bin": {
-    "create-web-starter": "./index.js"
+    "create-php-starter": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

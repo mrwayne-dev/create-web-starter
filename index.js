@@ -9,7 +9,7 @@ const { createProject }             = require('./src/scaffold');
 
 async function start() {
   console.log(chalk.bold.cyan('\n╔══════════════════════════════════════╗'));
-  console.log(chalk.bold.cyan('║') + chalk.bold('   create-web-starter  v2.0.0        ') + chalk.bold.cyan('║'));
+  console.log(chalk.bold.cyan('║') + chalk.bold('   create-php-starter  v1.0.0        ') + chalk.bold.cyan('║'));
   console.log(chalk.bold.cyan('╚══════════════════════════════════════╝\n'));
 
   const appConfig  = loadConfig();
