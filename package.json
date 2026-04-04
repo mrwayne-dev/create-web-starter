@@ -1,6 +1,6 @@
 {
   "name": "create-php-starter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Complexity-aware PHP + JS project scaffolding CLI. Generates a clean SPA-ready structure with optional auth, admin, PHPMailer, and Phosphor Icons.",
   "main": "index.js",
   "bin": {
@@ -19,7 +19,7 @@
     "composer",
     "phpmailer"
   ],
-  "author": "Your Name",
+  "author": "mrwayne-dev",
   "license": "MIT",
   "dependencies": {
     "adm-zip": "^0.5.10",

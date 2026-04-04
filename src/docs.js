@@ -1,51 +1,45 @@
 'use strict';
 
-/**
- * Generate README.md content dynamically from the project config.
- */
-function generateReadme({ projectName, authorName, projectType, complexity, phpBackend, features }) {
-  const date = new Date().toISOString().split('T')[0];
+function generateReadme({ projectName, authorName, projectType, framework, complexity, phpBackend, features }) {
+  const date  = new Date().toISOString().split('T')[0];
+  const isPhp = phpBackend || framework === 'mvc' || framework === 'api';
 
-  // ── Tech stack list ───────────────────────────────────────────────────────
   const stack = [];
-  if (phpBackend) stack.push('PHP >=7.4 (backend API layer)');
-  stack.push('Vanilla JavaScript (SPA pattern — no framework)');
-  stack.push('CSS Custom Properties (no preprocessor)');
-  if (features.phpMailer) stack.push('PHPMailer (SMTP email via Composer)');
+  if (isPhp) stack.push('PHP >=7.4');
+  if (framework !== 'api') {
+    stack.push('Vanilla JavaScript (SPA pattern)');
+    stack.push('CSS Custom Properties');
+  }
+  if (features.phpMailer)     stack.push('PHPMailer (Composer)');
   if (features.phosphorIcons) stack.push('Phosphor Icons');
 
   const stackList = stack.map((s) => `- ${s}`).join('\n');
 
-  // ── Folder tree annotation ────────────────────────────────────────────────
-  const tree = buildTreeAnnotation({ complexity, phpBackend, features });
+  const tree = buildTreeAnnotation({ framework, complexity, phpBackend, features });
 
-  // ── Getting started ───────────────────────────────────────────────────────
   let gettingStarted = '```bash\n';
-  if (phpBackend) {
-    gettingStarted += 'cp .env.example .env\n';
-    gettingStarted += '# Edit .env with your DB credentials and SMTP settings\n';
+  if (isPhp) {
+    gettingStarted += 'edit .env   # fill in DB and SMTP credentials\n';
     if (features.database) gettingStarted += 'mysql -u root -p < database/database.sql\n';
     if (features.phpMailer) gettingStarted += 'composer install\n';
     gettingStarted += 'php -S localhost:8000\n';
   } else {
-    gettingStarted += '# Open index.php in your browser or start a local server:\n';
     gettingStarted += 'php -S localhost:8000\n';
   }
   gettingStarted += '```';
 
-  // ── Features list ─────────────────────────────────────────────────────────
   const featureLines = [];
-  featureLines.push(`- Project type: **${projectType}** (${complexity} complexity)`);
-  if (features.auth)          featureLines.push('- ✅ Authentication (login / register / forgot / reset password)');
-  if (features.admin)         featureLines.push('- ✅ Admin panel (`/admin/dashboard.php`)');
-  if (features.contactForm)   featureLines.push('- ✅ Contact form with rate limiting');
-  if (features.phpMailer)     featureLines.push('- ✅ PHPMailer (SMTP email)');
-  if (features.database)      featureLines.push('- ✅ Database layer (`database/database.sql` + `config/database.php`)');
-  if (features.phosphorIcons) featureLines.push('- ✅ Phosphor Icons (`assets/icons/`)');
+  featureLines.push(`- Framework: **${framework}** | Type: **${projectType || framework}** | Complexity: **${complexity || 'n/a'}**`);
+  if (features.auth)          featureLines.push('- Authentication (login / register / forgot / reset password)');
+  if (features.admin)         featureLines.push('- Admin panel (`/pages/admin/dashboard.php`)');
+  if (features.contactForm)   featureLines.push('- Contact form with rate limiting');
+  if (features.phpMailer)     featureLines.push('- PHPMailer (SMTP email via Composer)');
+  if (features.database)      featureLines.push('- Database layer (`database/database.sql` + `config/database.php`)');
+  if (features.phosphorIcons) featureLines.push('- Phosphor Icons (`assets/icons/`)');
 
   return `# ${projectName}
 
-> Created by **${authorName}** on ${date} using [create-web-starter](https://github.com/mrwayne-dev/create-web-starter)
+> Created by **${authorName}** on ${date} using [create-php-starter](https://www.npmjs.com/package/create-php-starter)
 
 _One-line description of what this project does._
 
@@ -65,6 +59,22 @@ ${tree}
 
 ---
 
+## Pages Architecture
+
+This project separates pages into three tiers — mirrored in both the PHP layer and the JS layer:
+
+| Tier | PHP (server-rendered) | JS (SPA modules) |
+|------|-----------------------|------------------|
+| Public | \`pages/public/\` | \`assets/js/pages/public/\` |
+| User | \`pages/user/\` | \`assets/js/pages/user/\` |
+| Admin | \`pages/admin/\` | \`assets/js/pages/admin/\` |
+
+- **public/** — no authentication required (login, register, password reset)
+- **user/** — requires \`requireAuth()\` — logged-in users only
+- **admin/** — requires \`requireAdmin()\` — admin role only
+
+---
+
 ## Getting Started
 
 ${gettingStarted}
@@ -73,11 +83,9 @@ ${gettingStarted}
 
 ## Architecture Notes
 
-This project follows a **vanilla PHP + JS SPA** pattern:
-
-- \`assets/js/app.js\` bootstraps the app on DOMContentLoaded
+- \`assets/js/app.js\` bootstraps the app on \`DOMContentLoaded\`
 - \`assets/js/router.js\` maps URL paths to page modules
-- \`assets/js/pages/\` contains page-level view modules
+- \`assets/js/pages/\` contains page-level view modules (split public/user/admin)
 - \`assets/js/components/\` contains reusable UI pieces
 - \`assets/js/utils/\` contains helpers (DOM, API calls, transitions)
 - \`.htaccess\` rewrites unknown paths to \`index.php\` to enable SPA navigation
@@ -90,112 +98,104 @@ ${featureLines.join('\n')}
 `;
 }
 
-// ── Build annotated folder tree for README ──────────────────────────────────
-function buildTreeAnnotation({ complexity, phpBackend, features }) {
+function buildTreeAnnotation({ framework, complexity, phpBackend, features }) {
   const lines = [];
-  const add = (line) => lines.push(line);
+  const add   = (l) => lines.push(l);
 
   add('project-name/');
-  add('├── index.php                 ← SPA shell — loads CSS + app.js');
-  add('├── .env.example              ← environment variable template');
-  add('├── .htaccess                 ← URL rewriting + SPA fallback');
-  add('├── .gitignore');
-  add('├── .gitattributes');
-  add('├── README.md');
-  add('├── ARCHITECTURE.md');
-  if (phpBackend && features.phpMailer) add('├── composer.json');
-  add('│');
-  if (phpBackend) {
-    add('├── api/                      ← PHP API endpoints');
-    if (features.contactForm) {
-      add('│   ├── contact.php           ← contact form handler');
-      add('│   ├── email_templates.php   ← reusable email HTML templates');
+  if (framework === 'mvc') {
+    add('|-- public/');
+    add('|   +-- index.php              <- front controller entry point');
+    add('|-- app/');
+    add('|   |-- Controllers/           <- request handlers');
+    add('|   |-- Models/                <- database models');
+    add('|   +-- Views/                 <- PHP view templates');
+    add('|-- routes/');
+    add('|   +-- web.php                <- route definitions');
+  } else if (framework === 'api') {
+    add('|-- index.php                  <- JSON health-check endpoint');
+  } else {
+    add('|-- index.php                  <- SPA shell (SEO, OG meta, CSS, app.js)');
+    add('|-- assets/');
+    add('|   |-- css/');
+    add('|   |   |-- main.css           <- CSS custom properties + reset');
+    add('|   |   |-- layout.css         <- grid, flex, structural layout');
+    add('|   |   |-- components.css     <- buttons, cards, forms');
+    add('|   |   +-- animations.css     <- keyframes + motion utilities');
+    add('|   |-- js/');
+    add('|   |   |-- app.js             <- SPA entry point + bootstrapper');
+    add('|   |   |-- router.js          <- client-side route definitions');
+    add('|   |   |-- pages/');
+    add('|   |   |   |-- public/        <- public page modules (home, about, contact)');
+    add('|   |   |   |-- user/          <- authenticated user page modules');
+    if (features.admin) add('|   |   |   +-- admin/         <- admin page modules');
+    add('|   |   |-- components/        <- reusable UI (nav, modals, etc.)');
+    add('|   |   +-- utils/             <- helpers: dom.js, api.js, transitions.js');
+    if (complexity === 'medium' || complexity === 'complex') {
+      add('|   |   |-- services/        <- fetch abstraction / API wrappers');
+      add('|   |   +-- lib/             <- third-party adapters');
     }
-    if (features.auth) add('│   ├── auth/                 ← login / register / forgot / reset');
-    if (features.admin) add('│   ├── admin/                ← admin-only API endpoints');
-    if (complexity === 'medium' || complexity === 'complex') add('│   ├── v1/                   ← versioned API (reserved)');
-    if (complexity === 'complex') add('│   └── webhooks/             ← incoming webhook handlers');
-    add('│');
+    if (complexity === 'complex') {
+      add('|   |   |-- store/           <- state management');
+      add('|   |   |-- middleware/      <- request/response interceptors');
+      add('|   |   +-- modules/         <- feature modules (auth/, dashboard/, etc.)');
+    }
+    add('|   |-- fonts/');
+    add('|   |-- images/');
+    add('|   +-- favicon/');
+    if (features.phosphorIcons) add('|   +-- icons/              <- Phosphor Icons');
   }
-  add('├── assets/');
-  add('│   ├── css/');
-  add('│   │   ├── main.css           ← CSS custom properties + reset');
-  add('│   │   ├── layout.css         ← grid, flex, structural layout');
-  add('│   │   ├── components.css     ← buttons, cards, forms');
-  add('│   │   └── animations.css     ← keyframes + motion utilities');
-  add('│   ├── fonts/');
-  add('│   ├── images/');
-  if (complexity === 'medium' || complexity === 'complex') {
-    add('│   │   ├── hero/');
-    add('│   │   ├── icons/');
-    add('│   │   └── og/');
+
+  const isPhp = phpBackend || framework === 'mvc' || framework === 'api';
+  if (isPhp) {
+    add('|-- api/');
+    if (features.contactForm) add('|   |-- contact.php           <- contact form handler');
+    if (features.auth)        add('|   |-- auth/                 <- login, register, forgot, reset');
+    if (features.admin)       add('|   +-- admin/                <- admin-only API endpoints');
+    if (framework === 'vanilla' && (complexity === 'medium' || complexity === 'complex')) add('|   +-- v1/                   <- versioned API (reserved)');
+    if (framework === 'vanilla' && complexity === 'complex') add('|   +-- webhooks/             <- webhook handlers');
+    add('|-- config/');
+    add('|   |-- constants.php          <- app constants + error config');
+    add('|   |-- env.php                <- .env loader');
+    add('|   +-- responses.php          <- jsonSuccess() / jsonError()');
+    if (features.database) add('|   +-- database.php          <- PDO singleton');
+    add('|-- includes/');
+    add('|   |-- headers.php            <- CORS + Content-Type');
+    add('|   +-- helpers.php            <- sanitize() + validateEmail()');
+    if (features.contactForm)  add('|   +-- rate_limit.php        <- session-based rate limiter');
+    if (features.phpMailer)    add('|   +-- mailer.php            <- PHPMailer wrapper');
+    if (features.auth)         add('|   +-- auth-check.php        <- requireAuth() / requireAdmin()');
+    if (features.auth) {
+      add('|-- pages/');
+      add('|   |-- public/              <- login.php, forgot-password.php, reset-password.php');
+      add('|   +-- user/                <- dashboard.php (auth required)');
+      if (features.admin) add('|   +-- admin/               <- dashboard.php (admin required)');
+    }
+    if (features.database) {
+      add('|-- database/');
+      add('|   +-- database.sql         <- schema: users, password_resets, sessions');
+    }
   }
-  add('│   ├── favicon/');
-  if (features.phosphorIcons) add('│   ├── icons/                ← Phosphor Icons');
-  add('│   └── js/');
-  add('│       ├── app.js             ← SPA entry point + bootstrapper');
-  add('│       ├── router.js          ← client-side route definitions');
-  add('│       ├── components/        ← reusable UI (nav, modals, etc.)');
-  add('│       ├── pages/             ← page-level view modules');
-  add('│       ├── utils/             ← helpers: dom.js, api.js, transitions.js');
-  if (complexity === 'medium' || complexity === 'complex') {
-    add('│       ├── services/          ← fetch abstraction / API call wrappers');
-    add('│       └── lib/               ← third-party adapters + initialisers');
-  }
-  if (complexity === 'complex') {
-    add('│       ├── store/             ← state management');
-    add('│       ├── middleware/        ← request/response interceptors');
-    add('│       └── modules/           ← feature modules (auth/, dashboard/, etc.)');
-  }
-  add('│');
-  if (phpBackend) {
-    add('├── config/');
-    add('│   ├── constants.php         ← app-wide constants + error config');
-    add('│   ├── env.php               ← .env loader');
-    add('│   ├── responses.php         ← jsonSuccess() / jsonError() helpers');
-    if (features.database) add('│   └── database.php          ← PDO singleton');
-    add('│');
-    add('├── includes/');
-    add('│   ├── headers.php           ← CORS + Content-Type headers');
-    add('│   ├── helpers.php           ← sanitize() + validateEmail()');
-    if (features.contactForm) add('│   ├── rate_limit.php        ← session-based rate limiter');
-    if (features.phpMailer)   add('│   ├── mailer.php            ← PHPMailer wrapper');
-    if (features.auth)        add('│   └── auth-check.php        ← requireAuth() / requireAdmin()');
-    add('│');
-  }
-  if (phpBackend && features.auth) {
-    add('├── pages/                    ← PHP-rendered auth pages');
-    add('│   ├── login.php');
-    add('│   ├── forgot-password.php');
-    add('│   ├── reset-password.php');
-    add('│   └── dashboard.php');
-    add('│');
-  }
-  if (phpBackend && features.admin) {
-    add('├── admin/                    ← admin panel (PHP-rendered)');
-    add('│   └── dashboard.php');
-    add('│');
-  }
-  if (phpBackend && features.database) {
-    add('├── database/');
-    add('│   └── database.sql          ← schema: users, password_resets, sessions');
-    add('│');
-  }
-  add('└── uploads/                  ← user-uploaded files (gitignored)');
+
+  add('|-- .env                         <- local credentials (gitignored)');
+  add('|-- .env.example                 <- credentials template');
+  add('|-- .htaccess');
+  add('|-- .gitignore');
+  add('+-- uploads/                     <- user uploads (gitignored)');
 
   return lines.join('\n');
 }
 
-// ── Generate ARCHITECTURE.md ────────────────────────────────────────────────
-function generateArchitecture({ projectName, complexity, phpBackend, features }) {
-  const jsLayers = buildJSLayersDocs(complexity);
-  const phpLayer = phpBackend ? buildPHPLayerDocs(features) : '';
+function generateArchitecture({ projectName, framework, complexity, phpBackend, features }) {
+  const isPhp = phpBackend || framework === 'mvc' || framework === 'api';
+  const jsLayers = buildJSLayersDocs(complexity, framework);
+  const pagesSection = features.auth ? buildPagesDocs() : '';
 
   return `# Architecture — ${projectName}
 
 ## Why This Structure
 
-No framework overhead — just vanilla PHP and JavaScript. Every file has a clear ownership boundary. You can read the codebase top-to-bottom without a mental model of a framework's conventions.
+No framework overhead — vanilla PHP and JavaScript with clear ownership boundaries per file. Every folder has exactly one responsibility.
 
 ---
 
@@ -203,24 +203,22 @@ No framework overhead — just vanilla PHP and JavaScript. Every file has a clea
 
 \`index.php\` is the single HTML shell. The browser loads it once.
 
-1. \`assets/js/app.js\` — bootstraps on \`DOMContentLoaded\`, initialises the router and global components
-2. \`assets/js/router.js\` — defines the route table mapping URL paths to page modules
-3. \`assets/js/pages/\` — each file is a page module that renders its own view
-4. \`assets/js/components/\` — reusable UI pieces (nav, modals, etc.) imported by pages
-5. \`assets/js/utils/\` — stateless helper functions (DOM manipulation, fetch wrappers, transitions)
+1. \`assets/js/app.js\` — bootstraps on \`DOMContentLoaded\`, initialises router and global components
+2. \`assets/js/router.js\` — route table mapping URL paths to page modules
+3. \`assets/js/pages/\` — page modules split into \`public/\`, \`user/\`, \`admin/\`
+4. \`assets/js/components/\` — reusable UI (nav, modals, cards)
+5. \`assets/js/utils/\` — stateless helpers (DOM, fetch wrappers, transitions)
 
-\`.htaccess\` rewrites all non-file requests to \`index.php\` so the router handles navigation without 404s from the server.
+\`.htaccess\` rewrites non-file requests to \`index.php\` so the router handles navigation without server 404s.
 
 ---
 
 ## CSS Architecture
 
-Each CSS file owns exactly one concern — they load together but never bleed into each other:
-
 | File | Owns |
 |------|------|
 | \`main.css\` | Design tokens (\`--color-*\`, \`--font-*\`) + box-model reset + body defaults |
-| \`layout.css\` | Page skeleton, containers, grid + flexbox structural rules |
+| \`layout.css\` | Page skeleton, containers, grid + flex structural rules |
 | \`components.css\` | Reusable UI patterns: \`.btn\`, cards, form controls |
 | \`animations.css\` | \`@keyframes\`, animation utilities, always wrapped in \`prefers-reduced-motion\` |
 
@@ -231,53 +229,71 @@ Each CSS file owns exactly one concern — they load together but never bleed in
 ${jsLayers}
 
 ---
-${phpLayer}
+${pagesSection}
+${isPhp ? buildPHPLayerDocs(features) : ''}
 ## Environment Setup
-
-Variables defined in \`.env\` (copy from \`.env.example\`):
 
 | Variable | Purpose |
 |----------|---------|
-| \`APP_NAME\` | Application name shown in emails and page titles |
+| \`APP_NAME\` | Application name used in emails and titles |
 | \`APP_URL\` | Full base URL — used for reset links and CORS |
-| \`APP_ENV\` | \`development\` shows errors; \`production\` suppresses them |
+| \`APP_ENV\` | \`development\` enables error display; \`production\` suppresses it |
 | \`DB_HOST / DB_NAME / DB_USER / DB_PASS\` | MySQL connection |
 | \`SESSION_LIFETIME\` | Session duration in seconds |
 | \`SMTP_*\` | Email sending credentials (PHPMailer) |
 `;
 }
 
-function buildJSLayersDocs(complexity) {
+function buildJSLayersDocs(complexity, framework) {
+  if (framework === 'api') return '_No JS layer — API-only project._\n';
   let s = `| Folder | Responsibility |\n|--------|----------------|\n`;
-  s += `| \`pages/\` | Page-level view modules — each maps to one route |\n`;
+  s += `| \`pages/public/\` | Public page modules — accessible to all visitors |\n`;
+  s += `| \`pages/user/\` | Authenticated page modules — logged-in users only |\n`;
+  s += `| \`pages/admin/\` | Admin page modules — admin role required |\n`;
   s += `| \`components/\` | Reusable UI pieces imported by multiple pages |\n`;
   s += `| \`utils/\` | Stateless helpers: DOM queries, fetch wrappers, transitions |\n`;
   if (complexity === 'medium' || complexity === 'complex') {
-    s += `| \`services/\` | Fetch abstraction layer — wraps API calls with typed responses |\n`;
+    s += `| \`services/\` | Fetch abstraction layer — typed API call wrappers |\n`;
     s += `| \`lib/\` | Third-party adapters and initialisers |\n`;
   }
   if (complexity === 'complex') {
     s += `| \`store/\` | App-wide state management |\n`;
     s += `| \`middleware/\` | Request/response interceptors (auth headers, error handling) |\n`;
-    s += `| \`modules/\` | Feature-based modules (e.g. \`auth/\`, \`dashboard/\`) |\n`;
+    s += `| \`modules/\` | Feature-based modules (auth/, dashboard/) |\n`;
   }
   return s;
+}
+
+function buildPagesDocs() {
+  return `## Pages Architecture
+
+PHP pages and JS page modules follow a consistent three-tier split:
+
+| Tier | PHP | JS |
+|------|-----|----|
+| Public | \`pages/public/\` | \`assets/js/pages/public/\` |
+| User | \`pages/user/\` | \`assets/js/pages/user/\` |
+| Admin | \`pages/admin/\` | \`assets/js/pages/admin/\` |
+
+- **public/** — no auth required. Login, register, password reset.
+- **user/** — \`requireAuth()\` guard applied. Dashboard, profile, settings.
+- **admin/** — \`requireAdmin()\` guard applied. Admin panel, user management.
+
+---
+
+`;
 }
 
 function buildPHPLayerDocs(features) {
   return `## PHP Layer
 
-\`api/\` contains endpoint files only — one concern per file, always return JSON.
+\`api/\` contains endpoint files — one concern per file, always returns JSON via \`jsonSuccess()\` / \`jsonError()\`.
 
-\`config/\` vs \`includes/\` distinction:
-- **config/** — bootstrap files loaded once at the top of entry points (\`constants.php\` → \`env.php\` → optional \`database.php\`)
-- **includes/** — utility files required a-la-carte by specific endpoints (\`headers.php\`, \`helpers.php\`, etc.)
+**config/** vs **includes/** distinction:
+- **config/** — bootstrap files loaded once per entry point (\`constants.php\` loads \`env.php\`, optionally \`database.php\`)
+- **includes/** — utility files required a-la-carte by specific endpoints
 
-Every API endpoint uses \`jsonSuccess()\` and \`jsonError()\` from \`config/responses.php\` so responses are always consistent.
-${features.auth ? '\nAuth state lives in the PHP session. `includes/auth-check.php` provides `requireAuth()` and `requireAdmin()` guards that short-circuit with a 401/403 JSON response before any business logic runs.\n' : ''}
----
-
-`;
+${features.auth ? `Auth state lives in the PHP session. \`includes/auth-check.php\` provides \`requireAuth()\` and \`requireAdmin()\` guards that return 401/403 JSON before any business logic runs.\n\n---\n\n` : '---\n\n'}`;
 }
 
 module.exports = { generateReadme, generateArchitecture };

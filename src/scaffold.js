@@ -1,15 +1,14 @@
 'use strict';
 
-const path    = require('path');
-const fs      = require('fs');
-const shell   = require('shelljs');
-const chalk   = require('chalk');
+const path  = require('path');
+const fs    = require('fs');
+const shell = require('shelljs');
+const chalk = require('chalk');
 
 const { writeComposerJson, installPHPMailer } = require('./composer');
 const { downloadPhosphorIcons }               = require('./icons');
 const { generateReadme, generateArchitecture } = require('./docs');
 
-// PHP file header comment block
 function phpHeader(projectName, authorName, note = '') {
   const noteStr = note ? `\n * ${note}` : '';
   return `<?php
@@ -21,21 +20,44 @@ function phpHeader(projectName, authorName, note = '') {
 `;
 }
 
-// Build folder list based on config options
-function buildFolderList({ complexity, phpBackend, features }) {
+// ── Folder list ─────────────────────────────────────────────────────────────
+function buildFolderList({ framework, complexity, phpBackend, features }) {
+  if (framework === 'api') {
+    const folders = ['api', 'config', 'includes', 'uploads'];
+    if (features.auth)     folders.push('api/auth', 'pages/public', 'pages/user');
+    if (features.admin)    folders.push('api/admin', 'pages/admin');
+    if (features.database) folders.push('database');
+    return folders;
+  }
+
+  if (framework === 'mvc') {
+    const folders = [
+      'app/Controllers', 'app/Models', 'app/Views',
+      'routes', 'public', 'config', 'includes', 'uploads'
+    ];
+    if (features.auth)     folders.push('api/auth', 'pages/public', 'pages/user');
+    if (features.admin)    folders.push('api/admin', 'pages/admin');
+    if (features.database) folders.push('database');
+    return folders;
+  }
+
+  // Vanilla
   const folders = [
     'assets/css',
     'assets/js/components',
-    'assets/js/pages',
-    'assets/js/utils',
+    'assets/js/pages/public',
+    'assets/js/pages/user',
     'assets/fonts',
     'assets/images',
     'assets/favicon',
     'uploads',
   ];
 
+  if (features.admin) folders.push('assets/js/pages/admin');
+
   if (phpBackend) {
-    folders.push('api', 'config', 'includes');
+    folders.push('api', 'config', 'includes', 'pages/public', 'pages/user');
+    if (features.admin) folders.push('pages/admin', 'api/admin');
   }
 
   if (complexity === 'medium' || complexity === 'complex') {
@@ -49,26 +71,25 @@ function buildFolderList({ complexity, phpBackend, features }) {
     if (phpBackend) folders.push('api/webhooks');
   }
 
-  if (phpBackend && features.auth)       folders.push('api/auth', 'pages');
-  if (phpBackend && features.admin)      folders.push('admin', 'api/admin');
-  if (phpBackend && features.database)   folders.push('database');
-  if (features.phosphorIcons)            folders.push('assets/icons');
+  if (features.auth && phpBackend)     folders.push('api/auth');
+  if (features.database && phpBackend) folders.push('database');
+  if (features.phosphorIcons)          folders.push('assets/icons');
 
   return folders;
 }
 
-// ── CSS stubs ───────────────────────────────────────────────────────────────
+// ── CSS stubs ────────────────────────────────────────────────────────────────
 const mainCSS = () => `/* main.css — CSS Custom Properties + Base Reset
  * Owns: design tokens, box-model reset, body defaults
  */
 
 :root {
-  --color-bg:        #ffffff;
-  --color-text:      #1f2937;
-  --color-accent:    #3b82f6;
-  --color-muted:     #6b7280;
-  --font-primary:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-secondary:  Georgia, 'Times New Roman', serif;
+  --color-bg:       #ffffff;
+  --color-text:     #1f2937;
+  --color-accent:   #3b82f6;
+  --color-muted:    #6b7280;
+  --font-primary:   -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-secondary: Georgia, 'Times New Roman', serif;
 }
 
 *, *::before, *::after {
@@ -123,7 +144,7 @@ const componentsCSS = () => `/* components.css — Buttons, Cards, Forms & UI Pi
 
 const animationsCSS = () => `/* animations.css — Keyframes, Transitions & Motion
  * Owns: @keyframes definitions, animation utility classes
- * Rule:  always wrap new animations in prefers-reduced-motion guard
+ * Rule: always wrap new animations in prefers-reduced-motion guard
  */
 
 @media (prefers-reduced-motion: reduce) {
@@ -143,7 +164,7 @@ const animationsCSS = () => `/* animations.css — Keyframes, Transitions & Moti
 */
 `;
 
-// ── JS stubs ────────────────────────────────────────────────────────────────
+// ── JS stubs ─────────────────────────────────────────────────────────────────
 const appJS = () => `/**
  * app.js — SPA Entry Point
  *
@@ -151,7 +172,7 @@ const appJS = () => `/**
  *   1. Waits for DOM to be ready
  *   2. Initialises the router
  *   3. Mounts global components (nav, footer, etc.)
- *   4. Runs any app-wide setup (theme, auth state, analytics, etc.)
+ *   4. Runs any app-wide setup (theme, auth state, analytics)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -168,46 +189,166 @@ const routerJS = () => `/**
  * app.js calls router.init() on DOMContentLoaded.
  *
  * Route shape:
- *   { path: '/about', view: () => import('./pages/about.js') }
+ *   { path: '/about', view: () => import('./pages/public/about.js') }
  */
 
 const routes = [
-  // { path: '/',        view: () => import('./pages/home.js')    },
-  // { path: '/about',   view: () => import('./pages/about.js')   },
-  // { path: '/contact', view: () => import('./pages/contact.js') },
+  // { path: '/',           view: () => import('./pages/public/home.js')       },
+  // { path: '/about',      view: () => import('./pages/public/about.js')      },
+  // { path: '/contact',    view: () => import('./pages/public/contact.js')    },
+  // { path: '/dashboard',  view: () => import('./pages/user/dashboard.js')    },
+  // { path: '/admin',      view: () => import('./pages/admin/dashboard.js')   },
 ];
 
 module.exports = { routes };
 `;
 
-// ── Root index.php ──────────────────────────────────────────────────────────
-const rootIndexPHP = (projectName, phpBackend) => {
+// ── Root index.php — production-quality HTML shell ───────────────────────────
+const rootIndexPHP = (projectName, phpBackend, features) => {
   const phpOpen = phpBackend
-    ? `<?php require_once 'config/constants.php'; ?>\n`
+    ? `<?php\nrequire_once __DIR__ . '/config/env.php';\nrequire_once __DIR__ . '/config/constants.php';\n?>\n`
     : '';
+
+  const phosphorScript = features && features.phosphorIcons
+    ? `\n  <!-- Phosphor Icons -->\n  <script src="https://unpkg.com/@phosphor-icons/web" defer></script>\n`
+    : '';
+
   return `${phpOpen}<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${projectName}</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/layout.css">
-    <link rel="stylesheet" href="assets/css/components.css">
-    <link rel="stylesheet" href="assets/css/animations.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${projectName}</title>
+
+  <!-- SEO -->
+  <meta name="description" content="<!-- Add your site description here -->">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="${projectName}">
+  <meta property="og:description" content="<!-- Add your site description here -->">
+  <meta property="og:image"       content="/assets/images/og/og-image.jpg">
+  <meta property="og:url"         content="https://yourdomain.com">
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="${projectName}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="${projectName}">
+  <meta name="twitter:description" content="<!-- Add your site description here -->">
+  <meta name="twitter:image"       content="/assets/images/og/og-image.jpg">
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://yourdomain.com">
+
+  <!-- Font Preloads — update paths once you add your fonts to assets/fonts/ -->
+  <!--
+  <link rel="preload" href="/assets/fonts/YourFont-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/YourFont-Bold.woff2"    as="font" type="font/woff2" crossorigin>
+  -->
+
+  <!-- Google Fonts — uncomment and replace with your chosen font -->
+  <!--
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  -->
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/layout.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/animations.css">
+${phosphorScript}
 </head>
 <body>
-    <div id="app">
-        <!-- SPA mounts here -->
-    </div>
-    <script src="assets/js/app.js" type="module"></script>
+
+  <nav    id="nav"          aria-label="Main navigation"></nav>
+  <main   id="app"          role="main"></main>
+  <footer id="site-footer"  aria-label="Site footer"></footer>
+
+  <!-- App Entry Point -->
+  <script type="module" src="/assets/js/app.js"></script>
+
 </body>
 </html>
 `;
 };
 
-// ── PHP config stubs ────────────────────────────────────────────────────────
-const constantsPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+// ── API index.php — JSON health-check endpoint ───────────────────────────────
+const apiIndexPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+require_once __DIR__ . '/config/constants.php';
+require_once __DIR__ . '/config/responses.php';
+require_once __DIR__ . '/includes/headers.php';
+
+jsonSuccess([
+    'service' => '${projectName}',
+    'status'  => 'ok',
+    'version' => '1.0.0',
+]);
+`;
+
+// ── MVC entry point ──────────────────────────────────────────────────────────
+const mvcPublicIndexPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+require_once dirname(__DIR__) . '/config/constants.php';
+
+// Front controller — all web traffic routes through here.
+// Load your router and dispatch the request.
+// Example: Router::dispatch($_SERVER['REQUEST_URI']);
+`;
+
+const mvcRoutesWebPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+/**
+ * routes/web.php — Application route definitions
+ *
+ * Example shape:
+ *   Router::get('/',       'HomeController@index');
+ *   Router::get('/about',  'AboutController@index');
+ *   Router::post('/login', 'AuthController@login');
+ */
+`;
+
+const mvcBaseControllerPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+namespace App\\Controllers;
+
+abstract class BaseController {
+
+    protected function view(string $template, array $data = []): void {
+        extract($data);
+        $path = APP_ROOT . '/app/Views/' . $template . '.php';
+        if (!file_exists($path)) {
+            throw new \\RuntimeException("View not found: $template");
+        }
+        require $path;
+    }
+
+    protected function json(array $data, int $code = 200): void {
+        http_response_code($code);
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
+    }
+}
+`;
+
+const mvcBaseModelPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+namespace App\\Models;
+
+abstract class BaseModel {
+
+    protected \\PDO $db;
+
+    public function __construct() {
+        $this->db = \\Database::getInstance()->getConnection();
+    }
+}
+`;
+
+// ── PHP config stubs ──────────────────────────────────────────────────────────
+const constantsPHP = (pn, an) => phpHeader(pn, an) + `
 define('APP_ROOT',      dirname(__DIR__));
 define('CONFIG_PATH',   APP_ROOT . '/config');
 define('INCLUDES_PATH', APP_ROOT . '/includes');
@@ -226,19 +367,16 @@ if (getenv('APP_ENV') === 'development') {
 date_default_timezone_set('UTC');
 `;
 
-const envPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+const envPHP = (pn, an) => phpHeader(pn, an) + `
 function loadEnv($path) {
     if (!file_exists($path)) return;
-
     $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
         if (strpos(trim($line), '#') === 0) continue;
         if (strpos($line, '=') === false) continue;
-
         list($name, $value) = explode('=', $line, 2);
         $name  = trim($name);
         $value = trim($value, " \\t\\n\\r\\0\\x0B\\"'");
-
         if (!array_key_exists($name, $_ENV)) {
             putenv("$name=$value");
             $_ENV[$name] = $value;
@@ -249,7 +387,7 @@ function loadEnv($path) {
 loadEnv(dirname(__DIR__) . '/.env');
 `;
 
-const databasePHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+const databasePHP = (pn, an) => phpHeader(pn, an) + `
 require_once __DIR__ . '/env.php';
 
 class Database {
@@ -261,12 +399,10 @@ class Database {
         $dbname   = getenv('DB_NAME');
         $username = getenv('DB_USER') ?: 'root';
         $password = getenv('DB_PASS') ?: '';
-
         try {
             $this->conn = new PDO(
                 "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-                $username,
-                $password,
+                $username, $password,
                 [
                     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -288,12 +424,7 @@ class Database {
 }
 `;
 
-const responsesPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-/**
- * JSON response helpers
- * Usage: jsonSuccess($data) / jsonError($message, $code)
- */
-
+const responsesPHP = (pn, an) => phpHeader(pn, an) + `
 function jsonSuccess($data = [], int $code = 200): void {
     http_response_code($code);
     header('Content-Type: application/json');
@@ -309,13 +440,8 @@ function jsonError(string $message, int $code = 400): void {
 }
 `;
 
-// ── PHP includes stubs ──────────────────────────────────────────────────────
-const headersPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-/**
- * CORS + Content-Type headers
- * Include at the top of API endpoint files
- */
-
+// ── PHP includes stubs ────────────────────────────────────────────────────────
+const headersPHP = (pn, an) => phpHeader(pn, an) + `
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: ' . (getenv('APP_URL') ?: '*'));
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -327,11 +453,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 `;
 
-const helpersPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-/**
- * Common utility helpers
- */
-
+const helpersPHP = (pn, an) => phpHeader(pn, an) + `
 function sanitize(string $input): string {
     return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
 }
@@ -341,28 +463,18 @@ function validateEmail(string $email): bool {
 }
 `;
 
-const rateLimitPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-/**
- * Session-based rate limiting
- * Usage: rateLimit('contact_form', 5, 60) — max 5 requests per 60 seconds
- */
-
+const rateLimitPHP = (pn, an) => phpHeader(pn, an) + `
 function rateLimit(string $key, int $maxAttempts = 5, int $windowSeconds = 60): void {
     if (session_status() === PHP_SESSION_NONE) session_start();
-
     $now        = time();
     $sessionKey = 'rate_limit_' . $key;
-
     if (!isset($_SESSION[$sessionKey])) {
         $_SESSION[$sessionKey] = ['count' => 0, 'reset_at' => $now + $windowSeconds];
     }
-
     if ($now > $_SESSION[$sessionKey]['reset_at']) {
         $_SESSION[$sessionKey] = ['count' => 0, 'reset_at' => $now + $windowSeconds];
     }
-
     $_SESSION[$sessionKey]['count']++;
-
     if ($_SESSION[$sessionKey]['count'] > $maxAttempts) {
         http_response_code(429);
         header('Content-Type: application/json');
@@ -372,12 +484,7 @@ function rateLimit(string $key, int $maxAttempts = 5, int $windowSeconds = 60): 
 }
 `;
 
-const mailerPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-/**
- * PHPMailer wrapper
- * Requires: composer require phpmailer/phpmailer
- */
-
+const mailerPHP = (pn, an) => phpHeader(pn, an) + `
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use PHPMailer\\PHPMailer\\PHPMailer;
@@ -397,7 +504,7 @@ function createMailer(): PHPMailer {
 }
 `;
 
-const authCheckPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+const authCheckPHP = (pn, an) => phpHeader(pn, an) + `
 session_start();
 
 function requireAuth(): void {
@@ -428,8 +535,8 @@ function getAuthUser(): array {
 }
 `;
 
-// ── Contact form stubs ──────────────────────────────────────────────────────
-const contactPHP = (projectName, authorName, withMailer) => phpHeader(projectName, authorName) + `
+// ── Contact + email templates ─────────────────────────────────────────────────
+const contactPHP = (pn, an, withMailer) => phpHeader(pn, an) + `
 require_once '../config/constants.php';
 require_once '../config/responses.php';
 require_once '../includes/headers.php';
@@ -471,21 +578,16 @@ jsonSuccess();
 `}
 `;
 
-const emailTemplatesPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-/**
- * Email template helpers
- * Usage: EmailTemplates::welcome($name) / EmailTemplates::passwordReset($name, $link)
- */
+const emailTemplatesPHP = (pn, an) => phpHeader(pn, an) + `
 class EmailTemplates {
 
     private static function layout(string $title, string $body): string {
-        $appName = getenv('APP_NAME') ?: '${projectName}';
+        $appName = getenv('APP_NAME') ?: '${pn}';
         return <<<HTML
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>$title</title>
+  <meta charset="UTF-8"><title>$title</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
     .wrapper { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; overflow: hidden; }
@@ -521,8 +623,8 @@ HTML;
 }
 `;
 
-// ── Auth API stubs ──────────────────────────────────────────────────────────
-const loginPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+// ── Auth API stubs ────────────────────────────────────────────────────────────
+const loginPHP = (pn, an) => phpHeader(pn, an) + `
 require_once '../../config/database.php';
 require_once '../../config/responses.php';
 require_once '../../includes/headers.php';
@@ -555,7 +657,7 @@ try {
 }
 `;
 
-const registerPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+const registerPHP = (pn, an) => phpHeader(pn, an) + `
 require_once '../../config/database.php';
 require_once '../../config/responses.php';
 require_once '../../includes/headers.php';
@@ -579,14 +681,13 @@ try {
     $hashed = password_hash($password, PASSWORD_DEFAULT);
     $stmt   = $db->prepare("INSERT INTO users (email, password, full_name) VALUES (:email, :password, :full_name)");
     $stmt->execute(['email' => $email, 'password' => $hashed, 'full_name' => $full_name]);
-
     jsonSuccess(['message' => 'Registration successful'], 201);
 } catch (PDOException $e) {
     jsonError('Server error', 500);
 }
 `;
 
-const logoutPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+const logoutPHP = (pn, an) => phpHeader(pn, an) + `
 require_once '../../config/responses.php';
 require_once '../../includes/headers.php';
 session_start();
@@ -594,7 +695,7 @@ session_destroy();
 jsonSuccess(['message' => 'Logged out successfully']);
 `;
 
-const forgotPasswordPHP = (projectName, authorName, withMailer) => phpHeader(projectName, authorName) + `
+const forgotPasswordPHP = (pn, an, withMailer) => phpHeader(pn, an) + `
 require_once '../../config/database.php';
 require_once '../../config/responses.php';
 require_once '../../includes/headers.php';
@@ -604,28 +705,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') jsonError('Method not allowed', 405);
 
 $input = json_decode(file_get_contents('php://input'), true);
 $email = trim($input['email'] ?? '');
-
 if (empty($email)) jsonError('Email is required');
 
 try {
     $db   = Database::getInstance()->getConnection();
     $stmt = $db->prepare("SELECT id FROM users WHERE email = :email");
     $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch();
-
-    // Always return success to prevent email enumeration
-    if (!$user) {
+    if (!$stmt->fetch()) {
         jsonSuccess(['message' => 'If this email exists, a reset link has been sent']);
     }
 
     $token      = bin2hex(random_bytes(32));
     $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
-
     $db->prepare("DELETE FROM password_resets WHERE email = :email")->execute(['email' => $email]);
-    $stmt = $db->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (:email, :token, :expires_at)");
-    $stmt->execute(['email' => $email, 'token' => $token, 'expires_at' => $expires_at]);
+    $db->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (:email, :token, :expires_at)")
+       ->execute(['email' => $email, 'token' => $token, 'expires_at' => $expires_at]);
 
-    $resetLink = getenv('APP_URL') . '/pages/reset-password.php?token=' . $token;
+    $resetLink = getenv('APP_URL') . '/pages/public/reset-password.php?token=' . $token;
 
     ${withMailer ? `
     try {
@@ -637,8 +733,7 @@ try {
         $mail->send();
     } catch (Exception $e) {
         error_log('Password reset email failed: ' . $e->getMessage());
-    }` : `
-    // TODO: send email with reset link: $resetLink`}
+    }` : `    // TODO: send email with reset link: $resetLink`}
 
     jsonSuccess(['message' => 'If this email exists, a reset link has been sent']);
 } catch (PDOException $e) {
@@ -646,7 +741,7 @@ try {
 }
 `;
 
-const resetPasswordPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+const resetPasswordPHP = (pn, an) => phpHeader(pn, an) + `
 require_once '../../config/database.php';
 require_once '../../config/responses.php';
 require_once '../../includes/headers.php';
@@ -665,7 +760,6 @@ try {
     $stmt = $db->prepare("SELECT * FROM password_resets WHERE token = :token AND expires_at > NOW()");
     $stmt->execute(['token' => $token]);
     $reset = $stmt->fetch();
-
     if (!$reset) jsonError('Invalid or expired reset token');
 
     $hashed = password_hash($password, PASSWORD_DEFAULT);
@@ -680,156 +774,155 @@ try {
 }
 `;
 
-// ── Auth pages ──────────────────────────────────────────────────────────────
-const loginPagePHP = (projectName) => `<!DOCTYPE html>
+// ── Auth pages — now in pages/public/ and pages/user/ ────────────────────────
+const loginPagePHP = (pn) => `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — ${projectName}</title>
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — ${pn}</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <form id="loginForm">
-            <input type="email"    name="email"    placeholder="Email"    required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-        <p><a href="forgot-password.php">Forgot password?</a></p>
-        <p id="msg"></p>
-    </div>
-    <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(e.target));
-        const res  = await fetch('/api/auth/login.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        document.getElementById('msg').textContent = result.data?.message || result.message;
-        if (result.success) window.location.href = '/pages/dashboard.php';
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="email"    name="email"    placeholder="Email"    required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p><a href="forgot-password.php">Forgot password?</a></p>
+    <p id="msg"></p>
+  </div>
+  <script>
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    const res  = await fetch('/api/auth/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
-    </script>
+    const result = await res.json();
+    document.getElementById('msg').textContent = result.data?.message || result.message;
+    if (result.success) window.location.href = '/pages/user/dashboard.php';
+  });
+  </script>
 </body>
 </html>
 `;
 
-const forgotPasswordPagePHP = (projectName) => `<!DOCTYPE html>
+const forgotPasswordPagePHP = (pn) => `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password — ${projectName}</title>
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password — ${pn}</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Forgot Password</h1>
-        <form id="forgotForm">
-            <input type="email" name="email" placeholder="Your email" required>
-            <button type="submit" class="btn btn-primary">Send Reset Link</button>
-        </form>
-        <p><a href="login.php">Back to login</a></p>
-        <p id="msg"></p>
-    </div>
-    <script>
-    document.getElementById('forgotForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(e.target));
-        const res  = await fetch('/api/auth/forgot-password.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        document.getElementById('msg').textContent = result.data?.message || result.message;
+  <div class="container">
+    <h1>Forgot Password</h1>
+    <form id="forgotForm">
+      <input type="email" name="email" placeholder="Your email" required>
+      <button type="submit" class="btn btn-primary">Send Reset Link</button>
+    </form>
+    <p><a href="login.php">Back to login</a></p>
+    <p id="msg"></p>
+  </div>
+  <script>
+  document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    const res  = await fetch('/api/auth/forgot-password.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
-    </script>
+    const result = await res.json();
+    document.getElementById('msg').textContent = result.data?.message || result.message;
+  });
+  </script>
 </body>
 </html>
 `;
 
-const resetPasswordPagePHP = (projectName) => `<!DOCTYPE html>
+const resetPasswordPagePHP = (pn) => `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password — ${projectName}</title>
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password — ${pn}</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Reset Password</h1>
-        <form id="resetForm">
-            <input type="password" name="password" placeholder="New password" minlength="8" required>
-            <input type="password" name="confirm"  placeholder="Confirm password"            required>
-            <button type="submit" class="btn btn-primary">Reset Password</button>
-        </form>
-        <p id="msg"></p>
-    </div>
-    <script>
-    const token = new URLSearchParams(window.location.search).get('token');
-    document.getElementById('resetForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const fd = new FormData(e.target);
-        if (fd.get('password') !== fd.get('confirm')) {
-            document.getElementById('msg').textContent = 'Passwords do not match';
-            return;
-        }
-        const res = await fetch('/api/auth/reset-password.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token, password: fd.get('password') })
-        });
-        const result = await res.json();
-        document.getElementById('msg').textContent = result.data?.message || result.message;
-        if (result.success) setTimeout(() => window.location.href = '/pages/login.php', 2000);
+  <div class="container">
+    <h1>Reset Password</h1>
+    <form id="resetForm">
+      <input type="password" name="password" placeholder="New password" minlength="8" required>
+      <input type="password" name="confirm"  placeholder="Confirm password"            required>
+      <button type="submit" class="btn btn-primary">Reset Password</button>
+    </form>
+    <p id="msg"></p>
+  </div>
+  <script>
+  const token = new URLSearchParams(window.location.search).get('token');
+  document.getElementById('resetForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    if (fd.get('password') !== fd.get('confirm')) {
+      document.getElementById('msg').textContent = 'Passwords do not match';
+      return;
+    }
+    const res = await fetch('/api/auth/reset-password.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password: fd.get('password') })
     });
-    </script>
+    const result = await res.json();
+    document.getElementById('msg').textContent = result.data?.message || result.message;
+    if (result.success) setTimeout(() => window.location.href = '/pages/public/login.php', 2000);
+  });
+  </script>
 </body>
 </html>
 `;
 
-// ── User dashboard ──────────────────────────────────────────────────────────
-const userDashboardPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-require_once '../includes/auth-check.php';
+const userDashboardPHP = (pn, an) => phpHeader(pn, an) + `
+require_once '../../includes/auth-check.php';
 requireAuth();
 $user = getAuthUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard — ${projectName}</title>
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — ${pn}</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Dashboard</h1>
-        <p>Welcome, <?php echo htmlspecialchars($user['email']); ?>!</p>
-        <button onclick="logout()" class="btn btn-primary">Logout</button>
-    </div>
-    <script>
-    async function logout() {
-        await fetch('/api/auth/logout.php');
-        window.location.href = '/pages/login.php';
-    }
-    </script>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <p>Welcome, <?php echo htmlspecialchars($user['email']); ?></p>
+    <button onclick="logout()" class="btn btn-primary">Logout</button>
+  </div>
+  <script>
+  async function logout() {
+    await fetch('/api/auth/logout.php');
+    window.location.href = '/pages/public/login.php';
+  }
+  </script>
 </body>
 </html>
 `;
 
-// ── Admin stubs ─────────────────────────────────────────────────────────────
-const adminDashboardAPIPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+// ── Admin — now in pages/admin/ ───────────────────────────────────────────────
+const adminDashboardAPIPHP = (pn, an) => phpHeader(pn, an) + `
 require_once '../../config/database.php';
 require_once '../../config/responses.php';
 require_once '../../includes/headers.php';
@@ -840,79 +933,72 @@ try {
     $db         = Database::getInstance()->getConnection();
     $totalUsers = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
     $newToday   = $db->query("SELECT COUNT(*) FROM users WHERE DATE(created_at) = CURDATE()")->fetchColumn();
-
-    jsonSuccess([
-        'total_users' => (int) $totalUsers,
-        'new_today'   => (int) $newToday,
-    ]);
+    jsonSuccess(['total_users' => (int) $totalUsers, 'new_today' => (int) $newToday]);
 } catch (PDOException $e) {
     jsonError('Server error', 500);
 }
 `;
 
-const adminPagePHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
-require_once '../includes/auth-check.php';
+const adminPagePHP = (pn, an) => phpHeader(pn, an) + `
+require_once '../../includes/auth-check.php';
 requireAdmin();
 $user = getAuthUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin — ${projectName}</title>
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
-    <style>
-        .admin-layout  { display: flex; min-height: 100vh; }
-        .admin-sidebar { width: 240px; background: #1e293b; color: #fff; padding: 1.5rem; }
-        .admin-sidebar h3 { margin-bottom: 1.5rem; font-size: 1rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; }
-        .admin-sidebar a  { display: block; color: #cbd5e1; text-decoration: none; padding: 0.5rem 0; }
-        .admin-sidebar a:hover { color: #fff; }
-        .admin-main    { flex: 1; padding: 2rem; background: #f8fafc; }
-        .admin-header  { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .stat-card     { background: #fff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.08); display: inline-block; min-width: 180px; margin-right: 1rem; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — ${pn}</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .admin-layout  { display: flex; min-height: 100vh; }
+    .admin-sidebar { width: 240px; background: #1e293b; color: #fff; padding: 1.5rem; }
+    .admin-sidebar h3 { margin-bottom: 1.5rem; font-size: .875rem; opacity:.7; text-transform: uppercase; letter-spacing:.08em; }
+    .admin-sidebar a  { display: block; color: #cbd5e1; text-decoration: none; padding: .5rem 0; }
+    .admin-sidebar a:hover { color: #fff; }
+    .admin-main    { flex: 1; padding: 2rem; background: #f8fafc; }
+    .stat-card     { background: #fff; border-radius: .75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.08); display: inline-block; min-width: 180px; margin-right: 1rem; }
+  </style>
 </head>
 <body>
 <div class="admin-layout">
-    <aside class="admin-sidebar">
-        <h3>${projectName}</h3>
-        <nav>
-            <a href="/admin/dashboard.php">Dashboard</a>
-        </nav>
-    </aside>
-    <div class="admin-main">
-        <header class="admin-header">
-            <h1>Admin Dashboard</h1>
-            <span>Logged in as <?php echo htmlspecialchars($user['email']); ?></span>
-        </header>
-        <div id="stats"></div>
-    </div>
+  <aside class="admin-sidebar">
+    <h3>${pn}</h3>
+    <nav><a href="/pages/admin/dashboard.php">Dashboard</a></nav>
+  </aside>
+  <div class="admin-main">
+    <header style="margin-bottom:2rem;display:flex;justify-content:space-between;align-items:center;">
+      <h1>Admin Dashboard</h1>
+      <span><?php echo htmlspecialchars($user['email']); ?></span>
+    </header>
+    <div id="stats"></div>
+  </div>
 </div>
 <script>
 fetch('/api/admin/dashboard.php')
-    .then(r => r.json())
-    .then(({ success, data }) => {
-        if (!success) return;
-        document.getElementById('stats').innerHTML =
-            '<div class="stat-card"><p style="font-size:.75rem;color:#6b7280;">Total Users</p><h2>' + data.total_users + '</h2></div>' +
-            '<div class="stat-card"><p style="font-size:.75rem;color:#6b7280;">New Today</p><h2>'    + data.new_today   + '</h2></div>';
-    });
+  .then(r => r.json())
+  .then(({ success, data }) => {
+    if (!success) return;
+    document.getElementById('stats').innerHTML =
+      '<div class="stat-card"><p style="font-size:.75rem;color:#6b7280;">Total Users</p><h2>' + data.total_users + '</h2></div>' +
+      '<div class="stat-card"><p style="font-size:.75rem;color:#6b7280;">New Today</p><h2>'   + data.new_today   + '</h2></div>';
+  });
 </script>
 </body>
 </html>
 `;
 
-// ── Webhook stub ────────────────────────────────────────────────────────────
-const webhookPHP = (projectName, authorName) => phpHeader(projectName, authorName) + `
+// ── Dot-files + DB schema ─────────────────────────────────────────────────────
+const webhookPHP = (pn, an) => phpHeader(pn, an) + `
 require_once '../../config/responses.php';
 header('Content-Type: application/json');
 
 $payload   = file_get_contents('php://input');
 $signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
 
-// TODO: Verify the webhook signature from your provider
+// TODO: verify webhook signature
 // $expected = hash_hmac('sha256', $payload, getenv('WEBHOOK_SECRET'));
 // if (!hash_equals($expected, $signature)) jsonError('Invalid signature', 401);
 
@@ -920,8 +1006,6 @@ $data  = json_decode($payload, true);
 $event = $data['event'] ?? '';
 
 switch ($event) {
-    // case 'payment.completed': break;
-    // case 'payment.failed':    break;
     default:
         error_log('Unhandled webhook event: ' . $event);
 }
@@ -929,12 +1013,89 @@ switch ($event) {
 jsonSuccess();
 `;
 
-// ── Database schema ─────────────────────────────────────────────────────────
-const dbSchema = (projectName, authorName) => {
-  const dbName = projectName.toLowerCase().replace(/[^a-z0-9_]/g, '_');
-  return `-- Database Schema for ${projectName}
--- Generated by create-web-starter
--- Author: ${authorName}
+const htaccess = (pn) => `# ${pn} — Apache Configuration
+Options -Indexes
+RewriteEngine On
+RewriteBase /
+
+# Remove .php extension from URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\\.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# SPA fallback — route all non-file, non-directory requests to index.php
+# This lets app.js + router.js handle client-side navigation.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [L,QSA]
+
+# Block direct access to sensitive files
+<FilesMatch "^\\.(env|gitignore|htaccess)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteRule ^vendor/ - [F,L]
+</IfModule>
+`;
+
+const gitignore = () => `.env
+/vendor/
+/node_modules/
+.DS_Store
+Thumbs.db
+*.log
+/uploads/*
+!uploads/.gitkeep
+.vscode/
+.idea/
+`;
+
+const gitattributes = () => `* text=auto
+*.php text eol=lf
+*.js  text eol=lf
+*.css text eol=lf
+*.sql text eol=lf
+*.md  text eol=lf
+`;
+
+const envTemplate = (pn) => {
+  const dbName = pn.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+  return `# Environment Configuration — ${pn}
+# Copy this file to .env and fill in your credentials
+# Never commit .env to version control
+
+# Database
+DB_HOST=localhost
+DB_NAME=${dbName}
+DB_USER=root
+DB_PASS=
+
+# Application
+APP_NAME="${pn}"
+APP_URL=http://localhost
+APP_ENV=development
+
+# Security
+SESSION_LIFETIME=3600
+PASSWORD_HASH_COST=12
+
+# Email (SMTP)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_FROM=noreply@${dbName}.com
+SMTP_FROM_NAME="${pn}"
+`;
+};
+
+const dbSchema = (pn, an) => {
+  const dbName = pn.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+  return `-- Database Schema for ${pn}
+-- Generated by create-php-starter
+-- Author: ${an}
 
 CREATE DATABASE IF NOT EXISTS \`${dbName}\`;
 USE \`${dbName}\`;
@@ -971,158 +1132,168 @@ CREATE TABLE IF NOT EXISTS \`sessions\` (
 `;
 };
 
-// ── Dot-files ───────────────────────────────────────────────────────────────
-const htaccess = (projectName) => `# ${projectName} — Apache Configuration
-Options -Indexes
-RewriteEngine On
-RewriteBase /
+// ── Post-generation output ────────────────────────────────────────────────────
+function printSuccess(projectName, authorName, projectConfig) {
+  const { framework, phpBackend, features, complexity } = projectConfig;
+  const w = projectName.length + 20;
+  const bar = '+' + '-'.repeat(w) + '+';
 
-# Remove .php extension from URLs
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\\.php -f
-RewriteRule ^(.*)$ $1.php [L]
+  console.log('\n' + chalk.bold.cyan(bar));
+  console.log(chalk.bold.cyan('|') + chalk.bold.white('  ' + projectName + '  —  ready to build.') + ' '.repeat(w - projectName.length - 20) + '   ' + chalk.bold.cyan('|'));
+  console.log(chalk.bold.cyan(bar));
 
-# SPA fallback — route all non-file, non-directory requests to index.php
-# This lets app.js + router.js handle client-side navigation.
-# Remove or adjust if you are NOT using a JS SPA pattern.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [L,QSA]
+  console.log('\n' + chalk.white.bold('  What was created:\n'));
 
-# Block direct access to sensitive files
-<FilesMatch "^\\.(env|gitignore|htaccess)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
+  if (framework === 'mvc') {
+    console.log(chalk.dim('    app/Controllers/    ') + 'base controller + placeholder');
+    console.log(chalk.dim('    app/Models/         ') + 'base model + placeholder');
+    console.log(chalk.dim('    app/Views/          ') + 'view templates');
+    console.log(chalk.dim('    routes/web.php       ') + 'route definitions');
+    console.log(chalk.dim('    public/index.php     ') + 'front controller entry point');
+  } else if (framework === 'api') {
+    console.log(chalk.dim('    api/                ') + 'PHP API endpoints');
+    console.log(chalk.dim('    index.php           ') + 'JSON health-check endpoint');
+  } else {
+    console.log(chalk.dim('    index.php           ') + 'SPA shell (SEO, OG, CSS, app.js)');
+    console.log(chalk.dim('    assets/css/         ') + 'main / layout / components / animations');
+    console.log(chalk.dim('    assets/js/          ') + 'app.js, router.js, pages/, components/, utils/');
+    if (phpBackend) {
+      console.log(chalk.dim('    api/                ') + 'PHP API endpoints');
+    }
+  }
 
-# Prevent direct access to vendor directory
-<IfModule mod_rewrite.c>
-    RewriteRule ^vendor/ - [F,L]
-</IfModule>
-`;
+  if (phpBackend || framework === 'mvc' || framework === 'api') {
+    console.log(chalk.dim('    config/             ') + 'constants, env loader, response helpers' + (features.database ? ', database PDO' : ''));
+    console.log(chalk.dim('    includes/           ') + 'headers, helpers' + (features.contactForm ? ', rate limiter' : '') + (features.phpMailer ? ', mailer' : '') + (features.auth ? ', auth-check' : ''));
+  }
 
-const gitignore = () => `.env
-/vendor/
-/node_modules/
-.DS_Store
-Thumbs.db
-*.log
-/uploads/*
-!uploads/.gitkeep
-.vscode/
-.idea/
-`;
+  if (features.auth) {
+    console.log(chalk.dim('    pages/public/       ') + 'login, forgot-password, reset-password');
+    console.log(chalk.dim('    pages/user/         ') + 'authenticated user dashboard');
+  }
+  if (features.admin) {
+    console.log(chalk.dim('    pages/admin/        ') + 'admin dashboard');
+    console.log(chalk.dim('    api/admin/          ') + 'admin API endpoints');
+  }
+  if (features.database) {
+    console.log(chalk.dim('    database/           ') + 'SQL schema (users, password_resets, sessions)');
+  }
+  if (features.phosphorIcons) {
+    console.log(chalk.dim('    assets/icons/       ') + 'Phosphor Icons');
+  }
 
-const gitattributes = () => `* text=auto
-*.php text eol=lf
-*.js  text eol=lf
-*.css text eol=lf
-*.sql text eol=lf
-*.md  text eol=lf
-`;
+  console.log(chalk.dim('    .env + .env.example ') + 'environment configuration');
+  console.log(chalk.dim('    README.md            ') + 'project documentation');
+  console.log(chalk.dim('    ARCHITECTURE.md      ') + 'architecture documentation');
 
-const envExample = (projectName) => {
-  const dbName = projectName.toLowerCase().replace(/[^a-z0-9_]/g, '_');
-  return `# Environment Configuration — ${projectName}
-# Copy this file to .env and fill in your values
-# Never commit .env to version control
+  console.log('\n' + chalk.white.bold('  Next steps:\n'));
+  console.log(chalk.cyan('    cd ' + projectName));
+  if (phpBackend || framework === 'mvc' || framework === 'api') {
+    console.log(chalk.cyan('    edit .env') + chalk.dim('   — fill in DB credentials and SMTP settings'));
+    if (features.database) {
+      console.log(chalk.cyan('    mysql -u root -p < database/database.sql'));
+    }
+    if (features.phpMailer) {
+      console.log(chalk.cyan('    composer install'));
+    }
+    console.log(chalk.cyan('    php -S localhost:8000'));
+  } else {
+    console.log(chalk.cyan('    php -S localhost:8000') + chalk.dim('  or open index.php in a browser'));
+  }
 
-# Database
-DB_HOST=localhost
-DB_NAME=${dbName}
-DB_USER=root
-DB_PASS=
+  console.log('');
+  console.log(chalk.yellow.italic('  Project analysed by alfred and shipped from the batcave.'));
+  console.log('');
+}
 
-# Application
-APP_NAME="${projectName}"
-APP_URL=http://localhost
-APP_ENV=development
-
-# Security
-SESSION_LIFETIME=3600
-PASSWORD_HASH_COST=12
-
-# Email (SMTP) — required for PHPMailer / contact form
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-SMTP_FROM=noreply@${dbName}.com
-SMTP_FROM_NAME="${projectName}"
-`;
-};
-
-// ── Print generated tree ────────────────────────────────────────────────────
+// ── printTree ─────────────────────────────────────────────────────────────────
 function printTree(dir, prefix = '') {
   const entries = fs.readdirSync(dir).sort();
   entries.forEach((entry, i) => {
     const isLast    = i === entries.length - 1;
-    const connector = isLast ? '└── ' : '├── ';
-    const childPfx  = isLast ? '    ' : '│   ';
+    const connector = isLast ? '    ' : '|   ';
     const full      = path.join(dir, entry);
     const stat      = fs.statSync(full);
+    const marker    = isLast ? '\\-- ' : '+-- ';
     if (stat.isDirectory()) {
-      console.log(prefix + connector + chalk.cyan(entry + '/'));
-      printTree(full, prefix + childPfx);
-    } else {
-      console.log(prefix + connector + chalk.white(entry));
+      console.log(chalk.dim(prefix + marker) + chalk.cyan(entry + '/'));
+      printTree(full, prefix + connector);
+    } else if (entry !== '.gitkeep') {
+      console.log(chalk.dim(prefix + marker) + chalk.white(entry));
     }
   });
 }
 
-// ── Main createProject ──────────────────────────────────────────────────────
+// ── Main createProject ────────────────────────────────────────────────────────
 async function createProject(projectConfig, appConfig) {
-  const { projectName, authorName, complexity, phpBackend, features } = projectConfig;
+  const { projectName, authorName, framework, complexity, phpBackend, features } = projectConfig;
   const projectPath = path.join(process.cwd(), projectName);
 
   if (shell.test('-e', projectPath)) {
-    console.log(chalk.red(`\n❌ Folder "${projectName}" already exists.`));
+    console.log(chalk.red('\n  [!] Folder "' + projectName + '" already exists.'));
     return;
   }
 
-  console.log(chalk.bold(`\n✨ Creating project: ${chalk.cyan(projectName)} ...`));
+  console.log(chalk.dim('\n  Creating project: ') + chalk.bold(projectName) + chalk.dim(' ...'));
   shell.mkdir('-p', projectPath);
 
-  // ── Folders ──────────────────────────────────────────────────────────────
-  console.log(chalk.dim('   Creating folder structure...'));
-  const folders = buildFolderList({ complexity, phpBackend, features });
+  // ── Folders ────────────────────────────────────────────────────────────────
+  const folders = buildFolderList({ framework, complexity, phpBackend, features });
   folders.forEach((f) => shell.mkdir('-p', path.join(projectPath, f)));
 
-  // Gitkeep stubs in empty JS sub-folders
-  const jsKeepFolders = ['components', 'pages', 'utils'];
-  if (complexity === 'medium' || complexity === 'complex') {
-    jsKeepFolders.push('services', 'lib');
+  // Gitkeeps in JS sub-folders (Vanilla only)
+  if (framework === 'vanilla') {
+    const jsKeeps = ['components', 'pages/public', 'pages/user'];
+    if (features.admin) jsKeeps.push('pages/admin');
+    if (complexity === 'medium' || complexity === 'complex') jsKeeps.push('services', 'lib');
+    if (complexity === 'complex') jsKeeps.push('store', 'middleware', 'modules');
+    jsKeeps.forEach((f) => {
+      const p = path.join(projectPath, 'assets', 'js', f, '.gitkeep');
+      const d = path.dirname(p);
+      if (fs.existsSync(d)) fs.writeFileSync(p, '');
+    });
   }
-  if (complexity === 'complex') {
-    jsKeepFolders.push('store', 'middleware', 'modules');
-  }
-  jsKeepFolders.forEach((f) => {
-    const p = path.join(projectPath, 'assets', 'js', f, '.gitkeep');
-    if (fs.existsSync(path.dirname(p))) fs.writeFileSync(p, '');
-  });
 
-  // ── CSS ───────────────────────────────────────────────────────────────────
-  const cssDir = (f) => path.join(projectPath, 'assets', 'css', f);
-  fs.writeFileSync(cssDir('main.css'),       mainCSS());
-  fs.writeFileSync(cssDir('layout.css'),     layoutCSS());
-  fs.writeFileSync(cssDir('components.css'), componentsCSS());
-  fs.writeFileSync(cssDir('animations.css'), animationsCSS());
-
-  // ── JS ────────────────────────────────────────────────────────────────────
-  const jsDir = (f) => path.join(projectPath, 'assets', 'js', f);
-  fs.writeFileSync(jsDir('app.js'),    appJS());
-  fs.writeFileSync(jsDir('router.js'), routerJS());
-
-  // ── Root files ────────────────────────────────────────────────────────────
-  fs.writeFileSync(path.join(projectPath, 'index.php'),       rootIndexPHP(projectName, phpBackend));
-  fs.writeFileSync(path.join(projectPath, '.htaccess'),        htaccess(projectName));
-  fs.writeFileSync(path.join(projectPath, '.gitignore'),       gitignore());
-  fs.writeFileSync(path.join(projectPath, '.gitattributes'),   gitattributes());
-  fs.writeFileSync(path.join(projectPath, '.env.example'),     envExample(projectName));
+  // Always: uploads gitkeep
   fs.writeFileSync(path.join(projectPath, 'uploads', '.gitkeep'), '');
 
-  // ── PHP config layer ──────────────────────────────────────────────────────
-  if (phpBackend) {
+  // ── Dot-files (all frameworks) ─────────────────────────────────────────────
+  fs.writeFileSync(path.join(projectPath, '.htaccess'),       htaccess(projectName));
+  fs.writeFileSync(path.join(projectPath, '.gitignore'),      gitignore());
+  fs.writeFileSync(path.join(projectPath, '.gitattributes'),  gitattributes());
+  fs.writeFileSync(path.join(projectPath, '.env.example'),    envTemplate(projectName));
+  fs.writeFileSync(path.join(projectPath, '.env'),            envTemplate(projectName));
+
+  // ── Vanilla ────────────────────────────────────────────────────────────────
+  if (framework === 'vanilla') {
+    const cssDir = (f) => path.join(projectPath, 'assets', 'css', f);
+    fs.writeFileSync(cssDir('main.css'),       mainCSS());
+    fs.writeFileSync(cssDir('layout.css'),     layoutCSS());
+    fs.writeFileSync(cssDir('components.css'), componentsCSS());
+    fs.writeFileSync(cssDir('animations.css'), animationsCSS());
+
+    const jsDir = (f) => path.join(projectPath, 'assets', 'js', f);
+    fs.writeFileSync(jsDir('app.js'),    appJS());
+    fs.writeFileSync(jsDir('router.js'), routerJS());
+
+    fs.writeFileSync(path.join(projectPath, 'index.php'), rootIndexPHP(projectName, phpBackend, features));
+  }
+
+  // ── API framework ──────────────────────────────────────────────────────────
+  if (framework === 'api') {
+    fs.writeFileSync(path.join(projectPath, 'index.php'), apiIndexPHP(projectName, authorName));
+  }
+
+  // ── MVC framework ──────────────────────────────────────────────────────────
+  if (framework === 'mvc') {
+    fs.writeFileSync(path.join(projectPath, 'public', 'index.php'),        mvcPublicIndexPHP(projectName, authorName));
+    fs.writeFileSync(path.join(projectPath, 'routes', 'web.php'),          mvcRoutesWebPHP(projectName, authorName));
+    fs.writeFileSync(path.join(projectPath, 'app', 'Controllers', 'BaseController.php'), mvcBaseControllerPHP(projectName, authorName));
+    fs.writeFileSync(path.join(projectPath, 'app', 'Models', 'BaseModel.php'),           mvcBaseModelPHP(projectName, authorName));
+  }
+
+  // ── PHP config + includes (all PHP-backed frameworks) ─────────────────────
+  if (phpBackend || framework === 'mvc' || framework === 'api') {
     const cfg = (f) => path.join(projectPath, 'config', f);
     fs.writeFileSync(cfg('constants.php'), constantsPHP(projectName, authorName));
     fs.writeFileSync(cfg('env.php'),       envPHP(projectName, authorName));
@@ -1131,27 +1302,26 @@ async function createProject(projectConfig, appConfig) {
       fs.writeFileSync(cfg('database.php'), databasePHP(projectName, authorName));
     }
 
-    // ── PHP includes layer ─────────────────────────────────────────────────
     const inc = (f) => path.join(projectPath, 'includes', f);
-    fs.writeFileSync(inc('headers.php'),  headersPHP(projectName, authorName));
-    fs.writeFileSync(inc('helpers.php'),  helpersPHP(projectName, authorName));
+    fs.writeFileSync(inc('headers.php'), headersPHP(projectName, authorName));
+    fs.writeFileSync(inc('helpers.php'), helpersPHP(projectName, authorName));
     if (features.contactForm) {
       fs.writeFileSync(inc('rate_limit.php'), rateLimitPHP(projectName, authorName));
-      if (features.phpMailer) {
-        fs.writeFileSync(inc('mailer.php'), mailerPHP(projectName, authorName));
-      }
+    }
+    if (features.phpMailer) {
+      fs.writeFileSync(inc('mailer.php'), mailerPHP(projectName, authorName));
     }
     if (features.auth) {
       fs.writeFileSync(inc('auth-check.php'), authCheckPHP(projectName, authorName));
     }
 
-    // ── Contact form ───────────────────────────────────────────────────────
+    // Contact form
     if (features.contactForm) {
       fs.writeFileSync(path.join(projectPath, 'api', 'contact.php'),         contactPHP(projectName, authorName, features.phpMailer));
       fs.writeFileSync(path.join(projectPath, 'api', 'email_templates.php'), emailTemplatesPHP(projectName, authorName));
     }
 
-    // ── Auth API ───────────────────────────────────────────────────────────
+    // Auth API
     if (features.auth) {
       const auth = (f) => path.join(projectPath, 'api', 'auth', f);
       fs.writeFileSync(auth('login.php'),           loginPHP(projectName, authorName));
@@ -1160,31 +1330,31 @@ async function createProject(projectConfig, appConfig) {
       fs.writeFileSync(auth('forgot-password.php'), forgotPasswordPHP(projectName, authorName, features.phpMailer));
       fs.writeFileSync(auth('reset-password.php'),  resetPasswordPHP(projectName, authorName));
 
-      // Auth pages
-      const pg = (f) => path.join(projectPath, 'pages', f);
-      fs.writeFileSync(pg('login.php'),           loginPagePHP(projectName));
-      fs.writeFileSync(pg('forgot-password.php'), forgotPasswordPagePHP(projectName));
-      fs.writeFileSync(pg('reset-password.php'),  resetPasswordPagePHP(projectName));
-      fs.writeFileSync(pg('dashboard.php'),       userDashboardPHP(projectName, authorName));
+      // Auth pages — public/ and user/
+      const pub = (f) => path.join(projectPath, 'pages', 'public', f);
+      fs.writeFileSync(pub('login.php'),           loginPagePHP(projectName));
+      fs.writeFileSync(pub('forgot-password.php'), forgotPasswordPagePHP(projectName));
+      fs.writeFileSync(pub('reset-password.php'),  resetPasswordPagePHP(projectName));
+      fs.writeFileSync(path.join(projectPath, 'pages', 'user', 'dashboard.php'), userDashboardPHP(projectName, authorName));
     }
 
-    // ── Admin ──────────────────────────────────────────────────────────────
+    // Admin
     if (features.admin) {
-      fs.writeFileSync(path.join(projectPath, 'api', 'admin', 'dashboard.php'), adminDashboardAPIPHP(projectName, authorName));
-      fs.writeFileSync(path.join(projectPath, 'admin', 'dashboard.php'),        adminPagePHP(projectName, authorName));
+      fs.writeFileSync(path.join(projectPath, 'api', 'admin', 'dashboard.php'),   adminDashboardAPIPHP(projectName, authorName));
+      fs.writeFileSync(path.join(projectPath, 'pages', 'admin', 'dashboard.php'), adminPagePHP(projectName, authorName));
     }
 
-    // ── Webhooks ───────────────────────────────────────────────────────────
-    if (complexity === 'complex') {
+    // Webhooks (complex vanilla only)
+    if (framework === 'vanilla' && complexity === 'complex') {
       fs.writeFileSync(path.join(projectPath, 'api', 'webhooks', 'webhook.php'), webhookPHP(projectName, authorName));
     }
 
-    // ── Database schema ────────────────────────────────────────────────────
+    // Database schema
     if (features.database) {
       fs.writeFileSync(path.join(projectPath, 'database', 'database.sql'), dbSchema(projectName, authorName));
     }
 
-    // ── Composer ───────────────────────────────────────────────────────────
+    // Composer + PHPMailer
     if (features.phpMailer) {
       writeComposerJson(projectPath, projectName, authorName);
       await installPHPMailer(projectPath, appConfig);
@@ -1196,33 +1366,12 @@ async function createProject(projectConfig, appConfig) {
     await downloadPhosphorIcons(projectPath);
   }
 
-  // ── Docs ──────────────────────────────────────────────────────────────────
+  // ── Docs ───────────────────────────────────────────────────────────────────
   fs.writeFileSync(path.join(projectPath, 'README.md'),       generateReadme(projectConfig));
   fs.writeFileSync(path.join(projectPath, 'ARCHITECTURE.md'), generateArchitecture(projectConfig));
 
-  // ── Post-generation output ─────────────────────────────────────────────────
-  console.log(chalk.bold.green(`\n✅ Project "${projectName}" created!\n`));
-  console.log(chalk.bold('📁 ' + projectName + '/'));
-  printTree(projectPath);
-
-  console.log(chalk.bold('\n🚀 Next steps:\n'));
-  console.log(chalk.cyan(`   cd ${projectName}`));
-  if (phpBackend) {
-    console.log(chalk.cyan('   cp .env.example .env'));
-    console.log(chalk.dim('   # Edit .env with your DB credentials and SMTP settings'));
-    if (features.database) {
-      console.log(chalk.cyan('   mysql -u root -p < database/database.sql'));
-    }
-    if (features.phpMailer) {
-      console.log(chalk.cyan('   composer install'));
-    }
-    console.log(chalk.cyan('   php -S localhost:8000'));
-  } else {
-    console.log(chalk.dim('   # Open index.php in your browser or set up a local server'));
-    console.log(chalk.cyan('   php -S localhost:8000'));
-  }
-
-  console.log(chalk.bold.magenta(`\n🛠  Happy coding, ${authorName}! 🚀\n`));
+  // ── Success output ─────────────────────────────────────────────────────────
+  printSuccess(projectName, authorName, projectConfig);
 }
 
 module.exports = { createProject };

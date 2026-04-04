@@ -1,8 +1,8 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
-const os = require('os');
+const fs   = require('fs');
+const os   = require('os');
 const inquirer = require('inquirer').default;
 
 const configPath = path.join(os.homedir(), '.webstarterrc.json');
@@ -24,8 +24,8 @@ async function getAuthorName(config) {
   const ans = await inquirer.prompt([
     {
       name: 'authorName',
-      message: '✨ Your name (creator of projects):',
-      validate: (input) => input ? true : 'Name cannot be empty.'
+      message: 'Your name (creator of projects):',
+      validate: (input) => input.trim() ? true : 'Name cannot be empty.'
     }
   ]);
 
