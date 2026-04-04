@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Syntax & Dependency Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check JS syntax (index.js)
+        run: node --check index.js
+
+      - name: Check JS syntax (src/)
+        run: |
+          for f in src/*.js; do
+            echo "Checking $f..."
+            node --check "$f"
+          done
+
+      - name: Verify modules resolve
+        run: |
+          node -e "
+            require('./src/config');
+            require('./src/composer');
+            require('./src/icons');
+            require('./src/prompts');
+            require('./src/scaffold');
+            require('./src/docs');
+            console.log('All modules load OK');
+          "
+
+      - name: Smoke-test docs generation
+        run: |
+          node -e "
+            const { generateReadme, generateArchitecture } = require('./src/docs');
+            const cfg = {
+              projectName: 'test-project',
+              authorName: 'CI',
+              projectType: 'saas',
+              complexity: 'complex',
+              phpBackend: true,
+              features: {
+                contactForm: true, auth: true, admin: true,
+                database: true, phpMailer: false, phosphorIcons: false
+              }
+            };
+            const readme = generateReadme(cfg);
+            const arch   = generateArchitecture(cfg);
+            if (!readme.includes('test-project')) throw new Error('README missing project name');
+            if (!arch.includes('SPA Pattern'))    throw new Error('ARCHITECTURE missing SPA section');
+            console.log('Docs smoke test passed');
+          "
