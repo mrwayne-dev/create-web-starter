@@ -1202,8 +1202,7 @@ function printSuccess(projectName, authorName, projectConfig) {
   }
 
   console.log('');
-  console.log(chalk.yellow.italic('  "I am the night. I am the scaffolder."'));
-  console.log(chalk.yellow.italic('                          — The Dark Coder'));
+  console.log(chalk.yellow.italic('  Project analysed by alfred and shipped from the batcave.'));
   console.log('');
 }
 
