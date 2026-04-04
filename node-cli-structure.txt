@@ -1,0 +1,3395 @@
+Folder PATH listing
+Volume serial number is F60C-7284
+C:\MRWAYNE\WEB_DEV\CREATE-WEB-STARTER
+|   index.js
+|   node-cli-structure.txt
+|   package-lock.json
+|   package.json
+|   
+\---node_modules
+    |   .package-lock.json
+    |   
+    +---.bin
+    |       node-which
+    |       node-which.cmd
+    |       node-which.ps1
+    |       
+    +---@inquirer
+    |   +---ansi
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---checkbox
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---confirm
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---core
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |       |   index.d.ts
+    |   |       |   index.js
+    |   |       |   
+    |   |       \---lib
+    |   |           |   create-prompt.d.ts
+    |   |           |   create-prompt.js
+    |   |           |   errors.d.ts
+    |   |           |   errors.js
+    |   |           |   hook-engine.d.ts
+    |   |           |   hook-engine.js
+    |   |           |   key.d.ts
+    |   |           |   key.js
+    |   |           |   make-theme.d.ts
+    |   |           |   make-theme.js
+    |   |           |   promise-polyfill.d.ts
+    |   |           |   promise-polyfill.js
+    |   |           |   screen-manager.d.ts
+    |   |           |   screen-manager.js
+    |   |           |   Separator.d.ts
+    |   |           |   Separator.js
+    |   |           |   theme.d.ts
+    |   |           |   theme.js
+    |   |           |   use-effect.d.ts
+    |   |           |   use-effect.js
+    |   |           |   use-keypress.d.ts
+    |   |           |   use-keypress.js
+    |   |           |   use-memo.d.ts
+    |   |           |   use-memo.js
+    |   |           |   use-prefix.d.ts
+    |   |           |   use-prefix.js
+    |   |           |   use-ref.d.ts
+    |   |           |   use-ref.js
+    |   |           |   use-state.d.ts
+    |   |           |   use-state.js
+    |   |           |   utils.d.ts
+    |   |           |   utils.js
+    |   |           |   
+    |   |           \---pagination
+    |   |                   use-pagination.d.ts
+    |   |                   use-pagination.js
+    |   |                   
+    |   +---editor
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---expand
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---external-editor
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |       |   index.d.ts
+    |   |       |   index.js
+    |   |       |   
+    |   |       \---errors
+    |   |               CreateFileError.d.ts
+    |   |               CreateFileError.js
+    |   |               LaunchEditorError.d.ts
+    |   |               LaunchEditorError.js
+    |   |               ReadFileError.d.ts
+    |   |               ReadFileError.js
+    |   |               RemoveFileError.d.ts
+    |   |               RemoveFileError.js
+    |   |               
+    |   +---figures
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---input
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---number
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---password
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---prompts
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---rawlist
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---search
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   +---select
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---dist
+    |   |           index.d.ts
+    |   |           index.js
+    |   |           
+    |   \---type
+    |       |   LICENSE
+    |       |   package.json
+    |       |   
+    |       \---dist
+    |               index.d.ts
+    |               index.js
+    |               inquirer.d.ts
+    |               inquirer.js
+    |               utils.d.ts
+    |               utils.js
+    |               
+    +---@nodelib
+    |   +---fs.scandir
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---out
+    |   |       |   constants.d.ts
+    |   |       |   constants.js
+    |   |       |   index.d.ts
+    |   |       |   index.js
+    |   |       |   settings.d.ts
+    |   |       |   settings.js
+    |   |       |   
+    |   |       +---adapters
+    |   |       |       fs.d.ts
+    |   |       |       fs.js
+    |   |       |       
+    |   |       +---providers
+    |   |       |       async.d.ts
+    |   |       |       async.js
+    |   |       |       common.d.ts
+    |   |       |       common.js
+    |   |       |       sync.d.ts
+    |   |       |       sync.js
+    |   |       |       
+    |   |       +---types
+    |   |       |       index.d.ts
+    |   |       |       index.js
+    |   |       |       
+    |   |       \---utils
+    |   |               fs.d.ts
+    |   |               fs.js
+    |   |               index.d.ts
+    |   |               index.js
+    |   |               
+    |   +---fs.stat
+    |   |   |   LICENSE
+    |   |   |   package.json
+    |   |   |   README.md
+    |   |   |   
+    |   |   \---out
+    |   |       |   index.d.ts
+    |   |       |   index.js
+    |   |       |   settings.d.ts
+    |   |       |   settings.js
+    |   |       |   
+    |   |       +---adapters
+    |   |       |       fs.d.ts
+    |   |       |       fs.js
+    |   |       |       
+    |   |       +---providers
+    |   |       |       async.d.ts
+    |   |       |       async.js
+    |   |       |       sync.d.ts
+    |   |       |       sync.js
+    |   |       |       
+    |   |       \---types
+    |   |               index.d.ts
+    |   |               index.js
+    |   |               
+    |   \---fs.walk
+    |       |   LICENSE
+    |       |   package.json
+    |       |   README.md
+    |       |   
+    |       \---out
+    |           |   index.d.ts
+    |           |   index.js
+    |           |   settings.d.ts
+    |           |   settings.js
+    |           |   
+    |           +---providers
+    |           |       async.d.ts
+    |           |       async.js
+    |           |       index.d.ts
+    |           |       index.js
+    |           |       stream.d.ts
+    |           |       stream.js
+    |           |       sync.d.ts
+    |           |       sync.js
+    |           |       
+    |           +---readers
+    |           |       async.d.ts
+    |           |       async.js
+    |           |       common.d.ts
+    |           |       common.js
+    |           |       reader.d.ts
+    |           |       reader.js
+    |           |       sync.d.ts
+    |           |       sync.js
+    |           |       
+    |           \---types
+    |                   index.d.ts
+    |                   index.js
+    |                   
+    +---ansi-regex
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---ansi-styles
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---braces
+    |   |   index.js
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---lib
+    |           compile.js
+    |           constants.js
+    |           expand.js
+    |           parse.js
+    |           stringify.js
+    |           utils.js
+    |           
+    +---chardet
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---lib
+    |       |   index.d.ts
+    |       |   index.js
+    |       |   index.js.map
+    |       |   match.d.ts
+    |       |   match.js
+    |       |   match.js.map
+    |       |   utils.d.ts
+    |       |   utils.js
+    |       |   utils.js.map
+    |       |   
+    |       +---encoding
+    |       |       ascii.d.ts
+    |       |       ascii.js
+    |       |       ascii.js.map
+    |       |       index.d.ts
+    |       |       index.js
+    |       |       index.js.map
+    |       |       iso2022.d.ts
+    |       |       iso2022.js
+    |       |       iso2022.js.map
+    |       |       mbcs.d.ts
+    |       |       mbcs.js
+    |       |       mbcs.js.map
+    |       |       sbcs.d.ts
+    |       |       sbcs.js
+    |       |       sbcs.js.map
+    |       |       unicode.d.ts
+    |       |       unicode.js
+    |       |       unicode.js.map
+    |       |       utf8.d.ts
+    |       |       utf8.js
+    |       |       utf8.js.map
+    |       |       
+    |       \---fs
+    |               browser.d.ts
+    |               browser.js
+    |               browser.js.map
+    |               node.d.ts
+    |               node.js
+    |               node.js.map
+    |               
+    +---cli-width
+    |       index.d.ts
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---cross-spawn
+    |   |   index.js
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---lib
+    |       |   enoent.js
+    |       |   parse.js
+    |       |   
+    |       \---util
+    |               escape.js
+    |               readShebang.js
+    |               resolveCommand.js
+    |               
+    +---emoji-regex
+    |       index.d.ts
+    |       index.js
+    |       index.mjs
+    |       LICENSE-MIT.txt
+    |       package.json
+    |       README.md
+    |       
+    +---execa
+    |   |   index.d.ts
+    |   |   index.js
+    |   |   license
+    |   |   package.json
+    |   |   readme.md
+    |   |   
+    |   +---lib
+    |   |       command.js
+    |   |       error.js
+    |   |       kill.js
+    |   |       promise.js
+    |   |       stdio.js
+    |   |       stream.js
+    |   |       
+    |   \---node_modules
+    |       \---signal-exit
+    |               index.js
+    |               LICENSE.txt
+    |               package.json
+    |               README.md
+    |               signals.js
+    |               
+    +---fast-glob
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---out
+    |       |   index.d.ts
+    |       |   index.js
+    |       |   settings.d.ts
+    |       |   settings.js
+    |       |   
+    |       +---managers
+    |       |       tasks.d.ts
+    |       |       tasks.js
+    |       |       
+    |       +---providers
+    |       |   |   async.d.ts
+    |       |   |   async.js
+    |       |   |   provider.d.ts
+    |       |   |   provider.js
+    |       |   |   stream.d.ts
+    |       |   |   stream.js
+    |       |   |   sync.d.ts
+    |       |   |   sync.js
+    |       |   |   
+    |       |   +---filters
+    |       |   |       deep.d.ts
+    |       |   |       deep.js
+    |       |   |       entry.d.ts
+    |       |   |       entry.js
+    |       |   |       error.d.ts
+    |       |   |       error.js
+    |       |   |       
+    |       |   +---matchers
+    |       |   |       matcher.d.ts
+    |       |   |       matcher.js
+    |       |   |       partial.d.ts
+    |       |   |       partial.js
+    |       |   |       
+    |       |   \---transformers
+    |       |           entry.d.ts
+    |       |           entry.js
+    |       |           
+    |       +---readers
+    |       |       async.d.ts
+    |       |       async.js
+    |       |       reader.d.ts
+    |       |       reader.js
+    |       |       stream.d.ts
+    |       |       stream.js
+    |       |       sync.d.ts
+    |       |       sync.js
+    |       |       
+    |       +---types
+    |       |       index.d.ts
+    |       |       index.js
+    |       |       
+    |       \---utils
+    |               array.d.ts
+    |               array.js
+    |               errno.d.ts
+    |               errno.js
+    |               fs.d.ts
+    |               fs.js
+    |               index.d.ts
+    |               index.js
+    |               path.d.ts
+    |               path.js
+    |               pattern.d.ts
+    |               pattern.js
+    |               stream.d.ts
+    |               stream.js
+    |               string.d.ts
+    |               string.js
+    |               
+    +---fastq
+    |   |   bench.js
+    |   |   example.js
+    |   |   example.mjs
+    |   |   index.d.ts
+    |   |   LICENSE
+    |   |   package.json
+    |   |   queue.js
+    |   |   README.md
+    |   |   SECURITY.md
+    |   |   
+    |   +---.github
+    |   |   |   dependabot.yml
+    |   |   |   
+    |   |   \---workflows
+    |   |           ci.yml
+    |   |           
+    |   \---test
+    |           example.ts
+    |           promise.js
+    |           test.js
+    |           tsconfig.json
+    |           
+    +---fill-range
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---get-east-asian-width
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       lookup.js
+    |       package.json
+    |       readme.md
+    |       
+    +---get-stream
+    |       buffer-stream.js
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---glob-parent
+    |       CHANGELOG.md
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---human-signals
+    |   |   CHANGELOG.md
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---build
+    |       \---src
+    |               core.js
+    |               core.js.map
+    |               main.d.ts
+    |               main.js
+    |               main.js.map
+    |               realtime.js
+    |               realtime.js.map
+    |               signals.js
+    |               signals.js.map
+    |               
+    +---iconv-lite
+    |   |   Changelog.md
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   +---encodings
+    |   |   |   dbcs-codec.js
+    |   |   |   dbcs-data.js
+    |   |   |   index.js
+    |   |   |   internal.js
+    |   |   |   sbcs-codec.js
+    |   |   |   sbcs-data-generated.js
+    |   |   |   sbcs-data.js
+    |   |   |   utf16.js
+    |   |   |   utf32.js
+    |   |   |   utf7.js
+    |   |   |   
+    |   |   \---tables
+    |   |           big5-added.json
+    |   |           cp936.json
+    |   |           cp949.json
+    |   |           cp950.json
+    |   |           eucjp.json
+    |   |           gb18030-ranges.json
+    |   |           gbk-added.json
+    |   |           shiftjis.json
+    |   |           
+    |   \---lib
+    |       |   bom-handling.js
+    |       |   index.d.ts
+    |       |   index.js
+    |       |   streams.js
+    |       |   
+    |       \---helpers
+    |               merge-exports.js
+    |               
+    +---inquirer
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---dist
+    |       |   index.d.ts
+    |       |   index.js
+    |       |   types.d.ts
+    |       |   types.js
+    |       |   
+    |       \---ui
+    |               prompt.d.ts
+    |               prompt.js
+    |               
+    +---is-extglob
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---is-glob
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---is-number
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---is-stream
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---isexe
+    |   |   .npmignore
+    |   |   index.js
+    |   |   LICENSE
+    |   |   mode.js
+    |   |   package.json
+    |   |   README.md
+    |   |   windows.js
+    |   |   
+    |   \---test
+    |           basic.js
+    |           
+    +---merge-stream
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---merge2
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---micromatch
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---mimic-fn
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---mute-stream
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---lib
+    |           index.js
+    |           
+    +---npm-run-path
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---onetime
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---path-key
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---picomatch
+    |   |   CHANGELOG.md
+    |   |   index.js
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---lib
+    |           constants.js
+    |           parse.js
+    |           picomatch.js
+    |           scan.js
+    |           utils.js
+    |           
+    +---queue-microtask
+    |       index.d.ts
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---reusify
+    |   |   eslint.config.js
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   reusify.d.ts
+    |   |   reusify.js
+    |   |   SECURITY.md
+    |   |   test.js
+    |   |   tsconfig.json
+    |   |   
+    |   +---.github
+    |   |   |   dependabot.yml
+    |   |   |   
+    |   |   \---workflows
+    |   |           ci.yml
+    |   |           
+    |   \---benchmarks
+    |           createNoCodeFunction.js
+    |           fib.js
+    |           reuseNoCodeFunction.js
+    |           
+    +---run-async
+    |       index.d.ts
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---run-parallel
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---rxjs
+    |   |   CHANGELOG.md
+    |   |   CODE_OF_CONDUCT.md
+    |   |   LICENSE.txt
+    |   |   package.json
+    |   |   README.md
+    |   |   tsconfig.json
+    |   |   
+    |   +---ajax
+    |   |       package.json
+    |   |       
+    |   +---dist
+    |   |   +---bundles
+    |   |   |       rxjs.umd.js
+    |   |   |       rxjs.umd.js.map
+    |   |   |       rxjs.umd.min.js
+    |   |   |       rxjs.umd.min.js.map
+    |   |   |       
+    |   |   +---cjs
+    |   |   |   |   index.js
+    |   |   |   |   index.js.map
+    |   |   |   |   
+    |   |   |   +---ajax
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---fetch
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---internal
+    |   |   |   |   |   AnyCatcher.js
+    |   |   |   |   |   AnyCatcher.js.map
+    |   |   |   |   |   AsyncSubject.js
+    |   |   |   |   |   AsyncSubject.js.map
+    |   |   |   |   |   BehaviorSubject.js
+    |   |   |   |   |   BehaviorSubject.js.map
+    |   |   |   |   |   config.js
+    |   |   |   |   |   config.js.map
+    |   |   |   |   |   firstValueFrom.js
+    |   |   |   |   |   firstValueFrom.js.map
+    |   |   |   |   |   lastValueFrom.js
+    |   |   |   |   |   lastValueFrom.js.map
+    |   |   |   |   |   Notification.js
+    |   |   |   |   |   Notification.js.map
+    |   |   |   |   |   NotificationFactories.js
+    |   |   |   |   |   NotificationFactories.js.map
+    |   |   |   |   |   Observable.js
+    |   |   |   |   |   Observable.js.map
+    |   |   |   |   |   Operator.js
+    |   |   |   |   |   Operator.js.map
+    |   |   |   |   |   ReplaySubject.js
+    |   |   |   |   |   ReplaySubject.js.map
+    |   |   |   |   |   Scheduler.js
+    |   |   |   |   |   Scheduler.js.map
+    |   |   |   |   |   Subject.js
+    |   |   |   |   |   Subject.js.map
+    |   |   |   |   |   Subscriber.js
+    |   |   |   |   |   Subscriber.js.map
+    |   |   |   |   |   Subscription.js
+    |   |   |   |   |   Subscription.js.map
+    |   |   |   |   |   types.js
+    |   |   |   |   |   types.js.map
+    |   |   |   |   |   
+    |   |   |   |   +---ajax
+    |   |   |   |   |       ajax.js
+    |   |   |   |   |       ajax.js.map
+    |   |   |   |   |       AjaxResponse.js
+    |   |   |   |   |       AjaxResponse.js.map
+    |   |   |   |   |       errors.js
+    |   |   |   |   |       errors.js.map
+    |   |   |   |   |       getXHRResponse.js
+    |   |   |   |   |       getXHRResponse.js.map
+    |   |   |   |   |       types.js
+    |   |   |   |   |       types.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---observable
+    |   |   |   |   |   |   bindCallback.js
+    |   |   |   |   |   |   bindCallback.js.map
+    |   |   |   |   |   |   bindCallbackInternals.js
+    |   |   |   |   |   |   bindCallbackInternals.js.map
+    |   |   |   |   |   |   bindNodeCallback.js
+    |   |   |   |   |   |   bindNodeCallback.js.map
+    |   |   |   |   |   |   combineLatest.js
+    |   |   |   |   |   |   combineLatest.js.map
+    |   |   |   |   |   |   concat.js
+    |   |   |   |   |   |   concat.js.map
+    |   |   |   |   |   |   connectable.js
+    |   |   |   |   |   |   connectable.js.map
+    |   |   |   |   |   |   ConnectableObservable.js
+    |   |   |   |   |   |   ConnectableObservable.js.map
+    |   |   |   |   |   |   defer.js
+    |   |   |   |   |   |   defer.js.map
+    |   |   |   |   |   |   empty.js
+    |   |   |   |   |   |   empty.js.map
+    |   |   |   |   |   |   forkJoin.js
+    |   |   |   |   |   |   forkJoin.js.map
+    |   |   |   |   |   |   from.js
+    |   |   |   |   |   |   from.js.map
+    |   |   |   |   |   |   fromEvent.js
+    |   |   |   |   |   |   fromEvent.js.map
+    |   |   |   |   |   |   fromEventPattern.js
+    |   |   |   |   |   |   fromEventPattern.js.map
+    |   |   |   |   |   |   fromSubscribable.js
+    |   |   |   |   |   |   fromSubscribable.js.map
+    |   |   |   |   |   |   generate.js
+    |   |   |   |   |   |   generate.js.map
+    |   |   |   |   |   |   iif.js
+    |   |   |   |   |   |   iif.js.map
+    |   |   |   |   |   |   innerFrom.js
+    |   |   |   |   |   |   innerFrom.js.map
+    |   |   |   |   |   |   interval.js
+    |   |   |   |   |   |   interval.js.map
+    |   |   |   |   |   |   merge.js
+    |   |   |   |   |   |   merge.js.map
+    |   |   |   |   |   |   never.js
+    |   |   |   |   |   |   never.js.map
+    |   |   |   |   |   |   of.js
+    |   |   |   |   |   |   of.js.map
+    |   |   |   |   |   |   onErrorResumeNext.js
+    |   |   |   |   |   |   onErrorResumeNext.js.map
+    |   |   |   |   |   |   pairs.js
+    |   |   |   |   |   |   pairs.js.map
+    |   |   |   |   |   |   partition.js
+    |   |   |   |   |   |   partition.js.map
+    |   |   |   |   |   |   race.js
+    |   |   |   |   |   |   race.js.map
+    |   |   |   |   |   |   range.js
+    |   |   |   |   |   |   range.js.map
+    |   |   |   |   |   |   throwError.js
+    |   |   |   |   |   |   throwError.js.map
+    |   |   |   |   |   |   timer.js
+    |   |   |   |   |   |   timer.js.map
+    |   |   |   |   |   |   using.js
+    |   |   |   |   |   |   using.js.map
+    |   |   |   |   |   |   zip.js
+    |   |   |   |   |   |   zip.js.map
+    |   |   |   |   |   |   
+    |   |   |   |   |   \---dom
+    |   |   |   |   |           animationFrames.js
+    |   |   |   |   |           animationFrames.js.map
+    |   |   |   |   |           fetch.js
+    |   |   |   |   |           fetch.js.map
+    |   |   |   |   |           webSocket.js
+    |   |   |   |   |           webSocket.js.map
+    |   |   |   |   |           WebSocketSubject.js
+    |   |   |   |   |           WebSocketSubject.js.map
+    |   |   |   |   |           
+    |   |   |   |   +---operators
+    |   |   |   |   |       audit.js
+    |   |   |   |   |       audit.js.map
+    |   |   |   |   |       auditTime.js
+    |   |   |   |   |       auditTime.js.map
+    |   |   |   |   |       buffer.js
+    |   |   |   |   |       buffer.js.map
+    |   |   |   |   |       bufferCount.js
+    |   |   |   |   |       bufferCount.js.map
+    |   |   |   |   |       bufferTime.js
+    |   |   |   |   |       bufferTime.js.map
+    |   |   |   |   |       bufferToggle.js
+    |   |   |   |   |       bufferToggle.js.map
+    |   |   |   |   |       bufferWhen.js
+    |   |   |   |   |       bufferWhen.js.map
+    |   |   |   |   |       catchError.js
+    |   |   |   |   |       catchError.js.map
+    |   |   |   |   |       combineAll.js
+    |   |   |   |   |       combineAll.js.map
+    |   |   |   |   |       combineLatest.js
+    |   |   |   |   |       combineLatest.js.map
+    |   |   |   |   |       combineLatestAll.js
+    |   |   |   |   |       combineLatestAll.js.map
+    |   |   |   |   |       combineLatestWith.js
+    |   |   |   |   |       combineLatestWith.js.map
+    |   |   |   |   |       concat.js
+    |   |   |   |   |       concat.js.map
+    |   |   |   |   |       concatAll.js
+    |   |   |   |   |       concatAll.js.map
+    |   |   |   |   |       concatMap.js
+    |   |   |   |   |       concatMap.js.map
+    |   |   |   |   |       concatMapTo.js
+    |   |   |   |   |       concatMapTo.js.map
+    |   |   |   |   |       concatWith.js
+    |   |   |   |   |       concatWith.js.map
+    |   |   |   |   |       connect.js
+    |   |   |   |   |       connect.js.map
+    |   |   |   |   |       count.js
+    |   |   |   |   |       count.js.map
+    |   |   |   |   |       debounce.js
+    |   |   |   |   |       debounce.js.map
+    |   |   |   |   |       debounceTime.js
+    |   |   |   |   |       debounceTime.js.map
+    |   |   |   |   |       defaultIfEmpty.js
+    |   |   |   |   |       defaultIfEmpty.js.map
+    |   |   |   |   |       delay.js
+    |   |   |   |   |       delay.js.map
+    |   |   |   |   |       delayWhen.js
+    |   |   |   |   |       delayWhen.js.map
+    |   |   |   |   |       dematerialize.js
+    |   |   |   |   |       dematerialize.js.map
+    |   |   |   |   |       distinct.js
+    |   |   |   |   |       distinct.js.map
+    |   |   |   |   |       distinctUntilChanged.js
+    |   |   |   |   |       distinctUntilChanged.js.map
+    |   |   |   |   |       distinctUntilKeyChanged.js
+    |   |   |   |   |       distinctUntilKeyChanged.js.map
+    |   |   |   |   |       elementAt.js
+    |   |   |   |   |       elementAt.js.map
+    |   |   |   |   |       endWith.js
+    |   |   |   |   |       endWith.js.map
+    |   |   |   |   |       every.js
+    |   |   |   |   |       every.js.map
+    |   |   |   |   |       exhaust.js
+    |   |   |   |   |       exhaust.js.map
+    |   |   |   |   |       exhaustAll.js
+    |   |   |   |   |       exhaustAll.js.map
+    |   |   |   |   |       exhaustMap.js
+    |   |   |   |   |       exhaustMap.js.map
+    |   |   |   |   |       expand.js
+    |   |   |   |   |       expand.js.map
+    |   |   |   |   |       filter.js
+    |   |   |   |   |       filter.js.map
+    |   |   |   |   |       finalize.js
+    |   |   |   |   |       finalize.js.map
+    |   |   |   |   |       find.js
+    |   |   |   |   |       find.js.map
+    |   |   |   |   |       findIndex.js
+    |   |   |   |   |       findIndex.js.map
+    |   |   |   |   |       first.js
+    |   |   |   |   |       first.js.map
+    |   |   |   |   |       flatMap.js
+    |   |   |   |   |       flatMap.js.map
+    |   |   |   |   |       groupBy.js
+    |   |   |   |   |       groupBy.js.map
+    |   |   |   |   |       ignoreElements.js
+    |   |   |   |   |       ignoreElements.js.map
+    |   |   |   |   |       isEmpty.js
+    |   |   |   |   |       isEmpty.js.map
+    |   |   |   |   |       joinAllInternals.js
+    |   |   |   |   |       joinAllInternals.js.map
+    |   |   |   |   |       last.js
+    |   |   |   |   |       last.js.map
+    |   |   |   |   |       map.js
+    |   |   |   |   |       map.js.map
+    |   |   |   |   |       mapTo.js
+    |   |   |   |   |       mapTo.js.map
+    |   |   |   |   |       materialize.js
+    |   |   |   |   |       materialize.js.map
+    |   |   |   |   |       max.js
+    |   |   |   |   |       max.js.map
+    |   |   |   |   |       merge.js
+    |   |   |   |   |       merge.js.map
+    |   |   |   |   |       mergeAll.js
+    |   |   |   |   |       mergeAll.js.map
+    |   |   |   |   |       mergeInternals.js
+    |   |   |   |   |       mergeInternals.js.map
+    |   |   |   |   |       mergeMap.js
+    |   |   |   |   |       mergeMap.js.map
+    |   |   |   |   |       mergeMapTo.js
+    |   |   |   |   |       mergeMapTo.js.map
+    |   |   |   |   |       mergeScan.js
+    |   |   |   |   |       mergeScan.js.map
+    |   |   |   |   |       mergeWith.js
+    |   |   |   |   |       mergeWith.js.map
+    |   |   |   |   |       min.js
+    |   |   |   |   |       min.js.map
+    |   |   |   |   |       multicast.js
+    |   |   |   |   |       multicast.js.map
+    |   |   |   |   |       observeOn.js
+    |   |   |   |   |       observeOn.js.map
+    |   |   |   |   |       onErrorResumeNextWith.js
+    |   |   |   |   |       onErrorResumeNextWith.js.map
+    |   |   |   |   |       OperatorSubscriber.js
+    |   |   |   |   |       OperatorSubscriber.js.map
+    |   |   |   |   |       pairwise.js
+    |   |   |   |   |       pairwise.js.map
+    |   |   |   |   |       partition.js
+    |   |   |   |   |       partition.js.map
+    |   |   |   |   |       pluck.js
+    |   |   |   |   |       pluck.js.map
+    |   |   |   |   |       publish.js
+    |   |   |   |   |       publish.js.map
+    |   |   |   |   |       publishBehavior.js
+    |   |   |   |   |       publishBehavior.js.map
+    |   |   |   |   |       publishLast.js
+    |   |   |   |   |       publishLast.js.map
+    |   |   |   |   |       publishReplay.js
+    |   |   |   |   |       publishReplay.js.map
+    |   |   |   |   |       race.js
+    |   |   |   |   |       race.js.map
+    |   |   |   |   |       raceWith.js
+    |   |   |   |   |       raceWith.js.map
+    |   |   |   |   |       reduce.js
+    |   |   |   |   |       reduce.js.map
+    |   |   |   |   |       refCount.js
+    |   |   |   |   |       refCount.js.map
+    |   |   |   |   |       repeat.js
+    |   |   |   |   |       repeat.js.map
+    |   |   |   |   |       repeatWhen.js
+    |   |   |   |   |       repeatWhen.js.map
+    |   |   |   |   |       retry.js
+    |   |   |   |   |       retry.js.map
+    |   |   |   |   |       retryWhen.js
+    |   |   |   |   |       retryWhen.js.map
+    |   |   |   |   |       sample.js
+    |   |   |   |   |       sample.js.map
+    |   |   |   |   |       sampleTime.js
+    |   |   |   |   |       sampleTime.js.map
+    |   |   |   |   |       scan.js
+    |   |   |   |   |       scan.js.map
+    |   |   |   |   |       scanInternals.js
+    |   |   |   |   |       scanInternals.js.map
+    |   |   |   |   |       sequenceEqual.js
+    |   |   |   |   |       sequenceEqual.js.map
+    |   |   |   |   |       share.js
+    |   |   |   |   |       share.js.map
+    |   |   |   |   |       shareReplay.js
+    |   |   |   |   |       shareReplay.js.map
+    |   |   |   |   |       single.js
+    |   |   |   |   |       single.js.map
+    |   |   |   |   |       skip.js
+    |   |   |   |   |       skip.js.map
+    |   |   |   |   |       skipLast.js
+    |   |   |   |   |       skipLast.js.map
+    |   |   |   |   |       skipUntil.js
+    |   |   |   |   |       skipUntil.js.map
+    |   |   |   |   |       skipWhile.js
+    |   |   |   |   |       skipWhile.js.map
+    |   |   |   |   |       startWith.js
+    |   |   |   |   |       startWith.js.map
+    |   |   |   |   |       subscribeOn.js
+    |   |   |   |   |       subscribeOn.js.map
+    |   |   |   |   |       switchAll.js
+    |   |   |   |   |       switchAll.js.map
+    |   |   |   |   |       switchMap.js
+    |   |   |   |   |       switchMap.js.map
+    |   |   |   |   |       switchMapTo.js
+    |   |   |   |   |       switchMapTo.js.map
+    |   |   |   |   |       switchScan.js
+    |   |   |   |   |       switchScan.js.map
+    |   |   |   |   |       take.js
+    |   |   |   |   |       take.js.map
+    |   |   |   |   |       takeLast.js
+    |   |   |   |   |       takeLast.js.map
+    |   |   |   |   |       takeUntil.js
+    |   |   |   |   |       takeUntil.js.map
+    |   |   |   |   |       takeWhile.js
+    |   |   |   |   |       takeWhile.js.map
+    |   |   |   |   |       tap.js
+    |   |   |   |   |       tap.js.map
+    |   |   |   |   |       throttle.js
+    |   |   |   |   |       throttle.js.map
+    |   |   |   |   |       throttleTime.js
+    |   |   |   |   |       throttleTime.js.map
+    |   |   |   |   |       throwIfEmpty.js
+    |   |   |   |   |       throwIfEmpty.js.map
+    |   |   |   |   |       timeInterval.js
+    |   |   |   |   |       timeInterval.js.map
+    |   |   |   |   |       timeout.js
+    |   |   |   |   |       timeout.js.map
+    |   |   |   |   |       timeoutWith.js
+    |   |   |   |   |       timeoutWith.js.map
+    |   |   |   |   |       timestamp.js
+    |   |   |   |   |       timestamp.js.map
+    |   |   |   |   |       toArray.js
+    |   |   |   |   |       toArray.js.map
+    |   |   |   |   |       window.js
+    |   |   |   |   |       window.js.map
+    |   |   |   |   |       windowCount.js
+    |   |   |   |   |       windowCount.js.map
+    |   |   |   |   |       windowTime.js
+    |   |   |   |   |       windowTime.js.map
+    |   |   |   |   |       windowToggle.js
+    |   |   |   |   |       windowToggle.js.map
+    |   |   |   |   |       windowWhen.js
+    |   |   |   |   |       windowWhen.js.map
+    |   |   |   |   |       withLatestFrom.js
+    |   |   |   |   |       withLatestFrom.js.map
+    |   |   |   |   |       zip.js
+    |   |   |   |   |       zip.js.map
+    |   |   |   |   |       zipAll.js
+    |   |   |   |   |       zipAll.js.map
+    |   |   |   |   |       zipWith.js
+    |   |   |   |   |       zipWith.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---scheduled
+    |   |   |   |   |       scheduleArray.js
+    |   |   |   |   |       scheduleArray.js.map
+    |   |   |   |   |       scheduleAsyncIterable.js
+    |   |   |   |   |       scheduleAsyncIterable.js.map
+    |   |   |   |   |       scheduled.js
+    |   |   |   |   |       scheduled.js.map
+    |   |   |   |   |       scheduleIterable.js
+    |   |   |   |   |       scheduleIterable.js.map
+    |   |   |   |   |       scheduleObservable.js
+    |   |   |   |   |       scheduleObservable.js.map
+    |   |   |   |   |       schedulePromise.js
+    |   |   |   |   |       schedulePromise.js.map
+    |   |   |   |   |       scheduleReadableStreamLike.js
+    |   |   |   |   |       scheduleReadableStreamLike.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---scheduler
+    |   |   |   |   |       Action.js
+    |   |   |   |   |       Action.js.map
+    |   |   |   |   |       animationFrame.js
+    |   |   |   |   |       animationFrame.js.map
+    |   |   |   |   |       AnimationFrameAction.js
+    |   |   |   |   |       AnimationFrameAction.js.map
+    |   |   |   |   |       animationFrameProvider.js
+    |   |   |   |   |       animationFrameProvider.js.map
+    |   |   |   |   |       AnimationFrameScheduler.js
+    |   |   |   |   |       AnimationFrameScheduler.js.map
+    |   |   |   |   |       asap.js
+    |   |   |   |   |       asap.js.map
+    |   |   |   |   |       AsapAction.js
+    |   |   |   |   |       AsapAction.js.map
+    |   |   |   |   |       AsapScheduler.js
+    |   |   |   |   |       AsapScheduler.js.map
+    |   |   |   |   |       async.js
+    |   |   |   |   |       async.js.map
+    |   |   |   |   |       AsyncAction.js
+    |   |   |   |   |       AsyncAction.js.map
+    |   |   |   |   |       AsyncScheduler.js
+    |   |   |   |   |       AsyncScheduler.js.map
+    |   |   |   |   |       dateTimestampProvider.js
+    |   |   |   |   |       dateTimestampProvider.js.map
+    |   |   |   |   |       immediateProvider.js
+    |   |   |   |   |       immediateProvider.js.map
+    |   |   |   |   |       intervalProvider.js
+    |   |   |   |   |       intervalProvider.js.map
+    |   |   |   |   |       performanceTimestampProvider.js
+    |   |   |   |   |       performanceTimestampProvider.js.map
+    |   |   |   |   |       queue.js
+    |   |   |   |   |       queue.js.map
+    |   |   |   |   |       QueueAction.js
+    |   |   |   |   |       QueueAction.js.map
+    |   |   |   |   |       QueueScheduler.js
+    |   |   |   |   |       QueueScheduler.js.map
+    |   |   |   |   |       timeoutProvider.js
+    |   |   |   |   |       timeoutProvider.js.map
+    |   |   |   |   |       timerHandle.js
+    |   |   |   |   |       timerHandle.js.map
+    |   |   |   |   |       VirtualTimeScheduler.js
+    |   |   |   |   |       VirtualTimeScheduler.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---symbol
+    |   |   |   |   |       iterator.js
+    |   |   |   |   |       iterator.js.map
+    |   |   |   |   |       observable.js
+    |   |   |   |   |       observable.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---testing
+    |   |   |   |   |       ColdObservable.js
+    |   |   |   |   |       ColdObservable.js.map
+    |   |   |   |   |       HotObservable.js
+    |   |   |   |   |       HotObservable.js.map
+    |   |   |   |   |       SubscriptionLog.js
+    |   |   |   |   |       SubscriptionLog.js.map
+    |   |   |   |   |       SubscriptionLoggable.js
+    |   |   |   |   |       SubscriptionLoggable.js.map
+    |   |   |   |   |       TestMessage.js
+    |   |   |   |   |       TestMessage.js.map
+    |   |   |   |   |       TestScheduler.js
+    |   |   |   |   |       TestScheduler.js.map
+    |   |   |   |   |       
+    |   |   |   |   \---util
+    |   |   |   |           applyMixins.js
+    |   |   |   |           applyMixins.js.map
+    |   |   |   |           args.js
+    |   |   |   |           args.js.map
+    |   |   |   |           argsArgArrayOrObject.js
+    |   |   |   |           argsArgArrayOrObject.js.map
+    |   |   |   |           argsOrArgArray.js
+    |   |   |   |           argsOrArgArray.js.map
+    |   |   |   |           ArgumentOutOfRangeError.js
+    |   |   |   |           ArgumentOutOfRangeError.js.map
+    |   |   |   |           arrRemove.js
+    |   |   |   |           arrRemove.js.map
+    |   |   |   |           createErrorClass.js
+    |   |   |   |           createErrorClass.js.map
+    |   |   |   |           createObject.js
+    |   |   |   |           createObject.js.map
+    |   |   |   |           EmptyError.js
+    |   |   |   |           EmptyError.js.map
+    |   |   |   |           errorContext.js
+    |   |   |   |           errorContext.js.map
+    |   |   |   |           executeSchedule.js
+    |   |   |   |           executeSchedule.js.map
+    |   |   |   |           identity.js
+    |   |   |   |           identity.js.map
+    |   |   |   |           Immediate.js
+    |   |   |   |           Immediate.js.map
+    |   |   |   |           isArrayLike.js
+    |   |   |   |           isArrayLike.js.map
+    |   |   |   |           isAsyncIterable.js
+    |   |   |   |           isAsyncIterable.js.map
+    |   |   |   |           isDate.js
+    |   |   |   |           isDate.js.map
+    |   |   |   |           isFunction.js
+    |   |   |   |           isFunction.js.map
+    |   |   |   |           isInteropObservable.js
+    |   |   |   |           isInteropObservable.js.map
+    |   |   |   |           isIterable.js
+    |   |   |   |           isIterable.js.map
+    |   |   |   |           isObservable.js
+    |   |   |   |           isObservable.js.map
+    |   |   |   |           isPromise.js
+    |   |   |   |           isPromise.js.map
+    |   |   |   |           isReadableStreamLike.js
+    |   |   |   |           isReadableStreamLike.js.map
+    |   |   |   |           isScheduler.js
+    |   |   |   |           isScheduler.js.map
+    |   |   |   |           lift.js
+    |   |   |   |           lift.js.map
+    |   |   |   |           mapOneOrManyArgs.js
+    |   |   |   |           mapOneOrManyArgs.js.map
+    |   |   |   |           noop.js
+    |   |   |   |           noop.js.map
+    |   |   |   |           not.js
+    |   |   |   |           not.js.map
+    |   |   |   |           NotFoundError.js
+    |   |   |   |           NotFoundError.js.map
+    |   |   |   |           ObjectUnsubscribedError.js
+    |   |   |   |           ObjectUnsubscribedError.js.map
+    |   |   |   |           pipe.js
+    |   |   |   |           pipe.js.map
+    |   |   |   |           reportUnhandledError.js
+    |   |   |   |           reportUnhandledError.js.map
+    |   |   |   |           SequenceError.js
+    |   |   |   |           SequenceError.js.map
+    |   |   |   |           subscribeToArray.js
+    |   |   |   |           subscribeToArray.js.map
+    |   |   |   |           throwUnobservableError.js
+    |   |   |   |           throwUnobservableError.js.map
+    |   |   |   |           UnsubscriptionError.js
+    |   |   |   |           UnsubscriptionError.js.map
+    |   |   |   |           workarounds.js
+    |   |   |   |           workarounds.js.map
+    |   |   |   |           
+    |   |   |   +---operators
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---testing
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   \---webSocket
+    |   |   |           index.js
+    |   |   |           index.js.map
+    |   |   |           
+    |   |   +---esm
+    |   |   |   |   index.js
+    |   |   |   |   index.js.map
+    |   |   |   |   
+    |   |   |   +---ajax
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---fetch
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---internal
+    |   |   |   |   |   AnyCatcher.js
+    |   |   |   |   |   AnyCatcher.js.map
+    |   |   |   |   |   AsyncSubject.js
+    |   |   |   |   |   AsyncSubject.js.map
+    |   |   |   |   |   BehaviorSubject.js
+    |   |   |   |   |   BehaviorSubject.js.map
+    |   |   |   |   |   config.js
+    |   |   |   |   |   config.js.map
+    |   |   |   |   |   firstValueFrom.js
+    |   |   |   |   |   firstValueFrom.js.map
+    |   |   |   |   |   lastValueFrom.js
+    |   |   |   |   |   lastValueFrom.js.map
+    |   |   |   |   |   Notification.js
+    |   |   |   |   |   Notification.js.map
+    |   |   |   |   |   NotificationFactories.js
+    |   |   |   |   |   NotificationFactories.js.map
+    |   |   |   |   |   Observable.js
+    |   |   |   |   |   Observable.js.map
+    |   |   |   |   |   Operator.js
+    |   |   |   |   |   Operator.js.map
+    |   |   |   |   |   ReplaySubject.js
+    |   |   |   |   |   ReplaySubject.js.map
+    |   |   |   |   |   Scheduler.js
+    |   |   |   |   |   Scheduler.js.map
+    |   |   |   |   |   Subject.js
+    |   |   |   |   |   Subject.js.map
+    |   |   |   |   |   Subscriber.js
+    |   |   |   |   |   Subscriber.js.map
+    |   |   |   |   |   Subscription.js
+    |   |   |   |   |   Subscription.js.map
+    |   |   |   |   |   types.js
+    |   |   |   |   |   types.js.map
+    |   |   |   |   |   umd.js
+    |   |   |   |   |   umd.js.map
+    |   |   |   |   |   
+    |   |   |   |   +---ajax
+    |   |   |   |   |       ajax.js
+    |   |   |   |   |       ajax.js.map
+    |   |   |   |   |       AjaxResponse.js
+    |   |   |   |   |       AjaxResponse.js.map
+    |   |   |   |   |       errors.js
+    |   |   |   |   |       errors.js.map
+    |   |   |   |   |       getXHRResponse.js
+    |   |   |   |   |       getXHRResponse.js.map
+    |   |   |   |   |       types.js
+    |   |   |   |   |       types.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---observable
+    |   |   |   |   |   |   bindCallback.js
+    |   |   |   |   |   |   bindCallback.js.map
+    |   |   |   |   |   |   bindCallbackInternals.js
+    |   |   |   |   |   |   bindCallbackInternals.js.map
+    |   |   |   |   |   |   bindNodeCallback.js
+    |   |   |   |   |   |   bindNodeCallback.js.map
+    |   |   |   |   |   |   combineLatest.js
+    |   |   |   |   |   |   combineLatest.js.map
+    |   |   |   |   |   |   concat.js
+    |   |   |   |   |   |   concat.js.map
+    |   |   |   |   |   |   connectable.js
+    |   |   |   |   |   |   connectable.js.map
+    |   |   |   |   |   |   ConnectableObservable.js
+    |   |   |   |   |   |   ConnectableObservable.js.map
+    |   |   |   |   |   |   defer.js
+    |   |   |   |   |   |   defer.js.map
+    |   |   |   |   |   |   empty.js
+    |   |   |   |   |   |   empty.js.map
+    |   |   |   |   |   |   forkJoin.js
+    |   |   |   |   |   |   forkJoin.js.map
+    |   |   |   |   |   |   from.js
+    |   |   |   |   |   |   from.js.map
+    |   |   |   |   |   |   fromEvent.js
+    |   |   |   |   |   |   fromEvent.js.map
+    |   |   |   |   |   |   fromEventPattern.js
+    |   |   |   |   |   |   fromEventPattern.js.map
+    |   |   |   |   |   |   fromSubscribable.js
+    |   |   |   |   |   |   fromSubscribable.js.map
+    |   |   |   |   |   |   generate.js
+    |   |   |   |   |   |   generate.js.map
+    |   |   |   |   |   |   iif.js
+    |   |   |   |   |   |   iif.js.map
+    |   |   |   |   |   |   innerFrom.js
+    |   |   |   |   |   |   innerFrom.js.map
+    |   |   |   |   |   |   interval.js
+    |   |   |   |   |   |   interval.js.map
+    |   |   |   |   |   |   merge.js
+    |   |   |   |   |   |   merge.js.map
+    |   |   |   |   |   |   never.js
+    |   |   |   |   |   |   never.js.map
+    |   |   |   |   |   |   of.js
+    |   |   |   |   |   |   of.js.map
+    |   |   |   |   |   |   onErrorResumeNext.js
+    |   |   |   |   |   |   onErrorResumeNext.js.map
+    |   |   |   |   |   |   pairs.js
+    |   |   |   |   |   |   pairs.js.map
+    |   |   |   |   |   |   partition.js
+    |   |   |   |   |   |   partition.js.map
+    |   |   |   |   |   |   race.js
+    |   |   |   |   |   |   race.js.map
+    |   |   |   |   |   |   range.js
+    |   |   |   |   |   |   range.js.map
+    |   |   |   |   |   |   throwError.js
+    |   |   |   |   |   |   throwError.js.map
+    |   |   |   |   |   |   timer.js
+    |   |   |   |   |   |   timer.js.map
+    |   |   |   |   |   |   using.js
+    |   |   |   |   |   |   using.js.map
+    |   |   |   |   |   |   zip.js
+    |   |   |   |   |   |   zip.js.map
+    |   |   |   |   |   |   
+    |   |   |   |   |   \---dom
+    |   |   |   |   |           animationFrames.js
+    |   |   |   |   |           animationFrames.js.map
+    |   |   |   |   |           fetch.js
+    |   |   |   |   |           fetch.js.map
+    |   |   |   |   |           webSocket.js
+    |   |   |   |   |           webSocket.js.map
+    |   |   |   |   |           WebSocketSubject.js
+    |   |   |   |   |           WebSocketSubject.js.map
+    |   |   |   |   |           
+    |   |   |   |   +---operators
+    |   |   |   |   |       audit.js
+    |   |   |   |   |       audit.js.map
+    |   |   |   |   |       auditTime.js
+    |   |   |   |   |       auditTime.js.map
+    |   |   |   |   |       buffer.js
+    |   |   |   |   |       buffer.js.map
+    |   |   |   |   |       bufferCount.js
+    |   |   |   |   |       bufferCount.js.map
+    |   |   |   |   |       bufferTime.js
+    |   |   |   |   |       bufferTime.js.map
+    |   |   |   |   |       bufferToggle.js
+    |   |   |   |   |       bufferToggle.js.map
+    |   |   |   |   |       bufferWhen.js
+    |   |   |   |   |       bufferWhen.js.map
+    |   |   |   |   |       catchError.js
+    |   |   |   |   |       catchError.js.map
+    |   |   |   |   |       combineAll.js
+    |   |   |   |   |       combineAll.js.map
+    |   |   |   |   |       combineLatest.js
+    |   |   |   |   |       combineLatest.js.map
+    |   |   |   |   |       combineLatestAll.js
+    |   |   |   |   |       combineLatestAll.js.map
+    |   |   |   |   |       combineLatestWith.js
+    |   |   |   |   |       combineLatestWith.js.map
+    |   |   |   |   |       concat.js
+    |   |   |   |   |       concat.js.map
+    |   |   |   |   |       concatAll.js
+    |   |   |   |   |       concatAll.js.map
+    |   |   |   |   |       concatMap.js
+    |   |   |   |   |       concatMap.js.map
+    |   |   |   |   |       concatMapTo.js
+    |   |   |   |   |       concatMapTo.js.map
+    |   |   |   |   |       concatWith.js
+    |   |   |   |   |       concatWith.js.map
+    |   |   |   |   |       connect.js
+    |   |   |   |   |       connect.js.map
+    |   |   |   |   |       count.js
+    |   |   |   |   |       count.js.map
+    |   |   |   |   |       debounce.js
+    |   |   |   |   |       debounce.js.map
+    |   |   |   |   |       debounceTime.js
+    |   |   |   |   |       debounceTime.js.map
+    |   |   |   |   |       defaultIfEmpty.js
+    |   |   |   |   |       defaultIfEmpty.js.map
+    |   |   |   |   |       delay.js
+    |   |   |   |   |       delay.js.map
+    |   |   |   |   |       delayWhen.js
+    |   |   |   |   |       delayWhen.js.map
+    |   |   |   |   |       dematerialize.js
+    |   |   |   |   |       dematerialize.js.map
+    |   |   |   |   |       distinct.js
+    |   |   |   |   |       distinct.js.map
+    |   |   |   |   |       distinctUntilChanged.js
+    |   |   |   |   |       distinctUntilChanged.js.map
+    |   |   |   |   |       distinctUntilKeyChanged.js
+    |   |   |   |   |       distinctUntilKeyChanged.js.map
+    |   |   |   |   |       elementAt.js
+    |   |   |   |   |       elementAt.js.map
+    |   |   |   |   |       endWith.js
+    |   |   |   |   |       endWith.js.map
+    |   |   |   |   |       every.js
+    |   |   |   |   |       every.js.map
+    |   |   |   |   |       exhaust.js
+    |   |   |   |   |       exhaust.js.map
+    |   |   |   |   |       exhaustAll.js
+    |   |   |   |   |       exhaustAll.js.map
+    |   |   |   |   |       exhaustMap.js
+    |   |   |   |   |       exhaustMap.js.map
+    |   |   |   |   |       expand.js
+    |   |   |   |   |       expand.js.map
+    |   |   |   |   |       filter.js
+    |   |   |   |   |       filter.js.map
+    |   |   |   |   |       finalize.js
+    |   |   |   |   |       finalize.js.map
+    |   |   |   |   |       find.js
+    |   |   |   |   |       find.js.map
+    |   |   |   |   |       findIndex.js
+    |   |   |   |   |       findIndex.js.map
+    |   |   |   |   |       first.js
+    |   |   |   |   |       first.js.map
+    |   |   |   |   |       flatMap.js
+    |   |   |   |   |       flatMap.js.map
+    |   |   |   |   |       groupBy.js
+    |   |   |   |   |       groupBy.js.map
+    |   |   |   |   |       ignoreElements.js
+    |   |   |   |   |       ignoreElements.js.map
+    |   |   |   |   |       isEmpty.js
+    |   |   |   |   |       isEmpty.js.map
+    |   |   |   |   |       joinAllInternals.js
+    |   |   |   |   |       joinAllInternals.js.map
+    |   |   |   |   |       last.js
+    |   |   |   |   |       last.js.map
+    |   |   |   |   |       map.js
+    |   |   |   |   |       map.js.map
+    |   |   |   |   |       mapTo.js
+    |   |   |   |   |       mapTo.js.map
+    |   |   |   |   |       materialize.js
+    |   |   |   |   |       materialize.js.map
+    |   |   |   |   |       max.js
+    |   |   |   |   |       max.js.map
+    |   |   |   |   |       merge.js
+    |   |   |   |   |       merge.js.map
+    |   |   |   |   |       mergeAll.js
+    |   |   |   |   |       mergeAll.js.map
+    |   |   |   |   |       mergeInternals.js
+    |   |   |   |   |       mergeInternals.js.map
+    |   |   |   |   |       mergeMap.js
+    |   |   |   |   |       mergeMap.js.map
+    |   |   |   |   |       mergeMapTo.js
+    |   |   |   |   |       mergeMapTo.js.map
+    |   |   |   |   |       mergeScan.js
+    |   |   |   |   |       mergeScan.js.map
+    |   |   |   |   |       mergeWith.js
+    |   |   |   |   |       mergeWith.js.map
+    |   |   |   |   |       min.js
+    |   |   |   |   |       min.js.map
+    |   |   |   |   |       multicast.js
+    |   |   |   |   |       multicast.js.map
+    |   |   |   |   |       observeOn.js
+    |   |   |   |   |       observeOn.js.map
+    |   |   |   |   |       onErrorResumeNextWith.js
+    |   |   |   |   |       onErrorResumeNextWith.js.map
+    |   |   |   |   |       OperatorSubscriber.js
+    |   |   |   |   |       OperatorSubscriber.js.map
+    |   |   |   |   |       pairwise.js
+    |   |   |   |   |       pairwise.js.map
+    |   |   |   |   |       partition.js
+    |   |   |   |   |       partition.js.map
+    |   |   |   |   |       pluck.js
+    |   |   |   |   |       pluck.js.map
+    |   |   |   |   |       publish.js
+    |   |   |   |   |       publish.js.map
+    |   |   |   |   |       publishBehavior.js
+    |   |   |   |   |       publishBehavior.js.map
+    |   |   |   |   |       publishLast.js
+    |   |   |   |   |       publishLast.js.map
+    |   |   |   |   |       publishReplay.js
+    |   |   |   |   |       publishReplay.js.map
+    |   |   |   |   |       race.js
+    |   |   |   |   |       race.js.map
+    |   |   |   |   |       raceWith.js
+    |   |   |   |   |       raceWith.js.map
+    |   |   |   |   |       reduce.js
+    |   |   |   |   |       reduce.js.map
+    |   |   |   |   |       refCount.js
+    |   |   |   |   |       refCount.js.map
+    |   |   |   |   |       repeat.js
+    |   |   |   |   |       repeat.js.map
+    |   |   |   |   |       repeatWhen.js
+    |   |   |   |   |       repeatWhen.js.map
+    |   |   |   |   |       retry.js
+    |   |   |   |   |       retry.js.map
+    |   |   |   |   |       retryWhen.js
+    |   |   |   |   |       retryWhen.js.map
+    |   |   |   |   |       sample.js
+    |   |   |   |   |       sample.js.map
+    |   |   |   |   |       sampleTime.js
+    |   |   |   |   |       sampleTime.js.map
+    |   |   |   |   |       scan.js
+    |   |   |   |   |       scan.js.map
+    |   |   |   |   |       scanInternals.js
+    |   |   |   |   |       scanInternals.js.map
+    |   |   |   |   |       sequenceEqual.js
+    |   |   |   |   |       sequenceEqual.js.map
+    |   |   |   |   |       share.js
+    |   |   |   |   |       share.js.map
+    |   |   |   |   |       shareReplay.js
+    |   |   |   |   |       shareReplay.js.map
+    |   |   |   |   |       single.js
+    |   |   |   |   |       single.js.map
+    |   |   |   |   |       skip.js
+    |   |   |   |   |       skip.js.map
+    |   |   |   |   |       skipLast.js
+    |   |   |   |   |       skipLast.js.map
+    |   |   |   |   |       skipUntil.js
+    |   |   |   |   |       skipUntil.js.map
+    |   |   |   |   |       skipWhile.js
+    |   |   |   |   |       skipWhile.js.map
+    |   |   |   |   |       startWith.js
+    |   |   |   |   |       startWith.js.map
+    |   |   |   |   |       subscribeOn.js
+    |   |   |   |   |       subscribeOn.js.map
+    |   |   |   |   |       switchAll.js
+    |   |   |   |   |       switchAll.js.map
+    |   |   |   |   |       switchMap.js
+    |   |   |   |   |       switchMap.js.map
+    |   |   |   |   |       switchMapTo.js
+    |   |   |   |   |       switchMapTo.js.map
+    |   |   |   |   |       switchScan.js
+    |   |   |   |   |       switchScan.js.map
+    |   |   |   |   |       take.js
+    |   |   |   |   |       take.js.map
+    |   |   |   |   |       takeLast.js
+    |   |   |   |   |       takeLast.js.map
+    |   |   |   |   |       takeUntil.js
+    |   |   |   |   |       takeUntil.js.map
+    |   |   |   |   |       takeWhile.js
+    |   |   |   |   |       takeWhile.js.map
+    |   |   |   |   |       tap.js
+    |   |   |   |   |       tap.js.map
+    |   |   |   |   |       throttle.js
+    |   |   |   |   |       throttle.js.map
+    |   |   |   |   |       throttleTime.js
+    |   |   |   |   |       throttleTime.js.map
+    |   |   |   |   |       throwIfEmpty.js
+    |   |   |   |   |       throwIfEmpty.js.map
+    |   |   |   |   |       timeInterval.js
+    |   |   |   |   |       timeInterval.js.map
+    |   |   |   |   |       timeout.js
+    |   |   |   |   |       timeout.js.map
+    |   |   |   |   |       timeoutWith.js
+    |   |   |   |   |       timeoutWith.js.map
+    |   |   |   |   |       timestamp.js
+    |   |   |   |   |       timestamp.js.map
+    |   |   |   |   |       toArray.js
+    |   |   |   |   |       toArray.js.map
+    |   |   |   |   |       window.js
+    |   |   |   |   |       window.js.map
+    |   |   |   |   |       windowCount.js
+    |   |   |   |   |       windowCount.js.map
+    |   |   |   |   |       windowTime.js
+    |   |   |   |   |       windowTime.js.map
+    |   |   |   |   |       windowToggle.js
+    |   |   |   |   |       windowToggle.js.map
+    |   |   |   |   |       windowWhen.js
+    |   |   |   |   |       windowWhen.js.map
+    |   |   |   |   |       withLatestFrom.js
+    |   |   |   |   |       withLatestFrom.js.map
+    |   |   |   |   |       zip.js
+    |   |   |   |   |       zip.js.map
+    |   |   |   |   |       zipAll.js
+    |   |   |   |   |       zipAll.js.map
+    |   |   |   |   |       zipWith.js
+    |   |   |   |   |       zipWith.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---scheduled
+    |   |   |   |   |       scheduleArray.js
+    |   |   |   |   |       scheduleArray.js.map
+    |   |   |   |   |       scheduleAsyncIterable.js
+    |   |   |   |   |       scheduleAsyncIterable.js.map
+    |   |   |   |   |       scheduled.js
+    |   |   |   |   |       scheduled.js.map
+    |   |   |   |   |       scheduleIterable.js
+    |   |   |   |   |       scheduleIterable.js.map
+    |   |   |   |   |       scheduleObservable.js
+    |   |   |   |   |       scheduleObservable.js.map
+    |   |   |   |   |       schedulePromise.js
+    |   |   |   |   |       schedulePromise.js.map
+    |   |   |   |   |       scheduleReadableStreamLike.js
+    |   |   |   |   |       scheduleReadableStreamLike.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---scheduler
+    |   |   |   |   |       Action.js
+    |   |   |   |   |       Action.js.map
+    |   |   |   |   |       animationFrame.js
+    |   |   |   |   |       animationFrame.js.map
+    |   |   |   |   |       AnimationFrameAction.js
+    |   |   |   |   |       AnimationFrameAction.js.map
+    |   |   |   |   |       animationFrameProvider.js
+    |   |   |   |   |       animationFrameProvider.js.map
+    |   |   |   |   |       AnimationFrameScheduler.js
+    |   |   |   |   |       AnimationFrameScheduler.js.map
+    |   |   |   |   |       asap.js
+    |   |   |   |   |       asap.js.map
+    |   |   |   |   |       AsapAction.js
+    |   |   |   |   |       AsapAction.js.map
+    |   |   |   |   |       AsapScheduler.js
+    |   |   |   |   |       AsapScheduler.js.map
+    |   |   |   |   |       async.js
+    |   |   |   |   |       async.js.map
+    |   |   |   |   |       AsyncAction.js
+    |   |   |   |   |       AsyncAction.js.map
+    |   |   |   |   |       AsyncScheduler.js
+    |   |   |   |   |       AsyncScheduler.js.map
+    |   |   |   |   |       dateTimestampProvider.js
+    |   |   |   |   |       dateTimestampProvider.js.map
+    |   |   |   |   |       immediateProvider.js
+    |   |   |   |   |       immediateProvider.js.map
+    |   |   |   |   |       intervalProvider.js
+    |   |   |   |   |       intervalProvider.js.map
+    |   |   |   |   |       performanceTimestampProvider.js
+    |   |   |   |   |       performanceTimestampProvider.js.map
+    |   |   |   |   |       queue.js
+    |   |   |   |   |       queue.js.map
+    |   |   |   |   |       QueueAction.js
+    |   |   |   |   |       QueueAction.js.map
+    |   |   |   |   |       QueueScheduler.js
+    |   |   |   |   |       QueueScheduler.js.map
+    |   |   |   |   |       timeoutProvider.js
+    |   |   |   |   |       timeoutProvider.js.map
+    |   |   |   |   |       timerHandle.js
+    |   |   |   |   |       timerHandle.js.map
+    |   |   |   |   |       VirtualTimeScheduler.js
+    |   |   |   |   |       VirtualTimeScheduler.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---symbol
+    |   |   |   |   |       iterator.js
+    |   |   |   |   |       iterator.js.map
+    |   |   |   |   |       observable.js
+    |   |   |   |   |       observable.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---testing
+    |   |   |   |   |       ColdObservable.js
+    |   |   |   |   |       ColdObservable.js.map
+    |   |   |   |   |       HotObservable.js
+    |   |   |   |   |       HotObservable.js.map
+    |   |   |   |   |       SubscriptionLog.js
+    |   |   |   |   |       SubscriptionLog.js.map
+    |   |   |   |   |       SubscriptionLoggable.js
+    |   |   |   |   |       SubscriptionLoggable.js.map
+    |   |   |   |   |       TestMessage.js
+    |   |   |   |   |       TestMessage.js.map
+    |   |   |   |   |       TestScheduler.js
+    |   |   |   |   |       TestScheduler.js.map
+    |   |   |   |   |       
+    |   |   |   |   \---util
+    |   |   |   |           applyMixins.js
+    |   |   |   |           applyMixins.js.map
+    |   |   |   |           args.js
+    |   |   |   |           args.js.map
+    |   |   |   |           argsArgArrayOrObject.js
+    |   |   |   |           argsArgArrayOrObject.js.map
+    |   |   |   |           argsOrArgArray.js
+    |   |   |   |           argsOrArgArray.js.map
+    |   |   |   |           ArgumentOutOfRangeError.js
+    |   |   |   |           ArgumentOutOfRangeError.js.map
+    |   |   |   |           arrRemove.js
+    |   |   |   |           arrRemove.js.map
+    |   |   |   |           createErrorClass.js
+    |   |   |   |           createErrorClass.js.map
+    |   |   |   |           createObject.js
+    |   |   |   |           createObject.js.map
+    |   |   |   |           EmptyError.js
+    |   |   |   |           EmptyError.js.map
+    |   |   |   |           errorContext.js
+    |   |   |   |           errorContext.js.map
+    |   |   |   |           executeSchedule.js
+    |   |   |   |           executeSchedule.js.map
+    |   |   |   |           identity.js
+    |   |   |   |           identity.js.map
+    |   |   |   |           Immediate.js
+    |   |   |   |           Immediate.js.map
+    |   |   |   |           isArrayLike.js
+    |   |   |   |           isArrayLike.js.map
+    |   |   |   |           isAsyncIterable.js
+    |   |   |   |           isAsyncIterable.js.map
+    |   |   |   |           isDate.js
+    |   |   |   |           isDate.js.map
+    |   |   |   |           isFunction.js
+    |   |   |   |           isFunction.js.map
+    |   |   |   |           isInteropObservable.js
+    |   |   |   |           isInteropObservable.js.map
+    |   |   |   |           isIterable.js
+    |   |   |   |           isIterable.js.map
+    |   |   |   |           isObservable.js
+    |   |   |   |           isObservable.js.map
+    |   |   |   |           isPromise.js
+    |   |   |   |           isPromise.js.map
+    |   |   |   |           isReadableStreamLike.js
+    |   |   |   |           isReadableStreamLike.js.map
+    |   |   |   |           isScheduler.js
+    |   |   |   |           isScheduler.js.map
+    |   |   |   |           lift.js
+    |   |   |   |           lift.js.map
+    |   |   |   |           mapOneOrManyArgs.js
+    |   |   |   |           mapOneOrManyArgs.js.map
+    |   |   |   |           noop.js
+    |   |   |   |           noop.js.map
+    |   |   |   |           not.js
+    |   |   |   |           not.js.map
+    |   |   |   |           NotFoundError.js
+    |   |   |   |           NotFoundError.js.map
+    |   |   |   |           ObjectUnsubscribedError.js
+    |   |   |   |           ObjectUnsubscribedError.js.map
+    |   |   |   |           pipe.js
+    |   |   |   |           pipe.js.map
+    |   |   |   |           reportUnhandledError.js
+    |   |   |   |           reportUnhandledError.js.map
+    |   |   |   |           SequenceError.js
+    |   |   |   |           SequenceError.js.map
+    |   |   |   |           subscribeToArray.js
+    |   |   |   |           subscribeToArray.js.map
+    |   |   |   |           throwUnobservableError.js
+    |   |   |   |           throwUnobservableError.js.map
+    |   |   |   |           UnsubscriptionError.js
+    |   |   |   |           UnsubscriptionError.js.map
+    |   |   |   |           workarounds.js
+    |   |   |   |           workarounds.js.map
+    |   |   |   |           
+    |   |   |   +---operators
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---testing
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   \---webSocket
+    |   |   |           index.js
+    |   |   |           index.js.map
+    |   |   |           
+    |   |   +---esm5
+    |   |   |   |   index.js
+    |   |   |   |   index.js.map
+    |   |   |   |   
+    |   |   |   +---ajax
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---fetch
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---internal
+    |   |   |   |   |   AnyCatcher.js
+    |   |   |   |   |   AnyCatcher.js.map
+    |   |   |   |   |   AsyncSubject.js
+    |   |   |   |   |   AsyncSubject.js.map
+    |   |   |   |   |   BehaviorSubject.js
+    |   |   |   |   |   BehaviorSubject.js.map
+    |   |   |   |   |   config.js
+    |   |   |   |   |   config.js.map
+    |   |   |   |   |   firstValueFrom.js
+    |   |   |   |   |   firstValueFrom.js.map
+    |   |   |   |   |   lastValueFrom.js
+    |   |   |   |   |   lastValueFrom.js.map
+    |   |   |   |   |   Notification.js
+    |   |   |   |   |   Notification.js.map
+    |   |   |   |   |   NotificationFactories.js
+    |   |   |   |   |   NotificationFactories.js.map
+    |   |   |   |   |   Observable.js
+    |   |   |   |   |   Observable.js.map
+    |   |   |   |   |   Operator.js
+    |   |   |   |   |   Operator.js.map
+    |   |   |   |   |   ReplaySubject.js
+    |   |   |   |   |   ReplaySubject.js.map
+    |   |   |   |   |   Scheduler.js
+    |   |   |   |   |   Scheduler.js.map
+    |   |   |   |   |   Subject.js
+    |   |   |   |   |   Subject.js.map
+    |   |   |   |   |   Subscriber.js
+    |   |   |   |   |   Subscriber.js.map
+    |   |   |   |   |   Subscription.js
+    |   |   |   |   |   Subscription.js.map
+    |   |   |   |   |   types.js
+    |   |   |   |   |   types.js.map
+    |   |   |   |   |   
+    |   |   |   |   +---ajax
+    |   |   |   |   |       ajax.js
+    |   |   |   |   |       ajax.js.map
+    |   |   |   |   |       AjaxResponse.js
+    |   |   |   |   |       AjaxResponse.js.map
+    |   |   |   |   |       errors.js
+    |   |   |   |   |       errors.js.map
+    |   |   |   |   |       getXHRResponse.js
+    |   |   |   |   |       getXHRResponse.js.map
+    |   |   |   |   |       types.js
+    |   |   |   |   |       types.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---observable
+    |   |   |   |   |   |   bindCallback.js
+    |   |   |   |   |   |   bindCallback.js.map
+    |   |   |   |   |   |   bindCallbackInternals.js
+    |   |   |   |   |   |   bindCallbackInternals.js.map
+    |   |   |   |   |   |   bindNodeCallback.js
+    |   |   |   |   |   |   bindNodeCallback.js.map
+    |   |   |   |   |   |   combineLatest.js
+    |   |   |   |   |   |   combineLatest.js.map
+    |   |   |   |   |   |   concat.js
+    |   |   |   |   |   |   concat.js.map
+    |   |   |   |   |   |   connectable.js
+    |   |   |   |   |   |   connectable.js.map
+    |   |   |   |   |   |   ConnectableObservable.js
+    |   |   |   |   |   |   ConnectableObservable.js.map
+    |   |   |   |   |   |   defer.js
+    |   |   |   |   |   |   defer.js.map
+    |   |   |   |   |   |   empty.js
+    |   |   |   |   |   |   empty.js.map
+    |   |   |   |   |   |   forkJoin.js
+    |   |   |   |   |   |   forkJoin.js.map
+    |   |   |   |   |   |   from.js
+    |   |   |   |   |   |   from.js.map
+    |   |   |   |   |   |   fromEvent.js
+    |   |   |   |   |   |   fromEvent.js.map
+    |   |   |   |   |   |   fromEventPattern.js
+    |   |   |   |   |   |   fromEventPattern.js.map
+    |   |   |   |   |   |   fromSubscribable.js
+    |   |   |   |   |   |   fromSubscribable.js.map
+    |   |   |   |   |   |   generate.js
+    |   |   |   |   |   |   generate.js.map
+    |   |   |   |   |   |   iif.js
+    |   |   |   |   |   |   iif.js.map
+    |   |   |   |   |   |   innerFrom.js
+    |   |   |   |   |   |   innerFrom.js.map
+    |   |   |   |   |   |   interval.js
+    |   |   |   |   |   |   interval.js.map
+    |   |   |   |   |   |   merge.js
+    |   |   |   |   |   |   merge.js.map
+    |   |   |   |   |   |   never.js
+    |   |   |   |   |   |   never.js.map
+    |   |   |   |   |   |   of.js
+    |   |   |   |   |   |   of.js.map
+    |   |   |   |   |   |   onErrorResumeNext.js
+    |   |   |   |   |   |   onErrorResumeNext.js.map
+    |   |   |   |   |   |   pairs.js
+    |   |   |   |   |   |   pairs.js.map
+    |   |   |   |   |   |   partition.js
+    |   |   |   |   |   |   partition.js.map
+    |   |   |   |   |   |   race.js
+    |   |   |   |   |   |   race.js.map
+    |   |   |   |   |   |   range.js
+    |   |   |   |   |   |   range.js.map
+    |   |   |   |   |   |   throwError.js
+    |   |   |   |   |   |   throwError.js.map
+    |   |   |   |   |   |   timer.js
+    |   |   |   |   |   |   timer.js.map
+    |   |   |   |   |   |   using.js
+    |   |   |   |   |   |   using.js.map
+    |   |   |   |   |   |   zip.js
+    |   |   |   |   |   |   zip.js.map
+    |   |   |   |   |   |   
+    |   |   |   |   |   \---dom
+    |   |   |   |   |           animationFrames.js
+    |   |   |   |   |           animationFrames.js.map
+    |   |   |   |   |           fetch.js
+    |   |   |   |   |           fetch.js.map
+    |   |   |   |   |           webSocket.js
+    |   |   |   |   |           webSocket.js.map
+    |   |   |   |   |           WebSocketSubject.js
+    |   |   |   |   |           WebSocketSubject.js.map
+    |   |   |   |   |           
+    |   |   |   |   +---operators
+    |   |   |   |   |       audit.js
+    |   |   |   |   |       audit.js.map
+    |   |   |   |   |       auditTime.js
+    |   |   |   |   |       auditTime.js.map
+    |   |   |   |   |       buffer.js
+    |   |   |   |   |       buffer.js.map
+    |   |   |   |   |       bufferCount.js
+    |   |   |   |   |       bufferCount.js.map
+    |   |   |   |   |       bufferTime.js
+    |   |   |   |   |       bufferTime.js.map
+    |   |   |   |   |       bufferToggle.js
+    |   |   |   |   |       bufferToggle.js.map
+    |   |   |   |   |       bufferWhen.js
+    |   |   |   |   |       bufferWhen.js.map
+    |   |   |   |   |       catchError.js
+    |   |   |   |   |       catchError.js.map
+    |   |   |   |   |       combineAll.js
+    |   |   |   |   |       combineAll.js.map
+    |   |   |   |   |       combineLatest.js
+    |   |   |   |   |       combineLatest.js.map
+    |   |   |   |   |       combineLatestAll.js
+    |   |   |   |   |       combineLatestAll.js.map
+    |   |   |   |   |       combineLatestWith.js
+    |   |   |   |   |       combineLatestWith.js.map
+    |   |   |   |   |       concat.js
+    |   |   |   |   |       concat.js.map
+    |   |   |   |   |       concatAll.js
+    |   |   |   |   |       concatAll.js.map
+    |   |   |   |   |       concatMap.js
+    |   |   |   |   |       concatMap.js.map
+    |   |   |   |   |       concatMapTo.js
+    |   |   |   |   |       concatMapTo.js.map
+    |   |   |   |   |       concatWith.js
+    |   |   |   |   |       concatWith.js.map
+    |   |   |   |   |       connect.js
+    |   |   |   |   |       connect.js.map
+    |   |   |   |   |       count.js
+    |   |   |   |   |       count.js.map
+    |   |   |   |   |       debounce.js
+    |   |   |   |   |       debounce.js.map
+    |   |   |   |   |       debounceTime.js
+    |   |   |   |   |       debounceTime.js.map
+    |   |   |   |   |       defaultIfEmpty.js
+    |   |   |   |   |       defaultIfEmpty.js.map
+    |   |   |   |   |       delay.js
+    |   |   |   |   |       delay.js.map
+    |   |   |   |   |       delayWhen.js
+    |   |   |   |   |       delayWhen.js.map
+    |   |   |   |   |       dematerialize.js
+    |   |   |   |   |       dematerialize.js.map
+    |   |   |   |   |       distinct.js
+    |   |   |   |   |       distinct.js.map
+    |   |   |   |   |       distinctUntilChanged.js
+    |   |   |   |   |       distinctUntilChanged.js.map
+    |   |   |   |   |       distinctUntilKeyChanged.js
+    |   |   |   |   |       distinctUntilKeyChanged.js.map
+    |   |   |   |   |       elementAt.js
+    |   |   |   |   |       elementAt.js.map
+    |   |   |   |   |       endWith.js
+    |   |   |   |   |       endWith.js.map
+    |   |   |   |   |       every.js
+    |   |   |   |   |       every.js.map
+    |   |   |   |   |       exhaust.js
+    |   |   |   |   |       exhaust.js.map
+    |   |   |   |   |       exhaustAll.js
+    |   |   |   |   |       exhaustAll.js.map
+    |   |   |   |   |       exhaustMap.js
+    |   |   |   |   |       exhaustMap.js.map
+    |   |   |   |   |       expand.js
+    |   |   |   |   |       expand.js.map
+    |   |   |   |   |       filter.js
+    |   |   |   |   |       filter.js.map
+    |   |   |   |   |       finalize.js
+    |   |   |   |   |       finalize.js.map
+    |   |   |   |   |       find.js
+    |   |   |   |   |       find.js.map
+    |   |   |   |   |       findIndex.js
+    |   |   |   |   |       findIndex.js.map
+    |   |   |   |   |       first.js
+    |   |   |   |   |       first.js.map
+    |   |   |   |   |       flatMap.js
+    |   |   |   |   |       flatMap.js.map
+    |   |   |   |   |       groupBy.js
+    |   |   |   |   |       groupBy.js.map
+    |   |   |   |   |       ignoreElements.js
+    |   |   |   |   |       ignoreElements.js.map
+    |   |   |   |   |       isEmpty.js
+    |   |   |   |   |       isEmpty.js.map
+    |   |   |   |   |       joinAllInternals.js
+    |   |   |   |   |       joinAllInternals.js.map
+    |   |   |   |   |       last.js
+    |   |   |   |   |       last.js.map
+    |   |   |   |   |       map.js
+    |   |   |   |   |       map.js.map
+    |   |   |   |   |       mapTo.js
+    |   |   |   |   |       mapTo.js.map
+    |   |   |   |   |       materialize.js
+    |   |   |   |   |       materialize.js.map
+    |   |   |   |   |       max.js
+    |   |   |   |   |       max.js.map
+    |   |   |   |   |       merge.js
+    |   |   |   |   |       merge.js.map
+    |   |   |   |   |       mergeAll.js
+    |   |   |   |   |       mergeAll.js.map
+    |   |   |   |   |       mergeInternals.js
+    |   |   |   |   |       mergeInternals.js.map
+    |   |   |   |   |       mergeMap.js
+    |   |   |   |   |       mergeMap.js.map
+    |   |   |   |   |       mergeMapTo.js
+    |   |   |   |   |       mergeMapTo.js.map
+    |   |   |   |   |       mergeScan.js
+    |   |   |   |   |       mergeScan.js.map
+    |   |   |   |   |       mergeWith.js
+    |   |   |   |   |       mergeWith.js.map
+    |   |   |   |   |       min.js
+    |   |   |   |   |       min.js.map
+    |   |   |   |   |       multicast.js
+    |   |   |   |   |       multicast.js.map
+    |   |   |   |   |       observeOn.js
+    |   |   |   |   |       observeOn.js.map
+    |   |   |   |   |       onErrorResumeNextWith.js
+    |   |   |   |   |       onErrorResumeNextWith.js.map
+    |   |   |   |   |       OperatorSubscriber.js
+    |   |   |   |   |       OperatorSubscriber.js.map
+    |   |   |   |   |       pairwise.js
+    |   |   |   |   |       pairwise.js.map
+    |   |   |   |   |       partition.js
+    |   |   |   |   |       partition.js.map
+    |   |   |   |   |       pluck.js
+    |   |   |   |   |       pluck.js.map
+    |   |   |   |   |       publish.js
+    |   |   |   |   |       publish.js.map
+    |   |   |   |   |       publishBehavior.js
+    |   |   |   |   |       publishBehavior.js.map
+    |   |   |   |   |       publishLast.js
+    |   |   |   |   |       publishLast.js.map
+    |   |   |   |   |       publishReplay.js
+    |   |   |   |   |       publishReplay.js.map
+    |   |   |   |   |       race.js
+    |   |   |   |   |       race.js.map
+    |   |   |   |   |       raceWith.js
+    |   |   |   |   |       raceWith.js.map
+    |   |   |   |   |       reduce.js
+    |   |   |   |   |       reduce.js.map
+    |   |   |   |   |       refCount.js
+    |   |   |   |   |       refCount.js.map
+    |   |   |   |   |       repeat.js
+    |   |   |   |   |       repeat.js.map
+    |   |   |   |   |       repeatWhen.js
+    |   |   |   |   |       repeatWhen.js.map
+    |   |   |   |   |       retry.js
+    |   |   |   |   |       retry.js.map
+    |   |   |   |   |       retryWhen.js
+    |   |   |   |   |       retryWhen.js.map
+    |   |   |   |   |       sample.js
+    |   |   |   |   |       sample.js.map
+    |   |   |   |   |       sampleTime.js
+    |   |   |   |   |       sampleTime.js.map
+    |   |   |   |   |       scan.js
+    |   |   |   |   |       scan.js.map
+    |   |   |   |   |       scanInternals.js
+    |   |   |   |   |       scanInternals.js.map
+    |   |   |   |   |       sequenceEqual.js
+    |   |   |   |   |       sequenceEqual.js.map
+    |   |   |   |   |       share.js
+    |   |   |   |   |       share.js.map
+    |   |   |   |   |       shareReplay.js
+    |   |   |   |   |       shareReplay.js.map
+    |   |   |   |   |       single.js
+    |   |   |   |   |       single.js.map
+    |   |   |   |   |       skip.js
+    |   |   |   |   |       skip.js.map
+    |   |   |   |   |       skipLast.js
+    |   |   |   |   |       skipLast.js.map
+    |   |   |   |   |       skipUntil.js
+    |   |   |   |   |       skipUntil.js.map
+    |   |   |   |   |       skipWhile.js
+    |   |   |   |   |       skipWhile.js.map
+    |   |   |   |   |       startWith.js
+    |   |   |   |   |       startWith.js.map
+    |   |   |   |   |       subscribeOn.js
+    |   |   |   |   |       subscribeOn.js.map
+    |   |   |   |   |       switchAll.js
+    |   |   |   |   |       switchAll.js.map
+    |   |   |   |   |       switchMap.js
+    |   |   |   |   |       switchMap.js.map
+    |   |   |   |   |       switchMapTo.js
+    |   |   |   |   |       switchMapTo.js.map
+    |   |   |   |   |       switchScan.js
+    |   |   |   |   |       switchScan.js.map
+    |   |   |   |   |       take.js
+    |   |   |   |   |       take.js.map
+    |   |   |   |   |       takeLast.js
+    |   |   |   |   |       takeLast.js.map
+    |   |   |   |   |       takeUntil.js
+    |   |   |   |   |       takeUntil.js.map
+    |   |   |   |   |       takeWhile.js
+    |   |   |   |   |       takeWhile.js.map
+    |   |   |   |   |       tap.js
+    |   |   |   |   |       tap.js.map
+    |   |   |   |   |       throttle.js
+    |   |   |   |   |       throttle.js.map
+    |   |   |   |   |       throttleTime.js
+    |   |   |   |   |       throttleTime.js.map
+    |   |   |   |   |       throwIfEmpty.js
+    |   |   |   |   |       throwIfEmpty.js.map
+    |   |   |   |   |       timeInterval.js
+    |   |   |   |   |       timeInterval.js.map
+    |   |   |   |   |       timeout.js
+    |   |   |   |   |       timeout.js.map
+    |   |   |   |   |       timeoutWith.js
+    |   |   |   |   |       timeoutWith.js.map
+    |   |   |   |   |       timestamp.js
+    |   |   |   |   |       timestamp.js.map
+    |   |   |   |   |       toArray.js
+    |   |   |   |   |       toArray.js.map
+    |   |   |   |   |       window.js
+    |   |   |   |   |       window.js.map
+    |   |   |   |   |       windowCount.js
+    |   |   |   |   |       windowCount.js.map
+    |   |   |   |   |       windowTime.js
+    |   |   |   |   |       windowTime.js.map
+    |   |   |   |   |       windowToggle.js
+    |   |   |   |   |       windowToggle.js.map
+    |   |   |   |   |       windowWhen.js
+    |   |   |   |   |       windowWhen.js.map
+    |   |   |   |   |       withLatestFrom.js
+    |   |   |   |   |       withLatestFrom.js.map
+    |   |   |   |   |       zip.js
+    |   |   |   |   |       zip.js.map
+    |   |   |   |   |       zipAll.js
+    |   |   |   |   |       zipAll.js.map
+    |   |   |   |   |       zipWith.js
+    |   |   |   |   |       zipWith.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---scheduled
+    |   |   |   |   |       scheduleArray.js
+    |   |   |   |   |       scheduleArray.js.map
+    |   |   |   |   |       scheduleAsyncIterable.js
+    |   |   |   |   |       scheduleAsyncIterable.js.map
+    |   |   |   |   |       scheduled.js
+    |   |   |   |   |       scheduled.js.map
+    |   |   |   |   |       scheduleIterable.js
+    |   |   |   |   |       scheduleIterable.js.map
+    |   |   |   |   |       scheduleObservable.js
+    |   |   |   |   |       scheduleObservable.js.map
+    |   |   |   |   |       schedulePromise.js
+    |   |   |   |   |       schedulePromise.js.map
+    |   |   |   |   |       scheduleReadableStreamLike.js
+    |   |   |   |   |       scheduleReadableStreamLike.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---scheduler
+    |   |   |   |   |       Action.js
+    |   |   |   |   |       Action.js.map
+    |   |   |   |   |       animationFrame.js
+    |   |   |   |   |       animationFrame.js.map
+    |   |   |   |   |       AnimationFrameAction.js
+    |   |   |   |   |       AnimationFrameAction.js.map
+    |   |   |   |   |       animationFrameProvider.js
+    |   |   |   |   |       animationFrameProvider.js.map
+    |   |   |   |   |       AnimationFrameScheduler.js
+    |   |   |   |   |       AnimationFrameScheduler.js.map
+    |   |   |   |   |       asap.js
+    |   |   |   |   |       asap.js.map
+    |   |   |   |   |       AsapAction.js
+    |   |   |   |   |       AsapAction.js.map
+    |   |   |   |   |       AsapScheduler.js
+    |   |   |   |   |       AsapScheduler.js.map
+    |   |   |   |   |       async.js
+    |   |   |   |   |       async.js.map
+    |   |   |   |   |       AsyncAction.js
+    |   |   |   |   |       AsyncAction.js.map
+    |   |   |   |   |       AsyncScheduler.js
+    |   |   |   |   |       AsyncScheduler.js.map
+    |   |   |   |   |       dateTimestampProvider.js
+    |   |   |   |   |       dateTimestampProvider.js.map
+    |   |   |   |   |       immediateProvider.js
+    |   |   |   |   |       immediateProvider.js.map
+    |   |   |   |   |       intervalProvider.js
+    |   |   |   |   |       intervalProvider.js.map
+    |   |   |   |   |       performanceTimestampProvider.js
+    |   |   |   |   |       performanceTimestampProvider.js.map
+    |   |   |   |   |       queue.js
+    |   |   |   |   |       queue.js.map
+    |   |   |   |   |       QueueAction.js
+    |   |   |   |   |       QueueAction.js.map
+    |   |   |   |   |       QueueScheduler.js
+    |   |   |   |   |       QueueScheduler.js.map
+    |   |   |   |   |       timeoutProvider.js
+    |   |   |   |   |       timeoutProvider.js.map
+    |   |   |   |   |       timerHandle.js
+    |   |   |   |   |       timerHandle.js.map
+    |   |   |   |   |       VirtualTimeScheduler.js
+    |   |   |   |   |       VirtualTimeScheduler.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---symbol
+    |   |   |   |   |       iterator.js
+    |   |   |   |   |       iterator.js.map
+    |   |   |   |   |       observable.js
+    |   |   |   |   |       observable.js.map
+    |   |   |   |   |       
+    |   |   |   |   +---testing
+    |   |   |   |   |       ColdObservable.js
+    |   |   |   |   |       ColdObservable.js.map
+    |   |   |   |   |       HotObservable.js
+    |   |   |   |   |       HotObservable.js.map
+    |   |   |   |   |       SubscriptionLog.js
+    |   |   |   |   |       SubscriptionLog.js.map
+    |   |   |   |   |       SubscriptionLoggable.js
+    |   |   |   |   |       SubscriptionLoggable.js.map
+    |   |   |   |   |       TestMessage.js
+    |   |   |   |   |       TestMessage.js.map
+    |   |   |   |   |       TestScheduler.js
+    |   |   |   |   |       TestScheduler.js.map
+    |   |   |   |   |       
+    |   |   |   |   \---util
+    |   |   |   |           applyMixins.js
+    |   |   |   |           applyMixins.js.map
+    |   |   |   |           args.js
+    |   |   |   |           args.js.map
+    |   |   |   |           argsArgArrayOrObject.js
+    |   |   |   |           argsArgArrayOrObject.js.map
+    |   |   |   |           argsOrArgArray.js
+    |   |   |   |           argsOrArgArray.js.map
+    |   |   |   |           ArgumentOutOfRangeError.js
+    |   |   |   |           ArgumentOutOfRangeError.js.map
+    |   |   |   |           arrRemove.js
+    |   |   |   |           arrRemove.js.map
+    |   |   |   |           createErrorClass.js
+    |   |   |   |           createErrorClass.js.map
+    |   |   |   |           createObject.js
+    |   |   |   |           createObject.js.map
+    |   |   |   |           EmptyError.js
+    |   |   |   |           EmptyError.js.map
+    |   |   |   |           errorContext.js
+    |   |   |   |           errorContext.js.map
+    |   |   |   |           executeSchedule.js
+    |   |   |   |           executeSchedule.js.map
+    |   |   |   |           identity.js
+    |   |   |   |           identity.js.map
+    |   |   |   |           Immediate.js
+    |   |   |   |           Immediate.js.map
+    |   |   |   |           isArrayLike.js
+    |   |   |   |           isArrayLike.js.map
+    |   |   |   |           isAsyncIterable.js
+    |   |   |   |           isAsyncIterable.js.map
+    |   |   |   |           isDate.js
+    |   |   |   |           isDate.js.map
+    |   |   |   |           isFunction.js
+    |   |   |   |           isFunction.js.map
+    |   |   |   |           isInteropObservable.js
+    |   |   |   |           isInteropObservable.js.map
+    |   |   |   |           isIterable.js
+    |   |   |   |           isIterable.js.map
+    |   |   |   |           isObservable.js
+    |   |   |   |           isObservable.js.map
+    |   |   |   |           isPromise.js
+    |   |   |   |           isPromise.js.map
+    |   |   |   |           isReadableStreamLike.js
+    |   |   |   |           isReadableStreamLike.js.map
+    |   |   |   |           isScheduler.js
+    |   |   |   |           isScheduler.js.map
+    |   |   |   |           lift.js
+    |   |   |   |           lift.js.map
+    |   |   |   |           mapOneOrManyArgs.js
+    |   |   |   |           mapOneOrManyArgs.js.map
+    |   |   |   |           noop.js
+    |   |   |   |           noop.js.map
+    |   |   |   |           not.js
+    |   |   |   |           not.js.map
+    |   |   |   |           NotFoundError.js
+    |   |   |   |           NotFoundError.js.map
+    |   |   |   |           ObjectUnsubscribedError.js
+    |   |   |   |           ObjectUnsubscribedError.js.map
+    |   |   |   |           pipe.js
+    |   |   |   |           pipe.js.map
+    |   |   |   |           reportUnhandledError.js
+    |   |   |   |           reportUnhandledError.js.map
+    |   |   |   |           SequenceError.js
+    |   |   |   |           SequenceError.js.map
+    |   |   |   |           subscribeToArray.js
+    |   |   |   |           subscribeToArray.js.map
+    |   |   |   |           throwUnobservableError.js
+    |   |   |   |           throwUnobservableError.js.map
+    |   |   |   |           UnsubscriptionError.js
+    |   |   |   |           UnsubscriptionError.js.map
+    |   |   |   |           workarounds.js
+    |   |   |   |           workarounds.js.map
+    |   |   |   |           
+    |   |   |   +---operators
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   +---testing
+    |   |   |   |       index.js
+    |   |   |   |       index.js.map
+    |   |   |   |       
+    |   |   |   \---webSocket
+    |   |   |           index.js
+    |   |   |           index.js.map
+    |   |   |           
+    |   |   \---types
+    |   |       |   index.d.ts
+    |   |       |   index.d.ts.map
+    |   |       |   
+    |   |       +---ajax
+    |   |       |       index.d.ts
+    |   |       |       index.d.ts.map
+    |   |       |       
+    |   |       +---fetch
+    |   |       |       index.d.ts
+    |   |       |       index.d.ts.map
+    |   |       |       
+    |   |       +---internal
+    |   |       |   |   AnyCatcher.d.ts
+    |   |       |   |   AnyCatcher.d.ts.map
+    |   |       |   |   AsyncSubject.d.ts
+    |   |       |   |   AsyncSubject.d.ts.map
+    |   |       |   |   BehaviorSubject.d.ts
+    |   |       |   |   BehaviorSubject.d.ts.map
+    |   |       |   |   config.d.ts
+    |   |       |   |   config.d.ts.map
+    |   |       |   |   firstValueFrom.d.ts
+    |   |       |   |   firstValueFrom.d.ts.map
+    |   |       |   |   lastValueFrom.d.ts
+    |   |       |   |   lastValueFrom.d.ts.map
+    |   |       |   |   Notification.d.ts
+    |   |       |   |   Notification.d.ts.map
+    |   |       |   |   NotificationFactories.d.ts
+    |   |       |   |   NotificationFactories.d.ts.map
+    |   |       |   |   Observable.d.ts
+    |   |       |   |   Observable.d.ts.map
+    |   |       |   |   Operator.d.ts
+    |   |       |   |   Operator.d.ts.map
+    |   |       |   |   ReplaySubject.d.ts
+    |   |       |   |   ReplaySubject.d.ts.map
+    |   |       |   |   Scheduler.d.ts
+    |   |       |   |   Scheduler.d.ts.map
+    |   |       |   |   Subject.d.ts
+    |   |       |   |   Subject.d.ts.map
+    |   |       |   |   Subscriber.d.ts
+    |   |       |   |   Subscriber.d.ts.map
+    |   |       |   |   Subscription.d.ts
+    |   |       |   |   Subscription.d.ts.map
+    |   |       |   |   types.d.ts
+    |   |       |   |   types.d.ts.map
+    |   |       |   |   
+    |   |       |   +---ajax
+    |   |       |   |       ajax.d.ts
+    |   |       |   |       ajax.d.ts.map
+    |   |       |   |       AjaxResponse.d.ts
+    |   |       |   |       AjaxResponse.d.ts.map
+    |   |       |   |       errors.d.ts
+    |   |       |   |       errors.d.ts.map
+    |   |       |   |       getXHRResponse.d.ts
+    |   |       |   |       getXHRResponse.d.ts.map
+    |   |       |   |       types.d.ts
+    |   |       |   |       types.d.ts.map
+    |   |       |   |       
+    |   |       |   +---observable
+    |   |       |   |   |   bindCallback.d.ts
+    |   |       |   |   |   bindCallback.d.ts.map
+    |   |       |   |   |   bindCallbackInternals.d.ts
+    |   |       |   |   |   bindCallbackInternals.d.ts.map
+    |   |       |   |   |   bindNodeCallback.d.ts
+    |   |       |   |   |   bindNodeCallback.d.ts.map
+    |   |       |   |   |   combineLatest.d.ts
+    |   |       |   |   |   combineLatest.d.ts.map
+    |   |       |   |   |   concat.d.ts
+    |   |       |   |   |   concat.d.ts.map
+    |   |       |   |   |   connectable.d.ts
+    |   |       |   |   |   connectable.d.ts.map
+    |   |       |   |   |   ConnectableObservable.d.ts
+    |   |       |   |   |   ConnectableObservable.d.ts.map
+    |   |       |   |   |   defer.d.ts
+    |   |       |   |   |   defer.d.ts.map
+    |   |       |   |   |   empty.d.ts
+    |   |       |   |   |   empty.d.ts.map
+    |   |       |   |   |   forkJoin.d.ts
+    |   |       |   |   |   forkJoin.d.ts.map
+    |   |       |   |   |   from.d.ts
+    |   |       |   |   |   from.d.ts.map
+    |   |       |   |   |   fromEvent.d.ts
+    |   |       |   |   |   fromEvent.d.ts.map
+    |   |       |   |   |   fromEventPattern.d.ts
+    |   |       |   |   |   fromEventPattern.d.ts.map
+    |   |       |   |   |   fromSubscribable.d.ts
+    |   |       |   |   |   fromSubscribable.d.ts.map
+    |   |       |   |   |   generate.d.ts
+    |   |       |   |   |   generate.d.ts.map
+    |   |       |   |   |   iif.d.ts
+    |   |       |   |   |   iif.d.ts.map
+    |   |       |   |   |   innerFrom.d.ts
+    |   |       |   |   |   innerFrom.d.ts.map
+    |   |       |   |   |   interval.d.ts
+    |   |       |   |   |   interval.d.ts.map
+    |   |       |   |   |   merge.d.ts
+    |   |       |   |   |   merge.d.ts.map
+    |   |       |   |   |   never.d.ts
+    |   |       |   |   |   never.d.ts.map
+    |   |       |   |   |   of.d.ts
+    |   |       |   |   |   of.d.ts.map
+    |   |       |   |   |   onErrorResumeNext.d.ts
+    |   |       |   |   |   onErrorResumeNext.d.ts.map
+    |   |       |   |   |   pairs.d.ts
+    |   |       |   |   |   pairs.d.ts.map
+    |   |       |   |   |   partition.d.ts
+    |   |       |   |   |   partition.d.ts.map
+    |   |       |   |   |   race.d.ts
+    |   |       |   |   |   race.d.ts.map
+    |   |       |   |   |   range.d.ts
+    |   |       |   |   |   range.d.ts.map
+    |   |       |   |   |   throwError.d.ts
+    |   |       |   |   |   throwError.d.ts.map
+    |   |       |   |   |   timer.d.ts
+    |   |       |   |   |   timer.d.ts.map
+    |   |       |   |   |   using.d.ts
+    |   |       |   |   |   using.d.ts.map
+    |   |       |   |   |   zip.d.ts
+    |   |       |   |   |   zip.d.ts.map
+    |   |       |   |   |   
+    |   |       |   |   \---dom
+    |   |       |   |           animationFrames.d.ts
+    |   |       |   |           animationFrames.d.ts.map
+    |   |       |   |           fetch.d.ts
+    |   |       |   |           fetch.d.ts.map
+    |   |       |   |           webSocket.d.ts
+    |   |       |   |           webSocket.d.ts.map
+    |   |       |   |           WebSocketSubject.d.ts
+    |   |       |   |           WebSocketSubject.d.ts.map
+    |   |       |   |           
+    |   |       |   +---operators
+    |   |       |   |       audit.d.ts
+    |   |       |   |       audit.d.ts.map
+    |   |       |   |       auditTime.d.ts
+    |   |       |   |       auditTime.d.ts.map
+    |   |       |   |       buffer.d.ts
+    |   |       |   |       buffer.d.ts.map
+    |   |       |   |       bufferCount.d.ts
+    |   |       |   |       bufferCount.d.ts.map
+    |   |       |   |       bufferTime.d.ts
+    |   |       |   |       bufferTime.d.ts.map
+    |   |       |   |       bufferToggle.d.ts
+    |   |       |   |       bufferToggle.d.ts.map
+    |   |       |   |       bufferWhen.d.ts
+    |   |       |   |       bufferWhen.d.ts.map
+    |   |       |   |       catchError.d.ts
+    |   |       |   |       catchError.d.ts.map
+    |   |       |   |       combineAll.d.ts
+    |   |       |   |       combineAll.d.ts.map
+    |   |       |   |       combineLatest.d.ts
+    |   |       |   |       combineLatest.d.ts.map
+    |   |       |   |       combineLatestAll.d.ts
+    |   |       |   |       combineLatestAll.d.ts.map
+    |   |       |   |       combineLatestWith.d.ts
+    |   |       |   |       combineLatestWith.d.ts.map
+    |   |       |   |       concat.d.ts
+    |   |       |   |       concat.d.ts.map
+    |   |       |   |       concatAll.d.ts
+    |   |       |   |       concatAll.d.ts.map
+    |   |       |   |       concatMap.d.ts
+    |   |       |   |       concatMap.d.ts.map
+    |   |       |   |       concatMapTo.d.ts
+    |   |       |   |       concatMapTo.d.ts.map
+    |   |       |   |       concatWith.d.ts
+    |   |       |   |       concatWith.d.ts.map
+    |   |       |   |       connect.d.ts
+    |   |       |   |       connect.d.ts.map
+    |   |       |   |       count.d.ts
+    |   |       |   |       count.d.ts.map
+    |   |       |   |       debounce.d.ts
+    |   |       |   |       debounce.d.ts.map
+    |   |       |   |       debounceTime.d.ts
+    |   |       |   |       debounceTime.d.ts.map
+    |   |       |   |       defaultIfEmpty.d.ts
+    |   |       |   |       defaultIfEmpty.d.ts.map
+    |   |       |   |       delay.d.ts
+    |   |       |   |       delay.d.ts.map
+    |   |       |   |       delayWhen.d.ts
+    |   |       |   |       delayWhen.d.ts.map
+    |   |       |   |       dematerialize.d.ts
+    |   |       |   |       dematerialize.d.ts.map
+    |   |       |   |       distinct.d.ts
+    |   |       |   |       distinct.d.ts.map
+    |   |       |   |       distinctUntilChanged.d.ts
+    |   |       |   |       distinctUntilChanged.d.ts.map
+    |   |       |   |       distinctUntilKeyChanged.d.ts
+    |   |       |   |       distinctUntilKeyChanged.d.ts.map
+    |   |       |   |       elementAt.d.ts
+    |   |       |   |       elementAt.d.ts.map
+    |   |       |   |       endWith.d.ts
+    |   |       |   |       endWith.d.ts.map
+    |   |       |   |       every.d.ts
+    |   |       |   |       every.d.ts.map
+    |   |       |   |       exhaust.d.ts
+    |   |       |   |       exhaust.d.ts.map
+    |   |       |   |       exhaustAll.d.ts
+    |   |       |   |       exhaustAll.d.ts.map
+    |   |       |   |       exhaustMap.d.ts
+    |   |       |   |       exhaustMap.d.ts.map
+    |   |       |   |       expand.d.ts
+    |   |       |   |       expand.d.ts.map
+    |   |       |   |       filter.d.ts
+    |   |       |   |       filter.d.ts.map
+    |   |       |   |       finalize.d.ts
+    |   |       |   |       finalize.d.ts.map
+    |   |       |   |       find.d.ts
+    |   |       |   |       find.d.ts.map
+    |   |       |   |       findIndex.d.ts
+    |   |       |   |       findIndex.d.ts.map
+    |   |       |   |       first.d.ts
+    |   |       |   |       first.d.ts.map
+    |   |       |   |       flatMap.d.ts
+    |   |       |   |       flatMap.d.ts.map
+    |   |       |   |       groupBy.d.ts
+    |   |       |   |       groupBy.d.ts.map
+    |   |       |   |       ignoreElements.d.ts
+    |   |       |   |       ignoreElements.d.ts.map
+    |   |       |   |       isEmpty.d.ts
+    |   |       |   |       isEmpty.d.ts.map
+    |   |       |   |       joinAllInternals.d.ts
+    |   |       |   |       joinAllInternals.d.ts.map
+    |   |       |   |       last.d.ts
+    |   |       |   |       last.d.ts.map
+    |   |       |   |       map.d.ts
+    |   |       |   |       map.d.ts.map
+    |   |       |   |       mapTo.d.ts
+    |   |       |   |       mapTo.d.ts.map
+    |   |       |   |       materialize.d.ts
+    |   |       |   |       materialize.d.ts.map
+    |   |       |   |       max.d.ts
+    |   |       |   |       max.d.ts.map
+    |   |       |   |       merge.d.ts
+    |   |       |   |       merge.d.ts.map
+    |   |       |   |       mergeAll.d.ts
+    |   |       |   |       mergeAll.d.ts.map
+    |   |       |   |       mergeInternals.d.ts
+    |   |       |   |       mergeInternals.d.ts.map
+    |   |       |   |       mergeMap.d.ts
+    |   |       |   |       mergeMap.d.ts.map
+    |   |       |   |       mergeMapTo.d.ts
+    |   |       |   |       mergeMapTo.d.ts.map
+    |   |       |   |       mergeScan.d.ts
+    |   |       |   |       mergeScan.d.ts.map
+    |   |       |   |       mergeWith.d.ts
+    |   |       |   |       mergeWith.d.ts.map
+    |   |       |   |       min.d.ts
+    |   |       |   |       min.d.ts.map
+    |   |       |   |       multicast.d.ts
+    |   |       |   |       multicast.d.ts.map
+    |   |       |   |       observeOn.d.ts
+    |   |       |   |       observeOn.d.ts.map
+    |   |       |   |       onErrorResumeNextWith.d.ts
+    |   |       |   |       onErrorResumeNextWith.d.ts.map
+    |   |       |   |       OperatorSubscriber.d.ts
+    |   |       |   |       OperatorSubscriber.d.ts.map
+    |   |       |   |       pairwise.d.ts
+    |   |       |   |       pairwise.d.ts.map
+    |   |       |   |       partition.d.ts
+    |   |       |   |       partition.d.ts.map
+    |   |       |   |       pluck.d.ts
+    |   |       |   |       pluck.d.ts.map
+    |   |       |   |       publish.d.ts
+    |   |       |   |       publish.d.ts.map
+    |   |       |   |       publishBehavior.d.ts
+    |   |       |   |       publishBehavior.d.ts.map
+    |   |       |   |       publishLast.d.ts
+    |   |       |   |       publishLast.d.ts.map
+    |   |       |   |       publishReplay.d.ts
+    |   |       |   |       publishReplay.d.ts.map
+    |   |       |   |       race.d.ts
+    |   |       |   |       race.d.ts.map
+    |   |       |   |       raceWith.d.ts
+    |   |       |   |       raceWith.d.ts.map
+    |   |       |   |       reduce.d.ts
+    |   |       |   |       reduce.d.ts.map
+    |   |       |   |       refCount.d.ts
+    |   |       |   |       refCount.d.ts.map
+    |   |       |   |       repeat.d.ts
+    |   |       |   |       repeat.d.ts.map
+    |   |       |   |       repeatWhen.d.ts
+    |   |       |   |       repeatWhen.d.ts.map
+    |   |       |   |       retry.d.ts
+    |   |       |   |       retry.d.ts.map
+    |   |       |   |       retryWhen.d.ts
+    |   |       |   |       retryWhen.d.ts.map
+    |   |       |   |       sample.d.ts
+    |   |       |   |       sample.d.ts.map
+    |   |       |   |       sampleTime.d.ts
+    |   |       |   |       sampleTime.d.ts.map
+    |   |       |   |       scan.d.ts
+    |   |       |   |       scan.d.ts.map
+    |   |       |   |       scanInternals.d.ts
+    |   |       |   |       scanInternals.d.ts.map
+    |   |       |   |       sequenceEqual.d.ts
+    |   |       |   |       sequenceEqual.d.ts.map
+    |   |       |   |       share.d.ts
+    |   |       |   |       share.d.ts.map
+    |   |       |   |       shareReplay.d.ts
+    |   |       |   |       shareReplay.d.ts.map
+    |   |       |   |       single.d.ts
+    |   |       |   |       single.d.ts.map
+    |   |       |   |       skip.d.ts
+    |   |       |   |       skip.d.ts.map
+    |   |       |   |       skipLast.d.ts
+    |   |       |   |       skipLast.d.ts.map
+    |   |       |   |       skipUntil.d.ts
+    |   |       |   |       skipUntil.d.ts.map
+    |   |       |   |       skipWhile.d.ts
+    |   |       |   |       skipWhile.d.ts.map
+    |   |       |   |       startWith.d.ts
+    |   |       |   |       startWith.d.ts.map
+    |   |       |   |       subscribeOn.d.ts
+    |   |       |   |       subscribeOn.d.ts.map
+    |   |       |   |       switchAll.d.ts
+    |   |       |   |       switchAll.d.ts.map
+    |   |       |   |       switchMap.d.ts
+    |   |       |   |       switchMap.d.ts.map
+    |   |       |   |       switchMapTo.d.ts
+    |   |       |   |       switchMapTo.d.ts.map
+    |   |       |   |       switchScan.d.ts
+    |   |       |   |       switchScan.d.ts.map
+    |   |       |   |       take.d.ts
+    |   |       |   |       take.d.ts.map
+    |   |       |   |       takeLast.d.ts
+    |   |       |   |       takeLast.d.ts.map
+    |   |       |   |       takeUntil.d.ts
+    |   |       |   |       takeUntil.d.ts.map
+    |   |       |   |       takeWhile.d.ts
+    |   |       |   |       takeWhile.d.ts.map
+    |   |       |   |       tap.d.ts
+    |   |       |   |       tap.d.ts.map
+    |   |       |   |       throttle.d.ts
+    |   |       |   |       throttle.d.ts.map
+    |   |       |   |       throttleTime.d.ts
+    |   |       |   |       throttleTime.d.ts.map
+    |   |       |   |       throwIfEmpty.d.ts
+    |   |       |   |       throwIfEmpty.d.ts.map
+    |   |       |   |       timeInterval.d.ts
+    |   |       |   |       timeInterval.d.ts.map
+    |   |       |   |       timeout.d.ts
+    |   |       |   |       timeout.d.ts.map
+    |   |       |   |       timeoutWith.d.ts
+    |   |       |   |       timeoutWith.d.ts.map
+    |   |       |   |       timestamp.d.ts
+    |   |       |   |       timestamp.d.ts.map
+    |   |       |   |       toArray.d.ts
+    |   |       |   |       toArray.d.ts.map
+    |   |       |   |       window.d.ts
+    |   |       |   |       window.d.ts.map
+    |   |       |   |       windowCount.d.ts
+    |   |       |   |       windowCount.d.ts.map
+    |   |       |   |       windowTime.d.ts
+    |   |       |   |       windowTime.d.ts.map
+    |   |       |   |       windowToggle.d.ts
+    |   |       |   |       windowToggle.d.ts.map
+    |   |       |   |       windowWhen.d.ts
+    |   |       |   |       windowWhen.d.ts.map
+    |   |       |   |       withLatestFrom.d.ts
+    |   |       |   |       withLatestFrom.d.ts.map
+    |   |       |   |       zip.d.ts
+    |   |       |   |       zip.d.ts.map
+    |   |       |   |       zipAll.d.ts
+    |   |       |   |       zipAll.d.ts.map
+    |   |       |   |       zipWith.d.ts
+    |   |       |   |       zipWith.d.ts.map
+    |   |       |   |       
+    |   |       |   +---scheduled
+    |   |       |   |       scheduleArray.d.ts
+    |   |       |   |       scheduleArray.d.ts.map
+    |   |       |   |       scheduleAsyncIterable.d.ts
+    |   |       |   |       scheduleAsyncIterable.d.ts.map
+    |   |       |   |       scheduled.d.ts
+    |   |       |   |       scheduled.d.ts.map
+    |   |       |   |       scheduleIterable.d.ts
+    |   |       |   |       scheduleIterable.d.ts.map
+    |   |       |   |       scheduleObservable.d.ts
+    |   |       |   |       scheduleObservable.d.ts.map
+    |   |       |   |       schedulePromise.d.ts
+    |   |       |   |       schedulePromise.d.ts.map
+    |   |       |   |       scheduleReadableStreamLike.d.ts
+    |   |       |   |       scheduleReadableStreamLike.d.ts.map
+    |   |       |   |       
+    |   |       |   +---scheduler
+    |   |       |   |       Action.d.ts
+    |   |       |   |       Action.d.ts.map
+    |   |       |   |       animationFrame.d.ts
+    |   |       |   |       animationFrame.d.ts.map
+    |   |       |   |       AnimationFrameAction.d.ts
+    |   |       |   |       AnimationFrameAction.d.ts.map
+    |   |       |   |       animationFrameProvider.d.ts
+    |   |       |   |       animationFrameProvider.d.ts.map
+    |   |       |   |       AnimationFrameScheduler.d.ts
+    |   |       |   |       AnimationFrameScheduler.d.ts.map
+    |   |       |   |       asap.d.ts
+    |   |       |   |       asap.d.ts.map
+    |   |       |   |       AsapAction.d.ts
+    |   |       |   |       AsapAction.d.ts.map
+    |   |       |   |       AsapScheduler.d.ts
+    |   |       |   |       AsapScheduler.d.ts.map
+    |   |       |   |       async.d.ts
+    |   |       |   |       async.d.ts.map
+    |   |       |   |       AsyncAction.d.ts
+    |   |       |   |       AsyncAction.d.ts.map
+    |   |       |   |       AsyncScheduler.d.ts
+    |   |       |   |       AsyncScheduler.d.ts.map
+    |   |       |   |       dateTimestampProvider.d.ts
+    |   |       |   |       dateTimestampProvider.d.ts.map
+    |   |       |   |       immediateProvider.d.ts
+    |   |       |   |       immediateProvider.d.ts.map
+    |   |       |   |       intervalProvider.d.ts
+    |   |       |   |       intervalProvider.d.ts.map
+    |   |       |   |       performanceTimestampProvider.d.ts
+    |   |       |   |       performanceTimestampProvider.d.ts.map
+    |   |       |   |       queue.d.ts
+    |   |       |   |       queue.d.ts.map
+    |   |       |   |       QueueAction.d.ts
+    |   |       |   |       QueueAction.d.ts.map
+    |   |       |   |       QueueScheduler.d.ts
+    |   |       |   |       QueueScheduler.d.ts.map
+    |   |       |   |       timeoutProvider.d.ts
+    |   |       |   |       timeoutProvider.d.ts.map
+    |   |       |   |       timerHandle.d.ts
+    |   |       |   |       timerHandle.d.ts.map
+    |   |       |   |       VirtualTimeScheduler.d.ts
+    |   |       |   |       VirtualTimeScheduler.d.ts.map
+    |   |       |   |       
+    |   |       |   +---symbol
+    |   |       |   |       iterator.d.ts
+    |   |       |   |       iterator.d.ts.map
+    |   |       |   |       observable.d.ts
+    |   |       |   |       observable.d.ts.map
+    |   |       |   |       
+    |   |       |   +---testing
+    |   |       |   |       ColdObservable.d.ts
+    |   |       |   |       ColdObservable.d.ts.map
+    |   |       |   |       HotObservable.d.ts
+    |   |       |   |       HotObservable.d.ts.map
+    |   |       |   |       SubscriptionLog.d.ts
+    |   |       |   |       SubscriptionLog.d.ts.map
+    |   |       |   |       SubscriptionLoggable.d.ts
+    |   |       |   |       SubscriptionLoggable.d.ts.map
+    |   |       |   |       TestMessage.d.ts
+    |   |       |   |       TestMessage.d.ts.map
+    |   |       |   |       TestScheduler.d.ts
+    |   |       |   |       TestScheduler.d.ts.map
+    |   |       |   |       
+    |   |       |   \---util
+    |   |       |           applyMixins.d.ts
+    |   |       |           applyMixins.d.ts.map
+    |   |       |           args.d.ts
+    |   |       |           args.d.ts.map
+    |   |       |           argsArgArrayOrObject.d.ts
+    |   |       |           argsArgArrayOrObject.d.ts.map
+    |   |       |           argsOrArgArray.d.ts
+    |   |       |           argsOrArgArray.d.ts.map
+    |   |       |           ArgumentOutOfRangeError.d.ts
+    |   |       |           ArgumentOutOfRangeError.d.ts.map
+    |   |       |           arrRemove.d.ts
+    |   |       |           arrRemove.d.ts.map
+    |   |       |           createErrorClass.d.ts
+    |   |       |           createErrorClass.d.ts.map
+    |   |       |           createObject.d.ts
+    |   |       |           createObject.d.ts.map
+    |   |       |           EmptyError.d.ts
+    |   |       |           EmptyError.d.ts.map
+    |   |       |           errorContext.d.ts
+    |   |       |           errorContext.d.ts.map
+    |   |       |           executeSchedule.d.ts
+    |   |       |           executeSchedule.d.ts.map
+    |   |       |           identity.d.ts
+    |   |       |           identity.d.ts.map
+    |   |       |           Immediate.d.ts
+    |   |       |           Immediate.d.ts.map
+    |   |       |           isArrayLike.d.ts
+    |   |       |           isArrayLike.d.ts.map
+    |   |       |           isAsyncIterable.d.ts
+    |   |       |           isAsyncIterable.d.ts.map
+    |   |       |           isDate.d.ts
+    |   |       |           isDate.d.ts.map
+    |   |       |           isFunction.d.ts
+    |   |       |           isFunction.d.ts.map
+    |   |       |           isInteropObservable.d.ts
+    |   |       |           isInteropObservable.d.ts.map
+    |   |       |           isIterable.d.ts
+    |   |       |           isIterable.d.ts.map
+    |   |       |           isObservable.d.ts
+    |   |       |           isObservable.d.ts.map
+    |   |       |           isPromise.d.ts
+    |   |       |           isPromise.d.ts.map
+    |   |       |           isReadableStreamLike.d.ts
+    |   |       |           isReadableStreamLike.d.ts.map
+    |   |       |           isScheduler.d.ts
+    |   |       |           isScheduler.d.ts.map
+    |   |       |           lift.d.ts
+    |   |       |           lift.d.ts.map
+    |   |       |           mapOneOrManyArgs.d.ts
+    |   |       |           mapOneOrManyArgs.d.ts.map
+    |   |       |           noop.d.ts
+    |   |       |           noop.d.ts.map
+    |   |       |           not.d.ts
+    |   |       |           not.d.ts.map
+    |   |       |           NotFoundError.d.ts
+    |   |       |           NotFoundError.d.ts.map
+    |   |       |           ObjectUnsubscribedError.d.ts
+    |   |       |           ObjectUnsubscribedError.d.ts.map
+    |   |       |           pipe.d.ts
+    |   |       |           pipe.d.ts.map
+    |   |       |           reportUnhandledError.d.ts
+    |   |       |           reportUnhandledError.d.ts.map
+    |   |       |           SequenceError.d.ts
+    |   |       |           SequenceError.d.ts.map
+    |   |       |           subscribeToArray.d.ts
+    |   |       |           subscribeToArray.d.ts.map
+    |   |       |           throwUnobservableError.d.ts
+    |   |       |           throwUnobservableError.d.ts.map
+    |   |       |           UnsubscriptionError.d.ts
+    |   |       |           UnsubscriptionError.d.ts.map
+    |   |       |           workarounds.d.ts
+    |   |       |           workarounds.d.ts.map
+    |   |       |           
+    |   |       +---operators
+    |   |       |       index.d.ts
+    |   |       |       index.d.ts.map
+    |   |       |       
+    |   |       +---testing
+    |   |       |       index.d.ts
+    |   |       |       index.d.ts.map
+    |   |       |       
+    |   |       \---webSocket
+    |   |               index.d.ts
+    |   |               index.d.ts.map
+    |   |               
+    |   +---fetch
+    |   |       package.json
+    |   |       
+    |   +---operators
+    |   |       package.json
+    |   |       
+    |   +---src
+    |   |   |   index.ts
+    |   |   |   Rx.global.js
+    |   |   |   tsconfig.base.json
+    |   |   |   tsconfig.cjs.json
+    |   |   |   tsconfig.cjs.spec.json
+    |   |   |   tsconfig.esm.json
+    |   |   |   tsconfig.esm5.json
+    |   |   |   tsconfig.esm5.rollup.json
+    |   |   |   tsconfig.types.json
+    |   |   |   tsconfig.types.spec.json
+    |   |   |   
+    |   |   +---ajax
+    |   |   |       index.ts
+    |   |   |       
+    |   |   +---fetch
+    |   |   |       index.ts
+    |   |   |       
+    |   |   +---internal
+    |   |   |   |   AnyCatcher.ts
+    |   |   |   |   AsyncSubject.ts
+    |   |   |   |   BehaviorSubject.ts
+    |   |   |   |   config.ts
+    |   |   |   |   firstValueFrom.ts
+    |   |   |   |   lastValueFrom.ts
+    |   |   |   |   Notification.ts
+    |   |   |   |   NotificationFactories.ts
+    |   |   |   |   Observable.ts
+    |   |   |   |   Operator.ts
+    |   |   |   |   ReplaySubject.ts
+    |   |   |   |   Scheduler.ts
+    |   |   |   |   Subject.ts
+    |   |   |   |   Subscriber.ts
+    |   |   |   |   Subscription.ts
+    |   |   |   |   types.ts
+    |   |   |   |   umd.ts
+    |   |   |   |   
+    |   |   |   +---ajax
+    |   |   |   |       ajax.ts
+    |   |   |   |       AjaxResponse.ts
+    |   |   |   |       errors.ts
+    |   |   |   |       getXHRResponse.ts
+    |   |   |   |       types.ts
+    |   |   |   |       
+    |   |   |   +---observable
+    |   |   |   |   |   bindCallback.ts
+    |   |   |   |   |   bindCallbackInternals.ts
+    |   |   |   |   |   bindNodeCallback.ts
+    |   |   |   |   |   combineLatest.ts
+    |   |   |   |   |   concat.ts
+    |   |   |   |   |   connectable.ts
+    |   |   |   |   |   ConnectableObservable.ts
+    |   |   |   |   |   defer.ts
+    |   |   |   |   |   empty.ts
+    |   |   |   |   |   forkJoin.ts
+    |   |   |   |   |   from.ts
+    |   |   |   |   |   fromEvent.ts
+    |   |   |   |   |   fromEventPattern.ts
+    |   |   |   |   |   fromSubscribable.ts
+    |   |   |   |   |   generate.ts
+    |   |   |   |   |   iif.ts
+    |   |   |   |   |   innerFrom.ts
+    |   |   |   |   |   interval.ts
+    |   |   |   |   |   merge.ts
+    |   |   |   |   |   never.ts
+    |   |   |   |   |   of.ts
+    |   |   |   |   |   onErrorResumeNext.ts
+    |   |   |   |   |   pairs.ts
+    |   |   |   |   |   partition.ts
+    |   |   |   |   |   race.ts
+    |   |   |   |   |   range.ts
+    |   |   |   |   |   throwError.ts
+    |   |   |   |   |   timer.ts
+    |   |   |   |   |   using.ts
+    |   |   |   |   |   zip.ts
+    |   |   |   |   |   
+    |   |   |   |   \---dom
+    |   |   |   |           animationFrames.ts
+    |   |   |   |           fetch.ts
+    |   |   |   |           webSocket.ts
+    |   |   |   |           WebSocketSubject.ts
+    |   |   |   |           
+    |   |   |   +---operators
+    |   |   |   |       audit.ts
+    |   |   |   |       auditTime.ts
+    |   |   |   |       buffer.ts
+    |   |   |   |       bufferCount.ts
+    |   |   |   |       bufferTime.ts
+    |   |   |   |       bufferToggle.ts
+    |   |   |   |       bufferWhen.ts
+    |   |   |   |       catchError.ts
+    |   |   |   |       combineAll.ts
+    |   |   |   |       combineLatest.ts
+    |   |   |   |       combineLatestAll.ts
+    |   |   |   |       combineLatestWith.ts
+    |   |   |   |       concat.ts
+    |   |   |   |       concatAll.ts
+    |   |   |   |       concatMap.ts
+    |   |   |   |       concatMapTo.ts
+    |   |   |   |       concatWith.ts
+    |   |   |   |       connect.ts
+    |   |   |   |       count.ts
+    |   |   |   |       debounce.ts
+    |   |   |   |       debounceTime.ts
+    |   |   |   |       defaultIfEmpty.ts
+    |   |   |   |       delay.ts
+    |   |   |   |       delayWhen.ts
+    |   |   |   |       dematerialize.ts
+    |   |   |   |       distinct.ts
+    |   |   |   |       distinctUntilChanged.ts
+    |   |   |   |       distinctUntilKeyChanged.ts
+    |   |   |   |       elementAt.ts
+    |   |   |   |       endWith.ts
+    |   |   |   |       every.ts
+    |   |   |   |       exhaust.ts
+    |   |   |   |       exhaustAll.ts
+    |   |   |   |       exhaustMap.ts
+    |   |   |   |       expand.ts
+    |   |   |   |       filter.ts
+    |   |   |   |       finalize.ts
+    |   |   |   |       find.ts
+    |   |   |   |       findIndex.ts
+    |   |   |   |       first.ts
+    |   |   |   |       flatMap.ts
+    |   |   |   |       groupBy.ts
+    |   |   |   |       ignoreElements.ts
+    |   |   |   |       isEmpty.ts
+    |   |   |   |       joinAllInternals.ts
+    |   |   |   |       last.ts
+    |   |   |   |       map.ts
+    |   |   |   |       mapTo.ts
+    |   |   |   |       materialize.ts
+    |   |   |   |       max.ts
+    |   |   |   |       merge.ts
+    |   |   |   |       mergeAll.ts
+    |   |   |   |       mergeInternals.ts
+    |   |   |   |       mergeMap.ts
+    |   |   |   |       mergeMapTo.ts
+    |   |   |   |       mergeScan.ts
+    |   |   |   |       mergeWith.ts
+    |   |   |   |       min.ts
+    |   |   |   |       multicast.ts
+    |   |   |   |       observeOn.ts
+    |   |   |   |       onErrorResumeNextWith.ts
+    |   |   |   |       OperatorSubscriber.ts
+    |   |   |   |       pairwise.ts
+    |   |   |   |       partition.ts
+    |   |   |   |       pluck.ts
+    |   |   |   |       publish.ts
+    |   |   |   |       publishBehavior.ts
+    |   |   |   |       publishLast.ts
+    |   |   |   |       publishReplay.ts
+    |   |   |   |       race.ts
+    |   |   |   |       raceWith.ts
+    |   |   |   |       reduce.ts
+    |   |   |   |       refCount.ts
+    |   |   |   |       repeat.ts
+    |   |   |   |       repeatWhen.ts
+    |   |   |   |       retry.ts
+    |   |   |   |       retryWhen.ts
+    |   |   |   |       sample.ts
+    |   |   |   |       sampleTime.ts
+    |   |   |   |       scan.ts
+    |   |   |   |       scanInternals.ts
+    |   |   |   |       sequenceEqual.ts
+    |   |   |   |       share.ts
+    |   |   |   |       shareReplay.ts
+    |   |   |   |       single.ts
+    |   |   |   |       skip.ts
+    |   |   |   |       skipLast.ts
+    |   |   |   |       skipUntil.ts
+    |   |   |   |       skipWhile.ts
+    |   |   |   |       startWith.ts
+    |   |   |   |       subscribeOn.ts
+    |   |   |   |       switchAll.ts
+    |   |   |   |       switchMap.ts
+    |   |   |   |       switchMapTo.ts
+    |   |   |   |       switchScan.ts
+    |   |   |   |       take.ts
+    |   |   |   |       takeLast.ts
+    |   |   |   |       takeUntil.ts
+    |   |   |   |       takeWhile.ts
+    |   |   |   |       tap.ts
+    |   |   |   |       throttle.ts
+    |   |   |   |       throttleTime.ts
+    |   |   |   |       throwIfEmpty.ts
+    |   |   |   |       timeInterval.ts
+    |   |   |   |       timeout.ts
+    |   |   |   |       timeoutWith.ts
+    |   |   |   |       timestamp.ts
+    |   |   |   |       toArray.ts
+    |   |   |   |       window.ts
+    |   |   |   |       windowCount.ts
+    |   |   |   |       windowTime.ts
+    |   |   |   |       windowToggle.ts
+    |   |   |   |       windowWhen.ts
+    |   |   |   |       withLatestFrom.ts
+    |   |   |   |       zip.ts
+    |   |   |   |       zipAll.ts
+    |   |   |   |       zipWith.ts
+    |   |   |   |       
+    |   |   |   +---scheduled
+    |   |   |   |       scheduleArray.ts
+    |   |   |   |       scheduleAsyncIterable.ts
+    |   |   |   |       scheduled.ts
+    |   |   |   |       scheduleIterable.ts
+    |   |   |   |       scheduleObservable.ts
+    |   |   |   |       schedulePromise.ts
+    |   |   |   |       scheduleReadableStreamLike.ts
+    |   |   |   |       
+    |   |   |   +---scheduler
+    |   |   |   |       Action.ts
+    |   |   |   |       animationFrame.ts
+    |   |   |   |       AnimationFrameAction.ts
+    |   |   |   |       animationFrameProvider.ts
+    |   |   |   |       AnimationFrameScheduler.ts
+    |   |   |   |       asap.ts
+    |   |   |   |       AsapAction.ts
+    |   |   |   |       AsapScheduler.ts
+    |   |   |   |       async.ts
+    |   |   |   |       AsyncAction.ts
+    |   |   |   |       AsyncScheduler.ts
+    |   |   |   |       dateTimestampProvider.ts
+    |   |   |   |       immediateProvider.ts
+    |   |   |   |       intervalProvider.ts
+    |   |   |   |       performanceTimestampProvider.ts
+    |   |   |   |       queue.ts
+    |   |   |   |       QueueAction.ts
+    |   |   |   |       QueueScheduler.ts
+    |   |   |   |       timeoutProvider.ts
+    |   |   |   |       timerHandle.ts
+    |   |   |   |       VirtualTimeScheduler.ts
+    |   |   |   |       
+    |   |   |   +---symbol
+    |   |   |   |       iterator.ts
+    |   |   |   |       observable.ts
+    |   |   |   |       
+    |   |   |   +---testing
+    |   |   |   |       ColdObservable.ts
+    |   |   |   |       HotObservable.ts
+    |   |   |   |       SubscriptionLog.ts
+    |   |   |   |       SubscriptionLoggable.ts
+    |   |   |   |       TestMessage.ts
+    |   |   |   |       TestScheduler.ts
+    |   |   |   |       
+    |   |   |   \---util
+    |   |   |           applyMixins.ts
+    |   |   |           args.ts
+    |   |   |           argsArgArrayOrObject.ts
+    |   |   |           argsOrArgArray.ts
+    |   |   |           ArgumentOutOfRangeError.ts
+    |   |   |           arrRemove.ts
+    |   |   |           createErrorClass.ts
+    |   |   |           createObject.ts
+    |   |   |           EmptyError.ts
+    |   |   |           errorContext.ts
+    |   |   |           executeSchedule.ts
+    |   |   |           identity.ts
+    |   |   |           Immediate.ts
+    |   |   |           isArrayLike.ts
+    |   |   |           isAsyncIterable.ts
+    |   |   |           isDate.ts
+    |   |   |           isFunction.ts
+    |   |   |           isInteropObservable.ts
+    |   |   |           isIterable.ts
+    |   |   |           isObservable.ts
+    |   |   |           isPromise.ts
+    |   |   |           isReadableStreamLike.ts
+    |   |   |           isScheduler.ts
+    |   |   |           lift.ts
+    |   |   |           mapOneOrManyArgs.ts
+    |   |   |           noop.ts
+    |   |   |           not.ts
+    |   |   |           NotFoundError.ts
+    |   |   |           ObjectUnsubscribedError.ts
+    |   |   |           pipe.ts
+    |   |   |           reportUnhandledError.ts
+    |   |   |           SequenceError.ts
+    |   |   |           subscribeToArray.ts
+    |   |   |           throwUnobservableError.ts
+    |   |   |           UnsubscriptionError.ts
+    |   |   |           workarounds.ts
+    |   |   |           
+    |   |   +---operators
+    |   |   |       index.ts
+    |   |   |       
+    |   |   +---testing
+    |   |   |       index.ts
+    |   |   |       
+    |   |   \---webSocket
+    |   |           index.ts
+    |   |           
+    |   +---testing
+    |   |       package.json
+    |   |       
+    |   \---webSocket
+    |           package.json
+    |           
+    +---safer-buffer
+    |       dangerous.js
+    |       LICENSE
+    |       package.json
+    |       Porting-Buffer.md
+    |       Readme.md
+    |       safer.js
+    |       tests.js
+    |       
+    +---shebang-command
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---shebang-regex
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---shelljs
+    |   |   global.js
+    |   |   LICENSE
+    |   |   make.js
+    |   |   package.json
+    |   |   plugin.js
+    |   |   README.md
+    |   |   shell.js
+    |   |   
+    |   \---src
+    |           cat.js
+    |           cd.js
+    |           chmod.js
+    |           cmd.js
+    |           common.js
+    |           cp.js
+    |           dirs.js
+    |           echo.js
+    |           error.js
+    |           errorCode.js
+    |           exec-child.js
+    |           exec.js
+    |           find.js
+    |           grep.js
+    |           head.js
+    |           ln.js
+    |           ls.js
+    |           mkdir.js
+    |           mv.js
+    |           popd.js
+    |           pushd.js
+    |           pwd.js
+    |           rm.js
+    |           sed.js
+    |           set.js
+    |           sort.js
+    |           tail.js
+    |           tempdir.js
+    |           test.js
+    |           to.js
+    |           toEnd.js
+    |           touch.js
+    |           uniq.js
+    |           which.js
+    |           
+    +---signal-exit
+    |   |   LICENSE.txt
+    |   |   package.json
+    |   |   README.md
+    |   |   
+    |   \---dist
+    |       +---cjs
+    |       |       browser.d.ts
+    |       |       browser.d.ts.map
+    |       |       browser.js
+    |       |       browser.js.map
+    |       |       index.d.ts
+    |       |       index.d.ts.map
+    |       |       index.js
+    |       |       index.js.map
+    |       |       package.json
+    |       |       signals.d.ts
+    |       |       signals.d.ts.map
+    |       |       signals.js
+    |       |       signals.js.map
+    |       |       
+    |       \---mjs
+    |               browser.d.ts
+    |               browser.d.ts.map
+    |               browser.js
+    |               browser.js.map
+    |               index.d.ts
+    |               index.d.ts.map
+    |               index.js
+    |               index.js.map
+    |               package.json
+    |               signals.d.ts
+    |               signals.d.ts.map
+    |               signals.js
+    |               signals.js.map
+    |               
+    +---string-width
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---strip-ansi
+    |       index.d.ts
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---strip-final-newline
+    |       index.js
+    |       license
+    |       package.json
+    |       readme.md
+    |       
+    +---to-regex-range
+    |       index.js
+    |       LICENSE
+    |       package.json
+    |       README.md
+    |       
+    +---tslib
+    |   |   CopyrightNotice.txt
+    |   |   LICENSE.txt
+    |   |   package.json
+    |   |   README.md
+    |   |   SECURITY.md
+    |   |   tslib.d.ts
+    |   |   tslib.es6.html
+    |   |   tslib.es6.js
+    |   |   tslib.es6.mjs
+    |   |   tslib.html
+    |   |   tslib.js
+    |   |   
+    |   \---modules
+    |           index.d.ts
+    |           index.js
+    |           package.json
+    |           
+    +---which
+    |   |   CHANGELOG.md
+    |   |   LICENSE
+    |   |   package.json
+    |   |   README.md
+    |   |   which.js
+    |   |   
+    |   \---bin
+    |           node-which
+    |           
+    \---wrap-ansi
+            index.d.ts
+            index.js
+            license
+            package.json
+            readme.md
+            

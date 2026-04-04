@@ -1,0 +1,33 @@
+{
+  "name": "webstarter-cli",
+  "version": "2.0.0",
+  "description": "Smart PHP project scaffolding CLI with Phosphor Icons, Composer, and PHPMailer",
+  "main": "index.js",
+  "bin": {
+    "webstarter": "./index.js",
+    "create-webstarter": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "php",
+    "cli",
+    "scaffolding",
+    "generator",
+    "project-starter",
+    "phosphor-icons",
+    "composer",
+    "phpmailer"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^9.2.12",
+    "shelljs": "^0.8.5",
+    "adm-zip": "^0.5.10"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,2 @@
+                    cd C:\mrwayne\web_dev\create-web-starter && npm install && npm link && cd .. && webstarter
+                    
