@@ -1,11 +1,10 @@
 {
-  "name": "webstarter-cli",
+  "name": "create-web-starter",
   "version": "2.0.0",
-  "description": "Smart PHP project scaffolding CLI with Phosphor Icons, Composer, and PHPMailer",
+  "description": "Smart PHP + JS project scaffolding CLI with complexity-aware structure, Phosphor Icons, Composer, and PHPMailer",
   "main": "index.js",
   "bin": {
-    "webstarter": "./index.js",
-    "create-webstarter": "./index.js"
+    "create-web-starter": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,11 +22,13 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
+    "adm-zip": "^0.5.10",
+    "chalk": "^4.1.2",
     "inquirer": "^9.2.12",
-    "shelljs": "^0.8.5",
-    "adm-zip": "^0.5.10"
+    "ora": "^5.4.1",
+    "shelljs": "^0.8.5"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16"
   }
 }
