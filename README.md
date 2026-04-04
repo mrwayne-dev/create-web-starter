@@ -110,7 +110,7 @@ project-name/
 ## Requirements
 
 | Requirement | Version |
-|-------------|---------|
+|-------------|--------|
 | Node.js | >= 16 |
 | PHP *(optional)* | >= 7.4 |
 | Composer *(optional)* | Any |
