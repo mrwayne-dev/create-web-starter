@@ -1,17 +1,16 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
+const fs   = require('fs');
 const https = require('https');
 const AdmZip = require('adm-zip');
+const chalk  = require('chalk');
 
-// Download Phosphor Icons ZIP to assets/icons/
 async function downloadPhosphorIcons(projectPath) {
-  console.log('\n🎨 Downloading Phosphor Icons...');
+  console.log(chalk.dim('\n  Downloading Phosphor Icons...'));
 
-  const iconsDir = path.join(projectPath, 'assets', 'icons');
-  const zipPath = path.join(projectPath, 'phosphor-icons.zip');
-
+  const iconsDir   = path.join(projectPath, 'assets', 'icons');
+  const zipPath    = path.join(projectPath, 'phosphor-icons.zip');
   const downloadUrl = 'https://github.com/phosphor-icons/core/archive/refs/heads/main.zip';
 
   return new Promise((resolve) => {
@@ -31,7 +30,7 @@ async function downloadPhosphorIcons(projectPath) {
         });
       }).on('error', () => {
         if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-        console.log('⚠️  Could not download Phosphor Icons. Add them manually from https://phosphoricons.com');
+        console.log(chalk.yellow('  [!] Could not download Phosphor Icons. Add them manually from https://phosphoricons.com'));
         resolve();
       });
     };
@@ -51,22 +50,20 @@ async function downloadPhosphorIcons(projectPath) {
       });
     }).on('error', () => {
       if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-      console.log('⚠️  Could not download Phosphor Icons. Add them manually from https://phosphoricons.com');
+      console.log(chalk.yellow('  [!] Could not download Phosphor Icons. Add them manually from https://phosphoricons.com'));
       resolve();
     });
   });
 }
 
-// Extract Phosphor Icons from ZIP archive
 function extractPhosphorIcons(zipPath, targetDir) {
   try {
     const zip = new AdmZip(zipPath);
     zip.extractAllTo(targetDir, true);
     fs.unlinkSync(zipPath);
-    console.log('✅ Phosphor Icons extracted successfully!');
-    console.log('📁 Icons available in: assets/icons/');
+    console.log(chalk.green('  [ok] Phosphor Icons extracted to assets/icons/'));
   } catch {
-    console.log('⚠️  Error extracting icons. Add them manually from https://phosphoricons.com');
+    console.log(chalk.yellow('  [!] Error extracting icons. Add them manually from https://phosphoricons.com'));
   }
 }
 

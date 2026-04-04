@@ -8,9 +8,10 @@ const { runPrompts }                = require('./src/prompts');
 const { createProject }             = require('./src/scaffold');
 
 async function start() {
-  console.log(chalk.bold.cyan('\n╔══════════════════════════════════════╗'));
-  console.log(chalk.bold.cyan('║') + chalk.bold('   create-php-starter  v1.0.0        ') + chalk.bold.cyan('║'));
-  console.log(chalk.bold.cyan('╚══════════════════════════════════════╝\n'));
+  console.log(chalk.bold.cyan('\n+------------------------------------------+'));
+  console.log(chalk.bold.cyan('|') + chalk.bold('   create-php-starter  v1.1.0          ') + chalk.bold.cyan('|'));
+  console.log(chalk.bold.cyan('|') + chalk.dim('   I am the night. I am the scaffolder.') + chalk.bold.cyan(' |'));
+  console.log(chalk.bold.cyan('+------------------------------------------+\n'));
 
   const appConfig  = loadConfig();
   const authorName = await getAuthorName(appConfig);
@@ -20,6 +21,6 @@ async function start() {
 }
 
 start().catch((err) => {
-  console.error(chalk.red('\n❌ Unexpected error:'), err.message);
+  console.error(chalk.red('\n[!] Unexpected error:'), err.message);
   process.exit(1);
 });
