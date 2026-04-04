@@ -35,9 +35,67 @@ function generateReadme({ projectName, authorName, projectType, framework, compl
   if (features.contactForm)   featureLines.push('- Contact form with rate limiting');
   if (features.phpMailer)     featureLines.push('- PHPMailer (SMTP email via Composer)');
   if (features.database)      featureLines.push('- Database layer (`database/database.sql` + `config/database.php`)');
-  if (features.phosphorIcons) featureLines.push('- Phosphor Icons (via CDN \u2014 added to index.php)');
+  if (features.phosphorIcons) featureLines.push('- Phosphor Icons (via CDN — added to index.php)');
 
-  return `# ${projectName}\n\n> Created by **${authorName}** on ${date} using [create-php-starter](https://www.npmjs.com/package/create-php-starter)\n\n_One-line description of what this project does._\n\n---\n\n## Tech Stack\n\n${stackList}\n\n---\n\n## Folder Structure\n\n\`\`\`\n${tree}\n\`\`\`\n\n---\n\n## Pages Architecture\n\nThis project separates pages into three tiers \u2014 mirrored in both the PHP layer and the JS layer:\n\n| Tier | PHP (server-rendered) | JS (SPA modules) |\n|------|-----------------------|------------------|\n| Public | \`pages/public/\` | \`assets/js/pages/public/\` |\n| User | \`pages/user/\` | \`assets/js/pages/user/\` |\n| Admin | \`pages/admin/\` | \`assets/js/pages/admin/\` |\n\n- **public/** \u2014 no authentication required (login, register, password reset)\n- **user/** \u2014 requires \`requireAuth()\` \u2014 logged-in users only\n- **admin/** \u2014 requires \`requireAdmin()\` \u2014 admin role only\n\n---\n\n## Getting Started\n\n${gettingStarted}\n\n---\n\n## Architecture Notes\n\n- \`assets/js/app.js\` bootstraps the app on \`DOMContentLoaded\`\n- \`assets/js/router.js\` maps URL paths to page modules\n- \`assets/js/pages/\` contains page-level view modules (split public/user/admin)\n- \`assets/js/components/\` contains reusable UI pieces\n- \`assets/js/utils/\` contains helpers (DOM, API calls, transitions)\n- \`.htaccess\` rewrites unknown paths to \`index.php\` to enable SPA navigation\n\n---\n\n## Features\n\n${featureLines.join('\n')}\n`;
+  return `# ${projectName}
+
+> Created by **${authorName}** on ${date} using [create-php-starter](https://www.npmjs.com/package/create-php-starter)
+
+_One-line description of what this project does._
+
+---
+
+## Tech Stack
+
+${stackList}
+
+---
+
+## Folder Structure
+
+\`\`\`
+${tree}
+\`\`\`
+
+---
+
+## Pages Architecture
+
+This project separates pages into three tiers — mirrored in both the PHP layer and the JS layer:
+
+| Tier | PHP (server-rendered) | JS (SPA modules) |
+|------|-----------------------|------------------|
+| Public | \`pages/public/\` | \`assets/js/pages/public/\` |
+| User | \`pages/user/\` | \`assets/js/pages/user/\` |
+| Admin | \`pages/admin/\` | \`assets/js/pages/admin/\` |
+
+- **public/** — no authentication required (login, register, password reset)
+- **user/** — requires \`requireAuth()\` — logged-in users only
+- **admin/** — requires \`requireAdmin()\` — admin role only
+
+---
+
+## Getting Started
+
+${gettingStarted}
+
+---
+
+## Architecture Notes
+
+- \`assets/js/app.js\` bootstraps the app on \`DOMContentLoaded\`
+- \`assets/js/router.js\` maps URL paths to page modules
+- \`assets/js/pages/\` contains page-level view modules (split public/user/admin)
+- \`assets/js/components/\` contains reusable UI pieces
+- \`assets/js/utils/\` contains helpers (DOM, API calls, transitions)
+- \`.htaccess\` rewrites unknown paths to \`index.php\` to enable SPA navigation
+
+---
+
+## Features
+
+${featureLines.join('\n')}
+`;
 }
 
 function buildTreeAnnotation({ framework, complexity, phpBackend, features }) {
@@ -85,6 +143,7 @@ function buildTreeAnnotation({ framework, complexity, phpBackend, features }) {
     add('|   |-- fonts/');
     add('|   |-- images/');
     add('|   +-- favicon/');
+    // Phosphor Icons now CDN-only — no icons/ folder generated
   }
 
   const isPhp = phpBackend || framework === 'mvc' || framework === 'api';
@@ -132,19 +191,69 @@ function generateArchitecture({ projectName, framework, complexity, phpBackend, 
   const jsLayers = buildJSLayersDocs(complexity, framework);
   const pagesSection = features.auth ? buildPagesDocs() : '';
 
-  return `# Architecture \u2014 ${projectName}\n\n## Why This Structure\n\nNo framework overhead \u2014 vanilla PHP and JavaScript with clear ownership boundaries per file. Every folder has exactly one responsibility.\n\n---\n\n## The SPA Pattern\n\n\`index.php\` is the single HTML shell. The browser loads it once.\n\n1. \`assets/js/app.js\` \u2014 bootstraps on \`DOMContentLoaded\`, initialises router and global components\n2. \`assets/js/router.js\` \u2014 route table mapping URL paths to page modules\n3. \`assets/js/pages/\` \u2014 page modules split into \`public/\`, \`user/\`, \`admin/\`\n4. \`assets/js/components/\` \u2014 reusable UI (nav, modals, cards)\n5. \`assets/js/utils/\` \u2014 stateless helpers (DOM, fetch wrappers, transitions)\n\n\`.htaccess\` rewrites non-file requests to \`index.php\` so the router handles navigation without server 404s.\n\n---\n\n## CSS Architecture\n\n| File | Owns |\n|------|------|\n| \`main.css\` | Design tokens (\`--color-*\`, \`--font-*\`) + box-model reset + body defaults |\n| \`layout.css\` | Page skeleton, containers, grid + flex structural rules |\n| \`components.css\` | Reusable UI patterns: \`.btn\`, cards, form controls |\n| \`animations.css\` | \`@keyframes\`, animation utilities, always wrapped in \`prefers-reduced-motion\` |\n\n---\n\n## JS Layers\n\n${jsLayers}\n\n---\n${pagesSection}\n${isPhp ? buildPHPLayerDocs(features) : ''}\n## Environment Setup\n\n| Variable | Purpose |\n|----------|---------|\n| \`APP_NAME\` | Application name used in emails and titles |\n| \`APP_URL\` | Full base URL \u2014 used for reset links and CORS |\n| \`APP_ENV\` | \`development\` enables error display; \`production\` suppresses it |\n| \`DB_HOST / DB_NAME / DB_USER / DB_PASS\` | MySQL connection |\n| \`SESSION_LIFETIME\` | Session duration in seconds |\n| \`SMTP_*\` | Email sending credentials (PHPMailer) |\n`;
+  return `# Architecture — ${projectName}
+
+## Why This Structure
+
+No framework overhead — vanilla PHP and JavaScript with clear ownership boundaries per file. Every folder has exactly one responsibility.
+
+---
+
+## The SPA Pattern
+
+\`index.php\` is the single HTML shell. The browser loads it once.
+
+1. \`assets/js/app.js\` — bootstraps on \`DOMContentLoaded\`, initialises router and global components
+2. \`assets/js/router.js\` — route table mapping URL paths to page modules
+3. \`assets/js/pages/\` — page modules split into \`public/\`, \`user/\`, \`admin/\`
+4. \`assets/js/components/\` — reusable UI (nav, modals, cards)
+5. \`assets/js/utils/\` — stateless helpers (DOM, fetch wrappers, transitions)
+
+\`.htaccess\` rewrites non-file requests to \`index.php\` so the router handles navigation without server 404s.
+
+---
+
+## CSS Architecture
+
+| File | Owns |
+|------|------|
+| \`main.css\` | Design tokens (\`--color-*\`, \`--font-*\`) + box-model reset + body defaults |
+| \`layout.css\` | Page skeleton, containers, grid + flex structural rules |
+| \`components.css\` | Reusable UI patterns: \`.btn\`, cards, form controls |
+| \`animations.css\` | \`@keyframes\`, animation utilities, always wrapped in \`prefers-reduced-motion\` |
+
+---
+
+## JS Layers
+
+${jsLayers}
+
+---
+${pagesSection}
+${isPhp ? buildPHPLayerDocs(features) : ''}
+## Environment Setup
+
+| Variable | Purpose |
+|----------|---------|
+| \`APP_NAME\` | Application name used in emails and titles |
+| \`APP_URL\` | Full base URL — used for reset links and CORS |
+| \`APP_ENV\` | \`development\` enables error display; \`production\` suppresses it |
+| \`DB_HOST / DB_NAME / DB_USER / DB_PASS\` | MySQL connection |
+| \`SESSION_LIFETIME\` | Session duration in seconds |
+| \`SMTP_*\` | Email sending credentials (PHPMailer) |
+`;
 }
 
 function buildJSLayersDocs(complexity, framework) {
-  if (framework === 'api') return '_No JS layer \u2014 API-only project._\n';
+  if (framework === 'api') return '_No JS layer — API-only project._\n';
   let s = `| Folder | Responsibility |\n|--------|----------------|\n`;
-  s += `| \`pages/public/\` | Public page modules \u2014 accessible to all visitors |\n`;
-  s += `| \`pages/user/\` | Authenticated page modules \u2014 logged-in users only |\n`;
-  s += `| \`pages/admin/\` | Admin page modules \u2014 admin role required |\n`;
+  s += `| \`pages/public/\` | Public page modules — accessible to all visitors |\n`;
+  s += `| \`pages/user/\` | Authenticated page modules — logged-in users only |\n`;
+  s += `| \`pages/admin/\` | Admin page modules — admin role required |\n`;
   s += `| \`components/\` | Reusable UI pieces imported by multiple pages |\n`;
   s += `| \`utils/\` | Stateless helpers: DOM queries, fetch wrappers, transitions |\n`;
   if (complexity === 'medium' || complexity === 'complex') {
-    s += `| \`services/\` | Fetch abstraction layer \u2014 typed API call wrappers |\n`;
+    s += `| \`services/\` | Fetch abstraction layer — typed API call wrappers |\n`;
     s += `| \`lib/\` | Third-party adapters and initialisers |\n`;
   }
   if (complexity === 'complex') {
@@ -156,11 +265,35 @@ function buildJSLayersDocs(complexity, framework) {
 }
 
 function buildPagesDocs() {
-  return `## Pages Architecture\n\nPHP pages and JS page modules follow a consistent three-tier split:\n\n| Tier | PHP | JS |\n|------|-----|----|\n| Public | \`pages/public/\` | \`assets/js/pages/public/\` |\n| User | \`pages/user/\` | \`assets/js/pages/user/\` |\n| Admin | \`pages/admin/\` | \`assets/js/pages/admin/\` |\n\n- **public/** \u2014 no auth required. Login, register, password reset.\n- **user/** \u2014 \`requireAuth()\` guard applied. Dashboard, profile, settings.\n- **admin/** \u2014 \`requireAdmin()\` guard applied. Admin panel, user management.\n\n---\n\n`;
+  return `## Pages Architecture
+
+PHP pages and JS page modules follow a consistent three-tier split:
+
+| Tier | PHP | JS |
+|------|-----|----|
+| Public | \`pages/public/\` | \`assets/js/pages/public/\` |
+| User | \`pages/user/\` | \`assets/js/pages/user/\` |
+| Admin | \`pages/admin/\` | \`assets/js/pages/admin/\` |
+
+- **public/** — no auth required. Login, register, password reset.
+- **user/** — \`requireAuth()\` guard applied. Dashboard, profile, settings.
+- **admin/** — \`requireAdmin()\` guard applied. Admin panel, user management.
+
+---
+
+`;
 }
 
 function buildPHPLayerDocs(features) {
-  return `## PHP Layer\n\n\`api/\` contains endpoint files \u2014 one concern per file, always returns JSON via \`jsonSuccess()\` / \`jsonError()\`.\n\n**config/** vs **includes/** distinction:\n- **config/** \u2014 bootstrap files loaded once per entry point (\`constants.php\` loads \`env.php\`, optionally \`database.php\`)\n- **includes/** \u2014 utility files required a-la-carte by specific endpoints\n\n${features.auth ? `Auth state lives in the PHP session. \`includes/auth-check.php\` provides \`requireAuth()\` and \`requireAdmin()\` guards that return 401/403 JSON before any business logic runs.\n\n---\n\n` : '---\n\n'}`;
+  return `## PHP Layer
+
+\`api/\` contains endpoint files — one concern per file, always returns JSON via \`jsonSuccess()\` / \`jsonError()\`.
+
+**config/** vs **includes/** distinction:
+- **config/** — bootstrap files loaded once per entry point (\`constants.php\` loads \`env.php\`, optionally \`database.php\`)
+- **includes/** — utility files required a-la-carte by specific endpoints
+
+${features.auth ? `Auth state lives in the PHP session. \`includes/auth-check.php\` provides \`requireAuth()\` and \`requireAdmin()\` guards that return 401/403 JSON before any business logic runs.\n\n---\n\n` : '---\n\n'}`;
 }
 
 module.exports = { generateReadme, generateArchitecture };
