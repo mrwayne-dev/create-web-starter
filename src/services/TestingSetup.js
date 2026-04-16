@@ -37,7 +37,7 @@ class ExampleTest extends TestCase
 
 // ── Vitest config for React ──────────────────────────────────────────────────
 
-function vitestConfig(useTs) {
+function vitestConfig(useTs, srcDir = 'src') {
   return `import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
@@ -46,7 +46,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: './src/setupTests.${useTs ? 'ts' : 'js'}',
+    setupFiles: './${srcDir}/setupTests.${useTs ? 'ts' : 'js'}',
   },
 });
 `;
@@ -82,16 +82,18 @@ function setupPhp(projectDir, projectName) {
 
 /**
  * Write Vitest setup for a React frontend.
- * @param {string} frontendDir  Path to the React app root
+ * @param {string}  frontendDir  Path to the React app root
  * @param {boolean} useTs
+ * @param {string}  srcDir       Source directory relative to frontendDir (default: 'src').
+ *                               Pass 'resources/js' for Inertia projects.
  */
-function setupReact(frontendDir, useTs = false) {
-  const ext       = useTs ? 'ts' : 'js';
-  const testDir   = path.join(frontendDir, 'src', '__tests__');
+function setupReact(frontendDir, useTs = false, srcDir = 'src') {
+  const ext     = useTs ? 'ts' : 'js';
+  const testDir = path.join(frontendDir, srcDir, '__tests__');
   fs.mkdirSync(testDir, { recursive: true });
-  fs.writeFileSync(path.join(frontendDir, `vitest.config.${ext}`),          vitestConfig(useTs));
-  fs.writeFileSync(path.join(frontendDir, `src/setupTests.${ext}`),         vitestSetup());
-  fs.writeFileSync(path.join(testDir,     `App.test.${useTs ? 'tsx':'jsx'}`), reactAppTest(useTs));
+  fs.writeFileSync(path.join(frontendDir, `vitest.config.${ext}`),                    vitestConfig(useTs, srcDir));
+  fs.writeFileSync(path.join(frontendDir, srcDir, `setupTests.${ext}`),               vitestSetup());
+  fs.writeFileSync(path.join(testDir,     `App.test.${useTs ? 'tsx' : 'jsx'}`),       reactAppTest(useTs));
 }
 
 module.exports = { setupPhp, setupReact };

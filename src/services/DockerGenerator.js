@@ -5,8 +5,11 @@ const path = require('path');
 
 // ── DB service snippets ──────────────────────────────────────────────────────
 
-const DB_SERVICES = {
-  mysql: `
+function dbServiceSnippet(db, projectName) {
+  const net = `    networks:\n      - ${projectName}_net\n`;
+  switch (db) {
+    case 'mysql':
+      return `
   db:
     image: mysql:8.0
     restart: unless-stopped
@@ -19,8 +22,9 @@ const DB_SERVICES = {
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-`,
-  pgsql: `
+${net}`;
+    case 'pgsql':
+      return `
   db:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -32,8 +36,9 @@ const DB_SERVICES = {
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-`,
-  mongodb: `
+${net}`;
+    case 'mongodb':
+      return `
   db:
     image: mongo:7
     restart: unless-stopped
@@ -44,14 +49,16 @@ const DB_SERVICES = {
       - "27017:27017"
     volumes:
       - db_data:/data/db
-`,
-  sqlite: '',
-};
+${net}`;
+    default:
+      return '';
+  }
+}
 
 // ── Laravel docker-compose template ─────────────────────────────────────────
 
 function laravelDockerCompose(projectName, db) {
-  const dbService = DB_SERVICES[db] || DB_SERVICES.mysql;
+  const dbService = dbServiceSnippet(db, projectName);
   const dbDepends = db !== 'sqlite' ? `\n    depends_on:\n      - db` : '';
   const dbVolume  = db !== 'sqlite' ? '\n  db_data:' : '';
 
@@ -91,13 +98,16 @@ volumes:
 `;
 }
 
-function laravelDockerfile() {
+function laravelDockerfile(db = 'mysql') {
+  const mongoExt = db === 'mongodb'
+    ? `    && pecl install mongodb && docker-php-ext-enable mongodb \\\n`
+    : '';
   return `FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \\
     git curl libpng-dev libonig-dev libxml2-dev zip unzip \\
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd \\
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+${mongoExt}    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -143,7 +153,7 @@ function nginxConf() {
 // ── PHP mode docker-compose ──────────────────────────────────────────────────
 
 function phpDockerCompose(projectName, db) {
-  const dbService = DB_SERVICES[db] || DB_SERVICES.mysql;
+  const dbService = dbServiceSnippet(db, projectName);
   const dbDepends = db !== 'sqlite' ? `\n    depends_on:\n      - db` : '';
   const dbVolume  = db !== 'sqlite' ? '\n  db_data:' : '';
 
@@ -180,7 +190,7 @@ function generateForLaravel(projectDir, config) {
   const { projectName, db = 'mysql' } = config;
 
   fs.writeFileSync(path.join(projectDir, 'docker-compose.yml'), laravelDockerCompose(projectName, db));
-  fs.writeFileSync(path.join(projectDir, 'Dockerfile'),         laravelDockerfile());
+  fs.writeFileSync(path.join(projectDir, 'Dockerfile'),         laravelDockerfile(db));
 
   const nginxDir = path.join(projectDir, 'docker');
   fs.mkdirSync(nginxDir, { recursive: true });

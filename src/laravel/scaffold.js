@@ -51,11 +51,11 @@ const DB_CONNECTION = { mysql: 'mysql', pgsql: 'pgsql', mongodb: 'mongodb', sqli
 function getComposerPackages(config) {
   const packages = [];
   const devPackages = [];
+  // Installed separately with --ignore-platform-req=ext-mongodb
+  const mongoPackages = config.db === 'mongodb' ? ['mongodb/laravel-mongodb'] : [];
 
   if (config.auth === 'sanctum')  packages.push('laravel/sanctum');
   if (config.auth === 'passport') packages.push('laravel/passport');
-
-  if (config.db === 'mongodb') packages.push('mongodb/laravel-mongodb');
 
   if (['api', 'full'].includes(config.stack)) {
     packages.push('darkaonline/l5-swagger', 'spatie/laravel-data');
@@ -65,7 +65,7 @@ function getComposerPackages(config) {
     packages.push('inertiajs/inertia-laravel', 'tightenco/ziggy');
   }
 
-  return { packages, devPackages };
+  return { packages, devPackages, mongoPackages };
 }
 
 // ── Helper to write a stub file ──────────────────────────────────────────────
@@ -198,9 +198,10 @@ async function createProject(config, appConfig) {
   if (config.dryRun) {
     dry.exec(`composer create-project laravel/laravel "${projectName}"`, 'Create Laravel project');
 
-    const { packages, devPackages } = getComposerPackages(config);
-    if (packages.length)    dry.install(packages,    'composer require (prod)');
-    if (devPackages.length) dry.install(devPackages, 'composer require --dev (dev)');
+    const { packages, devPackages, mongoPackages } = getComposerPackages(config);
+    if (packages.length)      dry.install(packages,      'composer require (prod)');
+    if (devPackages.length)   dry.install(devPackages,   'composer require --dev (dev)');
+    if (mongoPackages.length) dry.install(mongoPackages, 'composer require mongodb (--ignore-platform-req=ext-mongodb)');
 
     dry.write('.env', 'Write .env from stub');
     dry.exec('php artisan key:generate', 'Generate app key');
@@ -273,7 +274,7 @@ async function createProject(config, appConfig) {
     exec(`php "${projectDir}/artisan" key:generate --force`, 'key:generate', !config.verbose);
 
     // Install Composer packages
-    const { packages, devPackages } = getComposerPackages(config);
+    const { packages, devPackages, mongoPackages } = getComposerPackages(config);
 
     if (packages.length > 0) {
       const s2 = ora('Installing Composer packages…').start();
@@ -289,6 +290,16 @@ async function createProject(config, appConfig) {
         composerRequire(devPackages, projectDir, { dev: true, verbose: config.verbose });
         s3.succeed('Dev packages installed.');
       } catch (e) { s3.fail('Dev package install failed.'); throw e; }
+    }
+
+    // MongoDB is installed separately so we can pass --ignore-platform-req=ext-mongodb
+    // (most dev machines won't have the PHP extension; it runs inside Docker in prod)
+    if (mongoPackages.length > 0) {
+      const sMongo = ora('Installing MongoDB package…').start();
+      try {
+        composerRequire(mongoPackages, projectDir, { ignorePlatformReqs: ['ext-mongodb'], verbose: config.verbose });
+        sMongo.succeed('MongoDB package installed.');
+      } catch (e) { sMongo.fail('MongoDB package install failed.'); throw e; }
     }
 
     // Pest is installed separately with -W so it can resolve phpunit conflicts
@@ -369,6 +380,9 @@ async function createProject(config, appConfig) {
           : ['@inertiajs/react', 'react', 'react-dom'];
         exec(`npm install ${npmPackages.join(' ')} --prefix "${projectDir}"`, 'npm install inertia', !config.verbose);
         s.succeed('Inertia + React set up.');
+
+        // JS test scaffolding lives under resources/js/ for Inertia (no separate frontend dir)
+        if (config.testing) TestingSetup.setupReact(projectDir, config.ts, 'resources/js');
       } catch (e) { s.fail('Inertia setup failed.'); throw e; }
     }
 

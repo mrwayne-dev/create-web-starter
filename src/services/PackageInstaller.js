@@ -31,9 +31,12 @@ function exec(cmd, step, silent = true, cwd = null) {
  */
 function composerRequire(packages, cwd, opts = {}) {
   if (!packages || packages.length === 0) return;
-  const devFlag      = opts.dev          ? ' --dev' : '';
-  const withAllDeps  = opts.withAllDeps  ? ' -W'    : '';
-  const cmd = `composer require ${packages.join(' ')}${devFlag}${withAllDeps} --prefer-dist --no-audit --working-dir="${cwd}"`;
+  const devFlag        = opts.dev                                      ? ' --dev' : '';
+  const withAllDeps    = opts.withAllDeps                              ? ' -W'    : '';
+  const ignorePlatform = opts.ignorePlatformReqs && opts.ignorePlatformReqs.length
+    ? ' ' + opts.ignorePlatformReqs.map(r => `--ignore-platform-req=${r}`).join(' ')
+    : '';
+  const cmd = `composer require ${packages.join(' ')}${devFlag}${withAllDeps}${ignorePlatform} --prefer-dist --no-audit --working-dir="${cwd}"`;
   exec(cmd, `composer require ${packages[0]}`, !opts.verbose);
 }
 
