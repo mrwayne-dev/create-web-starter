@@ -1,0 +1,13 @@
+import { createInertiaApp } from '@inertiajs/react';
+import { createRoot } from 'react-dom/client';
+import { type DefineComponent } from 'vue'; // Remove if not using SSR types
+
+createInertiaApp({
+  resolve: (name: string) => {
+    const pages = import.meta.glob<DefineComponent>('./Pages/**/*.tsx', { eager: true });
+    return pages[`./Pages/${name}.tsx`];
+  },
+  setup({ el, App, props }) {
+    createRoot(el).render(<App {...props} />);
+  },
+});

@@ -11,41 +11,71 @@ const TYPE_COMPLEXITY = {
 };
 
 /**
- * Run the full interactive prompt flow.
- * Returns a config object consumed by scaffold.js.
+ * Run the full interactive prompt flow for Custom PHP mode.
+ * @param {string} authorName
+ * @param {Object} defaults   Pre-filled values from CLI flags (parseArgs output)
  */
-async function runPrompts(authorName) {
+async function runPrompts(authorName, defaults = {}) {
 
-  // Step 1 — Framework
-  const { framework } = await inquirer.prompt([
-    {
-      name: 'framework',
-      type: 'list',
-      message: 'Choose a project framework:',
-      choices: [
-        { name: 'Vanilla   —  SPA-ready HTML/CSS/JS with optional PHP backend', value: 'vanilla' },
-        { name: 'MVC       —  PHP MVC structure (Controllers / Models / Views)',  value: 'mvc'     },
-        { name: 'API       —  PHP backend only, no frontend',                     value: 'api'     }
-      ]
-    }
-  ]);
+  // Step 1 — Framework (skip if --stack provided and maps to a known framework)
+  let framework = (['vanilla','mvc','api'].includes(defaults.stack)) ? defaults.stack : null;
 
-  // Step 2 — Project name
-  const { projectName } = await inquirer.prompt([
-    {
-      name: 'projectName',
-      message: 'Project name:',
-      validate: (input) => input.trim() ? true : 'Project name is required.',
-      filter:   (input) =>
-        input.trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '')
-    }
-  ]);
+  if (!framework) {
+    const { framework: chosen } = await inquirer.prompt([
+      {
+        name: 'framework',
+        type: 'list',
+        message: 'Choose a project framework:',
+        choices: [
+          { name: 'Vanilla   —  SPA-ready HTML/CSS/JS with optional PHP backend', value: 'vanilla' },
+          { name: 'MVC       —  PHP MVC structure (Controllers / Models / Views)',  value: 'mvc'     },
+          { name: 'API       —  PHP backend only, no frontend',                     value: 'api'     }
+        ]
+      }
+    ]);
+    framework = chosen;
+  }
+
+  // Step 2 — Project name (skip if passed as positional arg)
+  let projectName = defaults.projectName || null;
+
+  if (!projectName) {
+    const ans = await inquirer.prompt([
+      {
+        name: 'projectName',
+        message: 'Project name:',
+        validate: (input) => input.trim() ? true : 'Project name is required.',
+        filter:   (input) =>
+          input.trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+      }
+    ]);
+    projectName = ans.projectName;
+  } else {
+    projectName = projectName
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
 
   // MVC and API force PHP backend — skip project type / complexity / php prompt
   if (framework === 'api' || framework === 'mvc') {
+    // In dry-run mode, skip interactive prompts and use empty defaults
+    if (defaults.dryRun) {
+      return {
+        projectName, authorName, framework,
+        projectType: framework === 'mvc' ? 'custom' : 'api',
+        complexity: framework === 'mvc' ? 'medium' : 'simple',
+        phpBackend: true,
+        features: { contactForm: false, phpMailer: false, phosphorIcons: false, auth: false, admin: false, database: false },
+        docker: defaults.docker || false, ci: defaults.ci || false, testing: defaults.testing || false,
+        noGit: defaults.noGit || false, dryRun: true, verbose: defaults.verbose || false,
+      };
+    }
+
     const choices = [
       { name: 'Contact form  (api/contact.php, rate limiting)',      value: 'contactForm', checked: false },
       { name: 'PHPMailer  (install via Composer)',                    value: 'phpMailer',   checked: false },
@@ -77,7 +107,14 @@ async function runPrompts(authorName) {
       projectType: framework === 'mvc' ? 'custom' : 'api',
       complexity:  framework === 'mvc' ? 'medium' : 'simple',
       phpBackend:  true,
-      features
+      features,
+      // Pass through extra flags
+      docker:  defaults.docker  || false,
+      ci:      defaults.ci      || false,
+      testing: defaults.testing || false,
+      noGit:   defaults.noGit   || false,
+      dryRun:  defaults.dryRun  || false,
+      verbose: defaults.verbose || false,
     };
   }
 
@@ -167,7 +204,15 @@ async function runPrompts(authorName) {
     database:      phpBackend && isComplex
   };
 
-  return { projectName, authorName, framework, projectType, complexity, phpBackend, features };
+  return {
+    projectName, authorName, framework, projectType, complexity, phpBackend, features,
+    docker:  defaults.docker  || false,
+    ci:      defaults.ci      || false,
+    testing: defaults.testing || false,
+    noGit:   defaults.noGit   || false,
+    dryRun:  defaults.dryRun  || false,
+    verbose: defaults.verbose || false,
+  };
 }
 
 module.exports = { runPrompts };

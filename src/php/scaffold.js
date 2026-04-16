@@ -5,16 +5,18 @@ const fs    = require('fs');
 const shell = require('shelljs');
 const chalk = require('chalk');
 
-const { writeComposerJson, installPHPMailer } = require('./composer');
-const { generateReadme, generateArchitecture } = require('./docs');
+const { writeComposerJson, installPHPMailer } = require('../composer');
+const { generateReadme, generateArchitecture } = require('../docs');
 
 function phpHeader(projectName, authorName, note = '') {
-  const noteStr = note ? `\n * ${note}` : '';
+  // Strip */ to prevent PHP block-comment injection
+  const safeAuthor = String(authorName).replace(/\*\//g, '');
+  const safeNote   = note ? `\n * ${String(note).replace(/\*\//g, '')}` : '';
   return `<?php
 /**
  * Project: ${projectName}
- * Author:  ${authorName}
- * Created: ${new Date().toISOString().split('T')[0]}${noteStr}
+ * Author:  ${safeAuthor}
+ * Created: ${new Date().toISOString().split('T')[0]}${safeNote}
  */
 `;
 }
@@ -1224,6 +1226,34 @@ async function createProject(projectConfig, appConfig) {
   const { projectName, authorName, framework, complexity, phpBackend, features } = projectConfig;
   const projectPath = path.join(process.cwd(), projectName);
 
+  // Belt-and-suspenders path safety check (sanitization in prompts is primary defence)
+  const resolvedPath = path.resolve(projectPath);
+  const resolvedCwd  = path.resolve(process.cwd());
+  if (resolvedPath === resolvedCwd || !resolvedPath.startsWith(resolvedCwd + path.sep)) {
+    console.error(chalk.red(`\n[!] Unsafe project path "${projectName}" — must be a direct subdirectory.\n`));
+    process.exit(1);
+  }
+
+  // ── Dry run ──────────────────────────────────────────────────────────────────
+  if (projectConfig.dryRun) {
+    const DryRunner = require('../services/DryRunner');
+    const dry = new DryRunner(true);
+    const folders = buildFolderList({ framework, complexity, phpBackend, features });
+    dry.mkdir(`${projectName}/`, `Create project folder (${framework})`);
+    for (const f of folders) dry.mkdir(`${projectName}/${f}/`, `Create ${f}/`);
+    dry.write(`${projectName}/.env`, 'Write .env + .htaccess + .gitignore');
+    if (features.auth)     dry.write(`${projectName}/api/auth/*.php`, 'Write auth endpoints');
+    if (features.admin)    dry.write(`${projectName}/api/admin/dashboard.php`, 'Write admin API');
+    if (features.database) dry.write(`${projectName}/database/database.sql`, 'Write DB schema');
+    if (features.phpMailer) dry.install(['phpmailer/phpmailer'], 'Install PHPMailer');
+    dry.write(`${projectName}/README.md`, 'Write README + ARCHITECTURE.md');
+    if (!projectConfig.noGit) dry.exec('git init + initial commit', 'Initialize git repo');
+    if (projectConfig.docker) dry.write(`${projectName}/docker-compose.yml`, 'Write Docker files');
+    if (projectConfig.ci) dry.write(`${projectName}/.github/workflows/ci.yml`, 'Write GitHub Actions CI');
+    dry.finish();
+    return;
+  }
+
   if (shell.test('-e', projectPath)) {
     console.log(chalk.red('\n  [!] Folder "' + projectName + '" already exists.'));
     return;
@@ -1361,8 +1391,71 @@ async function createProject(projectConfig, appConfig) {
   fs.writeFileSync(path.join(projectPath, 'README.md'),       generateReadme(projectConfig));
   fs.writeFileSync(path.join(projectPath, 'ARCHITECTURE.md'), generateArchitecture(projectConfig));
 
+  // ── Dev files (.editorconfig, .vscode) ─────────────────────────────────────
+  try {
+    const phpStubDir = path.join(__dirname, '..', 'stubs', 'php');
+    fs.copyFileSync(
+      path.join(phpStubDir, 'editorconfig.stub'),
+      path.join(projectPath, '.editorconfig')
+    );
+    const vsDir = path.join(projectPath, '.vscode');
+    fs.mkdirSync(vsDir, { recursive: true });
+    const vsExtContent = JSON.stringify({
+      recommendations: [
+        'bmewburn.vscode-intelephense-client',
+        'junstyle.php-cs-fixer',
+        'eamodio.gitlens',
+        'EditorConfig.EditorConfig'
+      ]
+    }, null, 2) + '\n';
+    fs.writeFileSync(path.join(vsDir, 'extensions.json'), vsExtContent);
+  } catch (_) { /* non-critical */ }
+
+  // ── Docker ──────────────────────────────────────────────────────────────────
+  if (projectConfig.docker) {
+    try {
+      const DockerGen = require('../services/DockerGenerator');
+      DockerGen.generateForPhp(projectPath, projectConfig);
+    } catch (_) { /* non-critical */ }
+  }
+
+  // ── CI ──────────────────────────────────────────────────────────────────────
+  if (projectConfig.ci) {
+    try {
+      const CiGen = require('../services/CiGenerator');
+      CiGen.generate(projectPath, projectConfig, 'php');
+    } catch (_) { /* non-critical */ }
+  }
+
+  // ── Testing ─────────────────────────────────────────────────────────────────
+  if (projectConfig.testing) {
+    try {
+      const TestingSetup = require('../services/TestingSetup');
+      TestingSetup.setupPhp(projectPath, projectName);
+    } catch (_) { /* non-critical */ }
+  }
+
+  // ── Git init ────────────────────────────────────────────────────────────────
+  if (!projectConfig.noGit) {
+    try {
+      const { init: gitInit } = require('../services/GitInitializer');
+      gitInit(projectPath, projectConfig);
+    } catch (_) { /* non-critical — git may not be configured */ }
+  }
+
   // ── Success output ─────────────────────────────────────────────────────────
-  printSuccess(projectName, authorName, projectConfig);
+  try {
+    const { print: printSummary } = require('../services/SummaryPrinter');
+    printSummary(projectConfig, 'php');
+  } catch (_) {
+    printSuccess(projectName, authorName, projectConfig);
+  }
+
+  // ── Offer preset save ──────────────────────────────────────────────────────
+  try {
+    const { offerPresetSave } = require('../config');
+    await offerPresetSave(projectConfig, appConfig);
+  } catch (_) { /* non-critical */ }
 }
 
 module.exports = { createProject };

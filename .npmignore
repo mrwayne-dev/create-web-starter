@@ -1,0 +1,6 @@
+# Development files — excluded from npm publish
+plan.md
+detail.md
+node-cli-structure.txt
+notes/
+.github/

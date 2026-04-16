@@ -1,0 +1,11 @@
+<?php
+
+it('returns a healthy response', function () {
+    $response = $this->getJson('/api/health');
+
+    $response->assertStatus(200)
+             ->assertJson([
+                 'success' => true,
+                 'status'  => 'ok',
+             ]);
+});

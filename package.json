@@ -1,7 +1,7 @@
 {
   "name": "create-php-starter",
-  "version": "1.1.2",
-  "description": "Complexity-aware PHP + JS project scaffolding CLI. Generates a clean SPA-ready structure with optional auth, admin, PHPMailer, and Phosphor Icons.",
+  "version": "2.0.0",
+  "description": "Unified PHP + Laravel project scaffolding CLI. Scaffold raw PHP (Vanilla/MVC/API) or a full Laravel app with optional React frontend, auth, Docker, CI, and testing.",
   "main": "index.js",
   "bin": {
     "create-php-starter": "./index.js"
@@ -11,21 +11,28 @@
   },
   "keywords": [
     "php",
+    "laravel",
     "cli",
     "scaffolding",
     "generator",
     "project-starter",
-    "phosphor-icons",
-    "composer",
-    "phpmailer"
+    "react",
+    "inertia",
+    "vite",
+    "sanctum",
+    "docker",
+    "phpmailer",
+    "composer"
   ],
   "author": "mrwayne-dev",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",
     "inquirer": "^9.2.12",
+    "minimist": "^1.2.8",
     "ora": "^5.4.1",
-    "shelljs": "^0.10.0"
+    "shelljs": "^0.10.0",
+    "update-notifier": "^7.3.1"
   },
   "engines": {
     "node": ">=16"
