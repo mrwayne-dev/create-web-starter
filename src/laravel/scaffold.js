@@ -65,10 +65,6 @@ function getComposerPackages(config) {
     packages.push('inertiajs/inertia-laravel', 'tightenco/ziggy');
   }
 
-  if (config.testing) {
-    devPackages.push('pestphp/pest', 'pestphp/pest-plugin-laravel');
-  }
-
   return { packages, devPackages };
 }
 
@@ -229,7 +225,7 @@ async function createProject(config, appConfig) {
     }
     if (config.docker)  dry.write('docker-compose.yml + Dockerfile', 'Write Docker files');
     if (config.ci)      dry.write('.github/workflows/ci.yml',        'Write GitHub Actions CI');
-    if (config.testing) dry.install(['pestphp/pest --dev'],           'Install Pest');
+    if (config.testing) dry.install(['pestphp/pest', 'pestphp/pest-plugin-laravel', '--dev', '-W'], 'Install Pest (with -W for phpunit compat)');
 
     dry.write('.editorconfig', 'Write .editorconfig');
     dry.write('.vscode/extensions.json', 'Write VS Code extensions');
@@ -257,7 +253,7 @@ async function createProject(config, appConfig) {
     const spinner = ora(`Creating Laravel project: ${chalk.bold(projectName)}`).start();
 
     exec(
-      `composer create-project laravel/laravel "${projectName}" --no-interaction`,
+      `composer create-project laravel/laravel "${projectName}" --prefer-dist --no-audit --no-interaction`,
       'composer create-project',
       !config.verbose
     );
@@ -293,6 +289,22 @@ async function createProject(config, appConfig) {
         composerRequire(devPackages, projectDir, { dev: true, verbose: config.verbose });
         s3.succeed('Dev packages installed.');
       } catch (e) { s3.fail('Dev package install failed.'); throw e; }
+    }
+
+    // Pest is installed separately with -W so it can resolve phpunit conflicts
+    if (config.testing) {
+      const s4 = ora('Installing Pest…').start();
+      try {
+        composerRequire(
+          ['pestphp/pest', 'pestphp/pest-plugin-laravel'],
+          projectDir,
+          { dev: true, withAllDeps: true, verbose: config.verbose }
+        );
+        s4.succeed('Pest installed.');
+      } catch (e) {
+        s4.warn('Pest install skipped — version conflict with current Laravel/PHPUnit.');
+        console.log(chalk.dim('   Run manually once supported: composer require pestphp/pest pestphp/pest-plugin-laravel --dev -W'));
+      }
     }
 
     // Create directory structure

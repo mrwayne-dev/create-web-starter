@@ -23,7 +23,7 @@ async function run(cli = {}) {
 
   const s = ora('Installing Pest…').start();
   try {
-    exec(`composer require pestphp/pest pestphp/pest-plugin-laravel --dev --working-dir="${cwd}"`, 'install pest', !cli.verbose);
+    exec(`composer require pestphp/pest pestphp/pest-plugin-laravel --dev -W --prefer-dist --no-audit --working-dir="${cwd}"`, 'install pest', !cli.verbose);
     exec(`php artisan vendor:publish --provider="Pest\\Laravel\\PestServiceProvider"`, 'publish pest', !cli.verbose);
     s.succeed('Pest installed.');
   } catch (e) {
