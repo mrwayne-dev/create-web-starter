@@ -113,16 +113,35 @@ function writeDevFiles(projectDir, config) {
 // ── Health check route ───────────────────────────────────────────────────────
 
 function addHealthRoute(projectDir) {
-  const routeFile = path.join(projectDir, 'routes', 'api.php');
-  if (!fs.existsSync(routeFile)) return;
+  const routeFile  = path.join(projectDir, 'routes', 'api.php');
+  const bootstrapApp = path.join(projectDir, 'bootstrap', 'app.php');
+
+  // Laravel 11+ does not create routes/api.php by default — create and register it
+  if (!fs.existsSync(routeFile)) {
+    fs.mkdirSync(path.join(projectDir, 'routes'), { recursive: true });
+    fs.writeFileSync(routeFile, `<?php\n\nuse Illuminate\\Support\\Facades\\Route;\n`);
+
+    // Register api.php in bootstrap/app.php (Laravel 11 withRouting pattern)
+    if (fs.existsSync(bootstrapApp)) {
+      let content = fs.readFileSync(bootstrapApp, 'utf8');
+      if (!content.includes('api:') && content.includes('withRouting(')) {
+        // Use plain string replace — the pattern is stable across Laravel versions
+        content = content.replace(
+          `web: __DIR__.'/../routes/web.php'`,
+          `web: __DIR__.'/../routes/web.php',\n        api: __DIR__.'/../routes/api.php'`
+        );
+        fs.writeFileSync(bootstrapApp, content);
+      }
+    }
+  }
+
   const existing = fs.readFileSync(routeFile, 'utf8');
   if (existing.includes('/health')) return;
-  const healthRoute = `
+  fs.appendFileSync(routeFile, `
 Route::get('/health', function () {
     return response()->json(['success' => true, 'status' => 'ok', 'service' => config('app.name')]);
 });
-`;
-  fs.appendFileSync(routeFile, healthRoute);
+`);
 }
 
 // ── Inertia blade layout ─────────────────────────────────────────────────────
@@ -169,6 +188,38 @@ function writeTsConfig(projectDir) {
     include: ['resources/js/**/*'],
     exclude: ['node_modules', 'public']
   }, null, 2));
+}
+
+// ── Vite config: add React plugin ────────────────────────────────────────────
+
+function patchViteForReact(projectDir, useTs) {
+  // Laravel always generates vite.config.js (not .ts), so check both
+  const viteConfig = fs.existsSync(path.join(projectDir, 'vite.config.ts'))
+    ? path.join(projectDir, 'vite.config.ts')
+    : path.join(projectDir, 'vite.config.js');
+
+  if (!fs.existsSync(viteConfig)) return;
+
+  const ext = useTs ? 'tsx' : 'jsx';
+  let content = fs.readFileSync(viteConfig, 'utf8');
+
+  // Add @vitejs/plugin-react import
+  if (!content.includes('@vitejs/plugin-react')) {
+    content = content.replace(
+      `import { defineConfig } from 'vite';`,
+      `import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';`
+    );
+  }
+
+  // Add react() to plugins array before laravel()
+  if (!content.includes('react()')) {
+    content = content.replace(/plugins:\s*\[/, `plugins: [\n        react(),`);
+  }
+
+  // Update the JS entry point to the correct extension
+  content = content.replace(`resources/js/app.js`, `resources/js/app.${ext}`);
+
+  fs.writeFileSync(viteConfig, content);
 }
 
 // ── CORS config for react-vite ───────────────────────────────────────────────
@@ -302,19 +353,20 @@ async function createProject(config, appConfig) {
       } catch (e) { sMongo.fail('MongoDB package install failed.'); throw e; }
     }
 
-    // Pest is installed separately with -W so it can resolve phpunit conflicts
+    // Pest is installed separately. We drop --prefer-dist here because -W (update all deps)
+    // needs flexibility to resolve intermediate package versions.
     if (config.testing) {
       const s4 = ora('Installing Pest…').start();
       try {
-        composerRequire(
-          ['pestphp/pest', 'pestphp/pest-plugin-laravel'],
-          projectDir,
-          { dev: true, withAllDeps: true, verbose: config.verbose }
+        exec(
+          `composer require pestphp/pest pestphp/pest-plugin-laravel --dev -W --no-audit --working-dir="${projectDir}"`,
+          'composer require pestphp/pest',
+          !config.verbose
         );
         s4.succeed('Pest installed.');
       } catch (e) {
-        s4.warn('Pest install skipped — version conflict with current Laravel/PHPUnit.');
-        console.log(chalk.dim('   Run manually once supported: composer require pestphp/pest pestphp/pest-plugin-laravel --dev -W'));
+        s4.fail('Pest install failed.');
+        throw e;
       }
     }
 
@@ -374,11 +426,15 @@ async function createProject(config, appConfig) {
         writeInertiaBladeLayout(projectDir, config.ts);
         if (config.ts) writeTsConfig(projectDir);
 
-        // Install JS deps
+        // Install JS deps — @vitejs/plugin-react is required for Vite to compile JSX/TSX
         const npmPackages = config.ts
-          ? ['@inertiajs/react', 'react', 'react-dom', 'typescript', '@types/react', '@types/react-dom']
-          : ['@inertiajs/react', 'react', 'react-dom'];
+          ? ['@inertiajs/react', 'react', 'react-dom', '@vitejs/plugin-react', 'typescript', '@types/react', '@types/react-dom']
+          : ['@inertiajs/react', 'react', 'react-dom', '@vitejs/plugin-react'];
         exec(`npm install ${npmPackages.join(' ')} --prefix "${projectDir}"`, 'npm install inertia', !config.verbose);
+
+        // Patch vite.config.js to include react() plugin and correct entry extension
+        patchViteForReact(projectDir, config.ts);
+
         s.succeed('Inertia + React set up.');
 
         // JS test scaffolding lives under resources/js/ for Inertia (no separate frontend dir)

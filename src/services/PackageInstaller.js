@@ -40,24 +40,4 @@ function composerRequire(packages, cwd, opts = {}) {
   exec(cmd, `composer require ${packages[0]}`, !opts.verbose);
 }
 
-/**
- * Run `npm install` inside cwd.
- */
-function npmInstall(cwd, opts = {}) {
-  exec(`npm install --prefix "${cwd}"`, 'npm install', !opts.verbose);
-}
-
-/**
- * Run `npm create vite@latest` for a React frontend.
- * @param {string} name     Name for the Vite app folder
- * @param {string} destDir  Parent directory to run the command in
- * @param {boolean} useTS
- * @param {Object} opts
- */
-function createViteApp(name, destDir, useTS = false, opts = {}) {
-  const template = useTS ? 'react-ts' : 'react';
-  const cmd = `npm create vite@latest "${name}" -- --template ${template}`;
-  exec(cmd, 'vite scaffold', !opts.verbose, destDir);
-}
-
 module.exports = { composerRequire, exec };
