@@ -1,10 +1,26 @@
-# create-php-starter v2.0.0 — Feature Reference
+# create-php-starter v2.2.0 — Feature Reference
 
 ## What is this?
 
 `create-php-starter` is a Node.js CLI that scaffolds production-ready PHP projects in seconds. You run one command, answer a few questions, and get a complete project structure — with auth, database config, Docker, CI/CD, testing, and more already wired in.
 
-Version 2.0.0 expands the tool from a single-mode Custom PHP scaffolder into a **unified PHP + Laravel scaffolding platform**.
+It is a **unified PHP + Laravel scaffolding platform** covering both raw PHP projects and full Laravel applications.
+
+---
+
+## Startup Experience
+
+Every run opens with an animated ASCII bat character that draws itself line-by-line in the terminal (~1s), then clears to reveal the **Wayne Manor banner** — a styled two-panel display showing:
+
+- The bat logo in full
+- A personalised greeting using your saved author name
+- Current version and working directory
+- Your saved presets (left column)
+- Quick-tip flag reference (right column)
+
+The animation is skipped automatically on non-TTY environments (pipes, CI, `--dry-run` piped to `cat`).
+
+All visual output — spinners, success/failure panels, the summary box — uses a unified Batman/Alfred theme: cyan accent colours, bat-signal yellow used sparingly, Alfred/Wayne Manor flavour text on every spinner step.
 
 ---
 
