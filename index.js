@@ -68,11 +68,6 @@ ${chalk.bold('Examples:')}
   create-php-starter my-app --mode=laravel --dry-run
 `;
 
-// ── Banner ───────────────────────────────────────────────────────────────────
-function printBanner() {
-  console.log(theme.banner(pkg.version));
-}
-
 // ── Mode gate prompt ─────────────────────────────────────────────────────────
 async function promptMode() {
   const inquirer = require('inquirer').default;
@@ -126,11 +121,15 @@ async function start() {
     return;
   }
 
-  printBanner();
+  // Load config early so authorName is available for the banner
+  const appConfig = loadConfig();
+  const savedName = appConfig.authorName || null;
+
+  await theme.playBatAnimation();
+  console.log(theme.banner(pkg.version, savedName, appConfig.presets));
 
   // Preset shortcut
   if (cli.preset) {
-    const appConfig = loadConfig();
     const preset = loadPreset(cli.preset, appConfig);
     if (!preset) {
       console.error(chalk.red(`\n[!] Preset "${cli.preset}" not found in ~/.webstarterrc.json\n`));
@@ -158,7 +157,6 @@ async function start() {
     mode = await promptMode();
   }
 
-  const appConfig  = loadConfig();
   const authorName = await getAuthorName(appConfig);
 
   if (mode === 'laravel') {

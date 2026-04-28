@@ -2,7 +2,7 @@
 
 const fs    = require('fs');
 const path  = require('path');
-const chalk = require('chalk');
+const theme = require('../ui/theme');
 const CiGenerator = require('../services/CiGenerator');
 
 /**
@@ -14,7 +14,7 @@ async function run(cli = {}) {
   const ciPath = path.join(cwd, '.github', 'workflows', 'ci.yml');
 
   if (fs.existsSync(ciPath)) {
-    console.log(chalk.yellow('\n⚠  .github/workflows/ci.yml already exists.\n'));
+    console.log(theme.c.warn('\n⚠  .github/workflows/ci.yml already exists.\n'));
     process.exit(0);
   }
 
@@ -25,7 +25,7 @@ async function run(cli = {}) {
 
   CiGenerator.generate(cwd, { projectName, db, frontend }, isLaravel ? 'laravel' : 'php');
 
-  console.log(chalk.green('\n✔  .github/workflows/ci.yml written.\n'));
+  console.log(theme.c.success('\n✔  .github/workflows/ci.yml written.\n'));
 }
 
 module.exports = { run };

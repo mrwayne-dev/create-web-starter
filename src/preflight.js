@@ -1,7 +1,7 @@
 'use strict';
 
 const shell = require('shelljs');
-const chalk = require('chalk');
+const theme = require('./ui/theme');
 
 const CHECKS = {
   php:      { label: 'PHP',      url: 'https://www.php.net/downloads'   },
@@ -27,9 +27,9 @@ function run(required = ['php', 'composer', 'git']) {
 
   if (missing.length === 0) return;
 
-  console.error(chalk.red.bold('\n✖  Missing required dependencies:\n'));
+  console.error(theme.c.danger.bold('\n✖  Missing required dependencies:\n'));
   for (const dep of missing) {
-    console.error(chalk.red(`   ${dep.label}: ${dep.url}`));
+    console.error(theme.c.danger(`   ${dep.label}: ${dep.url}`));
   }
   console.error('');
   process.exit(1);

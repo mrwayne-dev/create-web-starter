@@ -1132,76 +1132,6 @@ CREATE TABLE IF NOT EXISTS \`sessions\` (
 `;
 };
 
-// ── Post-generation output ────────────────────────────────────────────────────
-function printSuccess(projectName, authorName, projectConfig) {
-  const { framework, phpBackend, features, complexity } = projectConfig;
-  const w = projectName.length + 20;
-  const bar = '+' + '-'.repeat(w) + '+';
-
-  console.log('\n' + chalk.bold.cyan(bar));
-  console.log(chalk.bold.cyan('|') + chalk.bold.white('  ' + projectName + '  —  ready to build.') + ' '.repeat(w - projectName.length - 20) + '   ' + chalk.bold.cyan('|'));
-  console.log(chalk.bold.cyan(bar));
-
-  console.log('\n' + chalk.white.bold('  What was created:\n'));
-
-  if (framework === 'mvc') {
-    console.log(chalk.dim('    app/Controllers/    ') + 'base controller + placeholder');
-    console.log(chalk.dim('    app/Models/         ') + 'base model + placeholder');
-    console.log(chalk.dim('    app/Views/          ') + 'view templates');
-    console.log(chalk.dim('    routes/web.php       ') + 'route definitions');
-    console.log(chalk.dim('    public/index.php     ') + 'front controller entry point');
-  } else if (framework === 'api') {
-    console.log(chalk.dim('    api/                ') + 'PHP API endpoints');
-    console.log(chalk.dim('    index.php           ') + 'JSON health-check endpoint');
-  } else {
-    console.log(chalk.dim('    index.php           ') + 'SPA shell (SEO, OG, CSS, app.js)');
-    console.log(chalk.dim('    assets/css/         ') + 'main / layout / components / animations');
-    console.log(chalk.dim('    assets/js/          ') + 'app.js, router.js, pages/, components/, utils/');
-    if (phpBackend) {
-      console.log(chalk.dim('    api/                ') + 'PHP API endpoints');
-    }
-  }
-
-  if (phpBackend || framework === 'mvc' || framework === 'api') {
-    console.log(chalk.dim('    config/             ') + 'constants, env loader, response helpers' + (features.database ? ', database PDO' : ''));
-    console.log(chalk.dim('    includes/           ') + 'headers, helpers' + (features.contactForm ? ', rate limiter' : '') + (features.phpMailer ? ', mailer' : '') + (features.auth ? ', auth-check' : ''));
-  }
-
-  if (features.auth) {
-    console.log(chalk.dim('    pages/public/       ') + 'login, forgot-password, reset-password');
-    console.log(chalk.dim('    pages/user/         ') + 'authenticated user dashboard');
-  }
-  if (features.admin) {
-    console.log(chalk.dim('    pages/admin/        ') + 'admin dashboard');
-    console.log(chalk.dim('    api/admin/          ') + 'admin API endpoints');
-  }
-  if (features.database) {
-    console.log(chalk.dim('    database/           ') + 'SQL schema (users, password_resets, sessions)');
-  }
-
-  console.log(chalk.dim('    .env + .env.example ') + 'environment configuration');
-  console.log(chalk.dim('    README.md            ') + 'project documentation');
-  console.log(chalk.dim('    ARCHITECTURE.md      ') + 'architecture documentation');
-
-  console.log('\n' + chalk.white.bold('  Next steps:\n'));
-  console.log(chalk.cyan('    cd ' + projectName));
-  if (phpBackend || framework === 'mvc' || framework === 'api') {
-    console.log(chalk.cyan('    edit .env') + chalk.dim('   — fill in DB credentials and SMTP settings'));
-    if (features.database) {
-      console.log(chalk.cyan('    mysql -u root -p < database/database.sql'));
-    }
-    if (features.phpMailer) {
-      console.log(chalk.cyan('    composer install'));
-    }
-    console.log(chalk.cyan('    php -S localhost:8000'));
-  } else {
-    console.log(chalk.cyan('    php -S localhost:8000') + chalk.dim('  or open index.php in a browser'));
-  }
-
-  console.log('');
-  console.log(chalk.yellow.italic('  Project analysed by alfred and shipped from the batcave.'));
-  console.log('');
-}
 
 // ── printTree ─────────────────────────────────────────────────────────────────
 function printTree(dir, prefix = '') {
@@ -1480,12 +1410,7 @@ async function createProject(projectConfig, appConfig) {
   }
 
   // ── Success output ─────────────────────────────────────────────────────────
-  try {
-    const { print: printSummary } = require('../services/SummaryPrinter');
-    printSummary(projectConfig, 'php');
-  } catch (_) {
-    printSuccess(projectName, authorName, projectConfig);
-  }
+  require('../services/SummaryPrinter').print(projectConfig, 'php');
 
   // ── Offer preset save ──────────────────────────────────────────────────────
   try {

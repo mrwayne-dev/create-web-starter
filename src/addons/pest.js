@@ -2,8 +2,6 @@
 
 const fs    = require('fs');
 const path  = require('path');
-const chalk = require('chalk');
-const ora   = require('ora');
 const { exec }     = require('../services/PackageInstaller');
 const { applyTokens } = require('../services/EnvConfigurator');
 const theme = require('../ui/theme');
@@ -18,7 +16,7 @@ async function run(cli = {}) {
   const cwd = process.cwd();
 
   if (!fs.existsSync(path.join(cwd, 'artisan'))) {
-    console.error(chalk.red('\n[!] Not inside a Laravel project (artisan not found).\n'));
+    console.error(theme.c.danger('\n[!] Not inside a Laravel project (artisan not found).\n'));
     process.exit(1);
   }
 
@@ -74,10 +72,10 @@ Route::get('/health', function () {
   if (!fs.existsSync(testPath)) {
     fs.mkdirSync(featuresDir, { recursive: true });
     fs.copyFileSync(path.join(STUB_DIR, 'pest-healthcheck.stub'), testPath);
-    console.log(chalk.green('✔  HealthCheckTest.php written.'));
+    console.log(theme.c.success('✔  HealthCheckTest.php written.'));
   }
 
-  console.log(chalk.dim('\n  Run: php artisan test\n'));
+  console.log(theme.c.muted('\n  Run: php artisan test\n'));
 }
 
 module.exports = { run };

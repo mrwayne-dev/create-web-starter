@@ -16,10 +16,8 @@ const ora   = require('ora');
 const boxen = require('boxen');
 
 // ── Colour tokens ────────────────────────────────────────────────────────────
-// Soft cyan-blue accent borrowed from Claude Code's palette. Falls back to the
-// nearest 256-colour on terminals without true-colour.
-const accent = chalk.hex('#7AA2F7');
-const bat    = chalk.hex('#FFD23F'); // Bat-signal yellow — used sparingly
+const accent = chalk.hex('#7AA2F7'); // Soft cyan-blue (Claude Code palette)
+const bat    = chalk.hex('#FFD23F'); // Bat-signal yellow
 
 const c = {
   accent,
@@ -33,10 +31,33 @@ const c = {
   bold:    chalk.bold,
 };
 
+// ── Bat ASCII art ─────────────────────────────────────────────────────────────
+// Stored as plain strings; bat() colour applied at render time.
+const BAT_ART = [
+  '                   ,.ood888888888888boo.,               ',
+  '              .od888P^""            ""^Y888bo.          ',
+  '          .od8P\'\'   ..oood88888888booo.    ``Y8bo.      ',
+  '       .odP\'"  .ood8888888888888888888888boo.  "`Ybo.   ',
+  '     .d8\'   od8\'d888888888f`8888\'t888888888b`8bo   `Yb. ',
+  '    d8\'  od8^   8888888888[  `\'  ]8888888888   ^8bo  `8b',
+  '  .8P  d88\'     8888888888P      Y8888888888     `88b  Y8.',
+  ' d8\' .d8\'       `Y88888888\'      `88888888P\'       `8b. `8b',
+  '.8P .88P            """"            """"            Y88. Y8.',
+  '88  888                                              888  88',
+  '88  888                                              888  88',
+  '88  888.        ..                        ..        .888  88',
+  '`8b `88b,     d8888b.od8bo.      .od8bo.d8888b     ,d88\' d8\'',
+  ' Y8. `Y88.    8888888888888b    d8888888888888    .88P\' .8P ',
+  '  `8b  Y88b.  `88888888888888  88888888888888\'  .d88P  d8\' ',
+  '    Y8.  ^Y88bod8888888888888..8888888888888bod88P^  .8P   ',
+  '     `Y8.   ^Y888888888888888LS888888888888888P^   .8P\'   ',
+  '       `^Yb.,  `^^Y8888888888888888888888P^^\'  ,.dP^\' ',
+  '          `^Y8b..   ``^^^Y88888888P^^^\'    ..d8P^\' ',
+  '              `^Y888bo.,            ,.od888P^\' ',
+  '                   "`^^Y888888888888P^\'"',
+];
+
 // ── Verb pool — Batman / Alfred / Wayne Manor flavour ────────────────────────
-// Each key maps to an array of cosmetic phrases used as the spinner text while
-// that step is in progress. The phrase rotates randomly per run; the success
-// label still reports what actually happened.
 const VERBS = {
   composer: [
     'Patrolling Packagist',
@@ -192,44 +213,114 @@ function pickVerb(key) {
   return pick(pool);
 }
 
+// ── ANSI-safe string helpers ──────────────────────────────────────────────────
+function visLen(s) {
+  return s.replace(/\x1B\[[0-9;]*m/g, '').length;
+}
+function rpad(s, w) {
+  return s + ' '.repeat(Math.max(0, w - visLen(s)));
+}
+
 // ── Verbose-mode toggle ──────────────────────────────────────────────────────
-// In verbose mode, child processes stream their stdout to the terminal. If we
-// also animate a spinner on the same line, the two writers collide. Callers
-// flip this once at the top of a scaffold; spinner() reads it and disables
-// animation accordingly. Start/success/fail messages still print, just with no
-// rotating frame.
 let _verbose = false;
 function setVerbose(v) { _verbose = !!v; }
 
 // ── Spinner factory ──────────────────────────────────────────────────────────
-/**
- * Build an ora spinner with a Batman-flavoured verb and the house style.
- * @param {string} key       Verb category (e.g. 'composer', 'pest', 'vite')
- * @param {Object} opts      Override `text` to bypass the verb pool.
- */
 function spinner(key, opts = {}) {
   const config = {
-    text: opts.text || pickVerb(key),
+    text:    opts.text || pickVerb(key),
     spinner: 'dots12',
-    color: 'cyan',
+    color:   'cyan',
     ...opts,
   };
-  // Disable animation when verbose — lets composer/npm output flow on its own
-  // line without the spinner frame trampling it.
   if (_verbose) config.isEnabled = false;
   return ora(config);
 }
 
-// ── Banner ───────────────────────────────────────────────────────────────────
-function banner(version) {
-  const title = c.bold('create-php-starter') + c.muted(`  v${version}`);
-  const tag   = c.muted('Alfred is on standby. Ready to scaffold.');
-  return boxen(`${title}\n${tag}`, {
-    padding:      { top: 0, bottom: 0, left: 2, right: 2 },
-    margin:       { top: 1, bottom: 1, left: 0, right: 0 },
-    borderStyle:  'round',
-    borderColor:  'cyan',
-    title:        accent.bold('✦  Wayne Manor  ✦'),
+// ── Startup animation ─────────────────────────────────────────────────────────
+// Reveals the bat art line-by-line at ~40ms per line (~840ms total),
+// pauses briefly, then clears so the full banner can take over.
+// Silently skips on non-TTY (pipes, CI, --dry-run piped).
+async function playBatAnimation() {
+  if (!process.stdout.isTTY) return;
+
+  const sleep     = ms => new Promise(r => setTimeout(r, ms));
+  const artHeight = BAT_ART.length;
+
+  process.stdout.write('\x1B[?25l'); // hide cursor
+  try {
+    for (const line of BAT_ART) {
+      process.stdout.write(bat(line) + '\n');
+      await sleep(40);
+    }
+    await sleep(300); // pause on full image
+    // Move cursor back up and wipe each line
+    process.stdout.write(`\x1B[${artHeight}A`);
+    for (let i = 0; i < artHeight; i++) process.stdout.write('\x1B[2K\n');
+    process.stdout.write(`\x1B[${artHeight}A`);
+  } finally {
+    process.stdout.write('\x1B[?25h'); // show cursor
+  }
+}
+
+// ── Banner ────────────────────────────────────────────────────────────────────
+// Two-section layout: bat as full-width hero, then greeting + two-column info.
+function banner(version, authorName = null, presets = {}) {
+  const batLines = BAT_ART.map(l => bat(l));
+
+  const greet = authorName
+    ? accent.bold('Welcome back, ' + authorName + '!')
+    : accent.bold('Welcome!');
+
+  const home       = process.env.HOME || '';
+  const cwd        = process.cwd().replace(home, '~');
+  const MAX_CWD    = 55;
+  const cwdDisplay = cwd.length > MAX_CWD ? '…' + cwd.slice(-(MAX_CWD - 1)) : cwd;
+  const meta       = c.muted('v' + version + '   ' + cwdDisplay);
+
+  // Two-column info section
+  const COL        = 30;
+  const presetKeys = Object.keys(presets || {});
+
+  const leftCol = presetKeys.length > 0
+    ? [accent.bold('Saved presets'), ...presetKeys.slice(0, 5).map(p => c.muted('  ▸  ') + p)]
+    : [accent.bold('Presets'), c.muted('  None saved yet'), c.muted('  Use --preset=name to save one')];
+
+  const rightCol = [
+    accent.bold('Quick tips'),
+    c.muted('  ') + c.code('--dry-run') + c.muted('   preview scaffold'),
+    c.muted('  ') + c.code('--yes') + c.muted('       accept defaults'),
+    c.muted('  ') + c.code('add pest') + c.muted('    retrofit testing'),
+    c.muted('  ') + c.code('--preset') + c.muted('    load a preset'),
+  ];
+
+  const colH = Math.max(leftCol.length, rightCol.length);
+  while (leftCol.length < colH)  leftCol.push('');
+  while (rightCol.length < colH) rightCol.push('');
+
+  const infoRows = leftCol.map((l, i) =>
+    rpad(l, COL) + '  ' + c.muted('│') + '  ' + (rightCol[i] || '')
+  );
+
+  const body = [
+    '',
+    ...batLines,
+    '',
+    greet,
+    meta,
+    '',
+    c.muted('─'.repeat(60)),
+    '',
+    ...infoRows,
+    '',
+  ].join('\n');
+
+  return boxen(body, {
+    padding:        { top: 0, bottom: 0, left: 2, right: 4 },
+    margin:         { top: 1, bottom: 1, left: 0, right: 0 },
+    borderStyle:    'round',
+    borderColor:    'cyan',
+    title:          accent.bold('❖  Wayne Manor  ❖'),
     titleAlignment: 'center',
   });
 }
@@ -248,7 +339,7 @@ function panel(content, { title, color = 'cyan' } = {}) {
 
 function successPanel(title, body) {
   const tagline = c.muted(pick(SUCCESS_LINES));
-  return panel(`${body}\n\n${tagline}`, { title: `✦  ${title}`, color: 'green' });
+  return panel(`${body}\n\n${tagline}`, { title: `❖  ${title}`, color: 'green' });
 }
 
 function failurePanel(title, body) {
@@ -261,6 +352,7 @@ module.exports = {
   spinner,
   setVerbose,
   pickVerb,
+  playBatAnimation,
   banner,
   panel,
   successPanel,

@@ -1,7 +1,6 @@
 'use strict';
 
 const shell = require('shelljs');
-const chalk = require('chalk');
 
 /**
  * Initialize a git repo and create the first commit.
