@@ -8,6 +8,7 @@ const pkg     = require('./package.json');
 const { parseArgs }     = require('./src/args');
 const { run: preflight} = require('./src/preflight');
 const { loadConfig, getAuthorName, savePreset, loadPreset } = require('./src/config');
+const theme = require('./src/ui/theme');
 
 // ── Update notifier ──────────────────────────────────────────────────────────
 // Runs after all prompts complete to avoid readline conflicts
@@ -69,10 +70,7 @@ ${chalk.bold('Examples:')}
 
 // ── Banner ───────────────────────────────────────────────────────────────────
 function printBanner() {
-  console.log(chalk.bold.cyan('\n+------------------------------------------+'));
-  console.log(chalk.bold.cyan('|') + chalk.bold(`   create-php-starter  v${pkg.version}          `) + chalk.bold.cyan('|'));
-  console.log(chalk.bold.cyan('|') + chalk.dim('   Alfred is on standby. Ready to scaffold.') + chalk.bold.cyan(' |'));
-  console.log(chalk.bold.cyan('+------------------------------------------+\n'));
+  console.log(theme.banner(pkg.version));
 }
 
 // ── Mode gate prompt ─────────────────────────────────────────────────────────
@@ -184,7 +182,7 @@ async function start() {
 start()
   .then(() => checkForUpdates())
   .catch((err) => {
-    console.error(chalk.red('\n[!] Unexpected error:'), err.message);
+    console.error('\n' + theme.failurePanel('Unexpected error', err.message));
     if (process.env.DEBUG) console.error(err.stack);
     process.exit(1);
   });

@@ -20,8 +20,10 @@ async function run(cli = {}) {
 
   const isLaravel = fs.existsSync(path.join(cwd, 'artisan'));
   const projectName = path.basename(cwd);
+  const db       = ['mysql','pgsql','mongodb','sqlite'].includes(cli.db) ? cli.db : 'mysql';
+  const frontend = ['none','react-vite','inertia'].includes(cli.frontend) ? cli.frontend : 'none';
 
-  CiGenerator.generate(cwd, { projectName, db: 'mysql', frontend: 'none' }, isLaravel ? 'laravel' : 'php');
+  CiGenerator.generate(cwd, { projectName, db, frontend }, isLaravel ? 'laravel' : 'php');
 
   console.log(chalk.green('\n✔  .github/workflows/ci.yml written.\n'));
 }

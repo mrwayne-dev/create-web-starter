@@ -1241,15 +1241,51 @@ async function createProject(projectConfig, appConfig) {
     const folders = buildFolderList({ framework, complexity, phpBackend, features });
     dry.mkdir(`${projectName}/`, `Create project folder (${framework})`);
     for (const f of folders) dry.mkdir(`${projectName}/${f}/`, `Create ${f}/`);
-    dry.write(`${projectName}/.env`, 'Write .env + .htaccess + .gitignore');
-    if (features.auth)     dry.write(`${projectName}/api/auth/*.php`, 'Write auth endpoints');
-    if (features.admin)    dry.write(`${projectName}/api/admin/dashboard.php`, 'Write admin API');
-    if (features.database) dry.write(`${projectName}/database/database.sql`, 'Write DB schema');
-    if (features.phpMailer) dry.install(['phpmailer/phpmailer'], 'Install PHPMailer');
-    dry.write(`${projectName}/README.md`, 'Write README + ARCHITECTURE.md');
-    if (!projectConfig.noGit) dry.exec('git init + initial commit', 'Initialize git repo');
-    if (projectConfig.docker) dry.write(`${projectName}/docker-compose.yml`, 'Write Docker files');
-    if (projectConfig.ci) dry.write(`${projectName}/.github/workflows/ci.yml`, 'Write GitHub Actions CI');
+
+    dry.write(`${projectName}/.env + .env.example`, 'Write .env + .htaccess + .gitignore + .gitattributes');
+
+    // Framework entry points
+    if (framework === 'vanilla') {
+      dry.write(`${projectName}/index.php`, 'Write index.php (SPA shell)');
+      dry.write(`${projectName}/assets/css/*.css`, 'Write main / layout / components / animations CSS');
+      dry.write(`${projectName}/assets/js/app.js + router.js`, 'Write app.js + router.js');
+    }
+    if (framework === 'api') {
+      dry.write(`${projectName}/index.php`, 'Write API health-check endpoint');
+    }
+    if (framework === 'mvc') {
+      dry.write(`${projectName}/public/index.php`, 'Write MVC front controller');
+      dry.write(`${projectName}/routes/web.php`, 'Write route definitions');
+      dry.write(`${projectName}/app/Controllers/BaseController.php`, 'Write BaseController');
+      dry.write(`${projectName}/app/Models/BaseModel.php`, 'Write BaseModel');
+    }
+
+    // PHP config + includes (all PHP-backed projects)
+    if (phpBackend || framework === 'mvc' || framework === 'api') {
+      dry.write(`${projectName}/config/constants.php + env.php + responses.php`, 'Write PHP config stubs');
+      dry.write(`${projectName}/includes/headers.php + helpers.php`, 'Write PHP include stubs');
+      if (features.contactForm) dry.write(`${projectName}/includes/rate_limit.php`, 'Write rate limiter');
+      if (features.phpMailer)   dry.write(`${projectName}/includes/mailer.php`,     'Write PHPMailer helper');
+      if (features.auth)        dry.write(`${projectName}/includes/auth-check.php`, 'Write auth-check helper');
+      if (features.database)    dry.write(`${projectName}/config/database.php`,     'Write PDO database config');
+      if (features.contactForm) dry.write(`${projectName}/api/contact.php + email_templates.php`, 'Write contact form endpoint');
+      if (features.auth)        dry.write(`${projectName}/api/auth/*.php`, 'Write auth endpoints (login/register/logout/forgot/reset)');
+      if (features.auth)        dry.write(`${projectName}/pages/public/*.php + pages/user/dashboard.php`, 'Write auth pages');
+      if (features.admin)       dry.write(`${projectName}/api/admin/dashboard.php`, 'Write admin API endpoint');
+      if (features.admin)       dry.write(`${projectName}/pages/admin/dashboard.php`, 'Write admin dashboard page');
+      if (features.database)    dry.write(`${projectName}/database/database.sql`, 'Write DB schema (users, password_resets, sessions)');
+    }
+
+    if (features.phpMailer) dry.install(['phpmailer/phpmailer'], 'Install PHPMailer via Composer');
+
+    dry.write(`${projectName}/.editorconfig + .vscode/extensions.json`, 'Write dev config files');
+    dry.write(`${projectName}/README.md + ARCHITECTURE.md`, 'Write README + ARCHITECTURE.md');
+
+    if (projectConfig.testing) dry.write(`${projectName}/tests/`, 'Write PHPUnit test scaffold');
+    if (projectConfig.docker)  dry.write(`${projectName}/docker-compose.yml + Dockerfile`, 'Write Docker files');
+    if (projectConfig.ci)      dry.write(`${projectName}/.github/workflows/ci.yml`, 'Write GitHub Actions CI');
+    if (!projectConfig.noGit)  dry.exec('git init && git add -A && git commit', 'Initialize git repo');
+
     dry.finish();
     return;
   }

@@ -6,6 +6,7 @@ const shell = require('shelljs');
 const chalk = require('chalk');
 const ora   = require('ora');
 const inquirer = require('inquirer').default;
+const theme = require('../ui/theme');
 
 const { writeEnvFiles, applyTokens, dbPort, dbName } = require('../services/EnvConfigurator');
 const { init: gitInit }    = require('../services/GitInitializer');
@@ -45,6 +46,35 @@ function safeRmRf(targetPath, baseDir) {
 // ── DB connection map ────────────────────────────────────────────────────────
 
 const DB_CONNECTION = { mysql: 'mysql', pgsql: 'pgsql', mongodb: 'mongodb', sqlite: 'sqlite' };
+
+// ── MongoDB config patch ─────────────────────────────────────────────────────
+
+function patchMongoDbConfig(projectDir) {
+  const configPath = path.join(projectDir, 'config', 'database.php');
+  if (!fs.existsSync(configPath)) return;
+  let content = fs.readFileSync(configPath, 'utf8');
+  if (content.includes("'mongodb'")) return;
+
+  const entry = `
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('DB_HOST', '127.0.0.1'),
+            'port'     => (int) env('DB_PORT', 27017),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', ''),
+            'password' => env('DB_PASSWORD', ''),
+            'options'  => [],
+        ],
+`;
+  // Anchor: 8-space ], closes the last connection entry; 4-space ], closes the connections array.
+  // This pattern is stable across all Laravel 10/11 versions.
+  const anchor = '\n        ],\n\n    ],\n';
+  const insert = '\n        ],\n' + entry + '\n    ],\n';
+  if (content.includes(anchor)) {
+    content = content.replace(anchor, insert);
+  }
+  fs.writeFileSync(configPath, content);
+}
 
 // ── Package map ──────────────────────────────────────────────────────────────
 
@@ -224,8 +254,18 @@ function patchViteForReact(projectDir, useTs) {
 
 // ── CORS config for react-vite ───────────────────────────────────────────────
 
-function patchCors(projectDir) {
+function patchCors(projectDir, config = {}) {
   const corsConfig = path.join(projectDir, 'config', 'cors.php');
+  // Laravel 11 does not ship config/cors.php by default — publish it first.
+  if (!fs.existsSync(corsConfig)) {
+    try {
+      exec(
+        `php "${projectDir}/artisan" config:publish cors --no-interaction`,
+        'publish cors config',
+        !config.verbose
+      );
+    } catch (_) { /* older Laravel — config already exists or publish unsupported */ }
+  }
   if (!fs.existsSync(corsConfig)) return;
   let content = fs.readFileSync(corsConfig, 'utf8');
   content = content.replace(
@@ -235,9 +275,64 @@ function patchCors(projectDir) {
   fs.writeFileSync(corsConfig, content);
 }
 
+// ── Pest config (tests/Pest.php) ─────────────────────────────────────────────
+
+function writeTestsPestPhp(projectDir) {
+  const testsDir = path.join(projectDir, 'tests');
+  fs.mkdirSync(testsDir, { recursive: true });
+  const target = path.join(testsDir, 'Pest.php');
+  if (fs.existsSync(target)) return; // composer post-install already created it
+  const content = `<?php
+
+uses(Tests\\TestCase::class)->in('Feature');
+`;
+  fs.writeFileSync(target, content);
+}
+
+// ── Inertia Welcome page + route ─────────────────────────────────────────────
+
+function writeInertiaWelcomePage(projectDir, useTs) {
+  const ext = useTs ? 'tsx' : 'jsx';
+  const pagesDir = path.join(projectDir, 'resources', 'js', 'Pages');
+  fs.mkdirSync(pagesDir, { recursive: true });
+  const content = `export default function Welcome() {
+  return (
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+      <h1>Welcome to Inertia</h1>
+      <p>Edit <code>resources/js/Pages/Welcome.${ext}</code> to get started.</p>
+    </div>
+  );
+}
+`;
+  fs.writeFileSync(path.join(pagesDir, `Welcome.${ext}`), content);
+}
+
+function patchInertiaWelcomeRoute(projectDir) {
+  const webRoutes = path.join(projectDir, 'routes', 'web.php');
+  if (!fs.existsSync(webRoutes)) return;
+  let content = fs.readFileSync(webRoutes, 'utf8');
+  if (!content.includes("return view('welcome')")) return;
+
+  if (!content.includes('use Inertia\\Inertia;')) {
+    content = content.replace(
+      /use Illuminate\\Support\\Facades\\Route;/,
+      `use Illuminate\\Support\\Facades\\Route;\nuse Inertia\\Inertia;`
+    );
+  }
+  content = content.replace(
+    "return view('welcome')",
+    "return Inertia::render('Welcome')"
+  );
+  fs.writeFileSync(webRoutes, content);
+}
+
 // ── Main scaffold function ───────────────────────────────────────────────────
 
 async function createProject(config, appConfig) {
+  // Tell the theme about verbose mode so spinners stop animating once child
+  // processes start streaming their own output to the terminal.
+  theme.setVerbose(!!config.verbose);
+
   const dry = new DryRunner(config.dryRun);
   const projectName = config.projectName;
   const projectDir  = path.resolve(process.cwd(), projectName);
@@ -269,15 +364,34 @@ async function createProject(config, appConfig) {
     dry.write('app/Http/Requests/BaseRequest.php',    'Write BaseRequest');
     dry.write('app/Exceptions/Handler.php',           'Write ExceptionHandler');
 
+    dry.write('routes/api.php', 'Add /health route');
+
+    if (config.db === 'sqlite')  dry.write('database/database.sqlite',  'Create SQLite database file');
+    if (config.db === 'mongodb') dry.write('config/database.php',       'Add mongodb connection entry');
+
     if (config.frontend === 'react-vite') {
       dry.exec(`npm create vite@latest frontend -- --template react${config.ts ? '-ts' : ''}`, 'Scaffold Vite React frontend');
+      dry.exec('npm install (frontend)', 'Install frontend npm packages');
+      dry.write('config/cors.php', 'Configure CORS allowed_origins for frontend');
     }
     if (config.frontend === 'inertia') {
-      dry.write('resources/js/app.jsx', 'Write Inertia app entry');
+      const ext = config.ts ? 'tsx' : 'jsx';
+      dry.write(`resources/js/app.${ext}`, 'Write Inertia app entry');
+      dry.write('resources/views/app.blade.php', 'Write Inertia blade layout');
+      if (config.ts) dry.write('tsconfig.json', 'Write TypeScript config');
+      dry.write(`resources/js/Pages/Welcome.${ext}`, 'Write Inertia Welcome page');
+      dry.exec('patch routes/web.php', 'Swap welcome route to Inertia::render');
+      dry.exec('npm install @inertiajs/react react react-dom @vitejs/plugin-react', 'Install Inertia npm packages');
+      dry.exec('patch vite.config.js', 'Add React plugin to Vite config');
     }
+
     if (config.docker)  dry.write('docker-compose.yml + Dockerfile', 'Write Docker files');
     if (config.ci)      dry.write('.github/workflows/ci.yml',        'Write GitHub Actions CI');
-    if (config.testing) dry.install(['pestphp/pest', 'pestphp/pest-plugin-laravel', '--dev', '-W'], 'Install Pest (with -W for phpunit compat)');
+    if (config.testing) {
+      dry.install(['pestphp/pest', 'pestphp/pest-plugin-laravel', '--dev', '-W'], 'Install Pest (-W for phpunit downgrade)');
+      dry.write('tests/Pest.php', 'Write tests/Pest.php');
+      dry.write('tests/Feature/HealthCheckTest.php', 'Write Pest health check test');
+    }
 
     dry.write('.editorconfig', 'Write .editorconfig');
     dry.write('.vscode/extensions.json', 'Write VS Code extensions');
@@ -302,10 +416,10 @@ async function createProject(config, appConfig) {
 
   // ── Scaffold ─────────────────────────────────────────────────────────────
   try {
-    const spinner = ora(`Creating Laravel project: ${chalk.bold(projectName)}`).start();
+    const spinner = theme.spinner('create', { text: `Suiting up Laravel: ${chalk.bold(projectName)}` }).start();
 
     exec(
-      `composer create-project laravel/laravel "${projectName}" --prefer-dist --no-audit --no-interaction`,
+      `composer create-project laravel/laravel "${projectName}" --prefer-dist --no-audit --no-interaction --no-progress`,
       'composer create-project',
       !config.verbose
     );
@@ -313,12 +427,13 @@ async function createProject(config, appConfig) {
 
     // Write .env
     const envStub = fs.readFileSync(path.join(STUB_DIR, 'env.stub'), 'utf8');
-    const dbNameStr = dbName(projectName);
+    // SQLite uses a file path; all other drivers use the project name as the database name.
+    const dbDatabaseStr = config.db === 'sqlite' ? 'database/database.sqlite' : dbName(projectName);
     writeEnvFiles(envStub, {
       PROJECT_NAME:   projectName,
       DB_CONNECTION:  DB_CONNECTION[config.db] || 'mysql',
       DB_PORT:        dbPort(config.db),
-      DB_DATABASE:    dbNameStr,
+      DB_DATABASE:    dbDatabaseStr,
     }, projectDir);
 
     // Generate app key
@@ -327,42 +442,57 @@ async function createProject(config, appConfig) {
     // Install Composer packages
     const { packages, devPackages, mongoPackages } = getComposerPackages(config);
 
-    if (packages.length > 0) {
-      const s2 = ora('Installing Composer packages…').start();
+    // Combine prod + mongo into one composer require — saves a full solver run when
+    // both are needed. --ignore-platform-req=ext-mongodb is harmless when no mongo
+    // package is in the list, but we only pass it when actually needed.
+    const allProd = [...packages, ...mongoPackages];
+    if (allProd.length > 0) {
+      const s2 = theme.spinner('composer').start();
       try {
-        composerRequire(packages, projectDir, { verbose: config.verbose });
+        composerRequire(allProd, projectDir, {
+          verbose: config.verbose,
+          ignorePlatformReqs: mongoPackages.length > 0 ? ['ext-mongodb'] : [],
+        });
         s2.succeed('Composer packages installed.');
       } catch (e) { s2.fail('Package install failed.'); throw e; }
     }
 
     if (devPackages.length > 0) {
-      const s3 = ora('Installing dev packages…').start();
+      const s3 = theme.spinner('composer').start();
       try {
         composerRequire(devPackages, projectDir, { dev: true, verbose: config.verbose });
         s3.succeed('Dev packages installed.');
       } catch (e) { s3.fail('Dev package install failed.'); throw e; }
     }
 
-    // MongoDB is installed separately so we can pass --ignore-platform-req=ext-mongodb
-    // (most dev machines won't have the PHP extension; it runs inside Docker in prod)
-    if (mongoPackages.length > 0) {
-      const sMongo = ora('Installing MongoDB package…').start();
-      try {
-        composerRequire(mongoPackages, projectDir, { ignorePlatformReqs: ['ext-mongodb'], verbose: config.verbose });
-        sMongo.succeed('MongoDB package installed.');
-      } catch (e) { sMongo.fail('MongoDB package install failed.'); throw e; }
-    }
-
     // Pest is installed separately. We drop --prefer-dist here because -W (update all deps)
     // needs flexibility to resolve intermediate package versions.
     if (config.testing) {
-      const s4 = ora('Installing Pest…').start();
+      const s4 = theme.spinner('pest').start();
       try {
-        exec(
-          `composer require pestphp/pest pestphp/pest-plugin-laravel --dev -W --no-audit --working-dir="${projectDir}"`,
-          'composer require pestphp/pest',
-          !config.verbose
+        // -W (withAllDeps) is load-bearing: recent Laravel 11.x ships PHPUnit
+        // ^12 but Pest 3 hard-requires PHPUnit ^11. Without it Composer can't
+        // downgrade phpunit and aborts. Pest left unpinned so a future Pest 4
+        // (PHPUnit 12 native) gets picked up automatically.
+        //
+        // ignorePlatformReqs: -W re-solves every dep, including mongo. If
+        // mongodb/laravel-mongodb was installed earlier, we MUST carry the
+        // ext-mongodb ignore through here too — otherwise the platform check
+        // fails on dev machines without the PHP mongo extension.
+        //
+        // `pest --init` is skipped because it's interactive under silent
+        // shelljs — we write tests/Pest.php ourselves.
+        composerRequire(
+          ['pestphp/pest', 'pestphp/pest-plugin-laravel'],
+          projectDir,
+          {
+            dev: true,
+            withAllDeps: true,
+            ignorePlatformReqs: config.db === 'mongodb' ? ['ext-mongodb'] : [],
+            verbose: config.verbose,
+          }
         );
+        writeTestsPestPhp(projectDir);
         s4.succeed('Pest installed.');
       } catch (e) {
         s4.fail('Pest install failed.');
@@ -396,27 +526,40 @@ async function createProject(config, appConfig) {
       fs.writeFileSync(path.join(projectDir, 'database', 'database.sqlite'), '');
     }
 
+    // MongoDB: add connection entry to config/database.php
+    if (config.db === 'mongodb') {
+      patchMongoDbConfig(projectDir);
+    }
+
     // ── Frontend ──────────────────────────────────────────────────────────
     if (config.frontend === 'react-vite') {
-      const s = ora('Scaffolding React (Vite) frontend…').start();
+      const s = theme.spinner('vite').start();
       try {
-        const template = config.ts ? 'react-ts' : 'react';
-        const prevDir  = shell.pwd().stdout;
-        shell.cd(projectDir);
+        const template    = config.ts ? 'react-ts' : 'react';
+        const frontendDir = path.join(projectDir, 'frontend');
+        // Pin to create-vite v5 — v6+ added an interactive "install deps?" prompt that hangs under silent shelljs.
+        // npx -y skips the "install create-vite?" confirmation.
         exec(
-          `npm create vite@latest frontend -- --template ${template}`,
+          `npx -y create-vite@5 frontend --template ${template}`,
           'vite scaffold',
-          !config.verbose
+          !config.verbose,
+          projectDir
         );
-        shell.cd(prevDir);
+        // create-vite scaffolds files but never installs deps — do it ourselves.
+        exec(
+          `npm install`,
+          'npm install (frontend)',
+          !config.verbose,
+          frontendDir
+        );
         s.succeed('React (Vite) frontend scaffolded → frontend/');
-        patchCors(projectDir);
-        if (config.testing) TestingSetup.setupReact(path.join(projectDir, 'frontend'), config.ts);
+        patchCors(projectDir, config);
+        if (config.testing) TestingSetup.setupReact(frontendDir, config.ts, 'src', { verbose: config.verbose });
       } catch (e) { s.fail('Vite scaffold failed.'); throw e; }
     }
 
     if (config.frontend === 'inertia') {
-      const s = ora('Setting up Inertia + React…').start();
+      const s = theme.spinner('inertia').start();
       try {
         const ext = config.ts ? 'tsx' : 'jsx';
         const appStub = config.ts ? 'inertia-app-ts.stub' : 'inertia-app.stub';
@@ -425,6 +568,10 @@ async function createProject(config, appConfig) {
         writeStub(appStub, path.join(jsDir, `app.${ext}`));
         writeInertiaBladeLayout(projectDir, config.ts);
         if (config.ts) writeTsConfig(projectDir);
+
+        // A default Welcome page so the app does not crash on first request.
+        writeInertiaWelcomePage(projectDir, config.ts);
+        patchInertiaWelcomeRoute(projectDir);
 
         // Install JS deps — @vitejs/plugin-react is required for Vite to compile JSX/TSX
         const npmPackages = config.ts
@@ -438,27 +585,27 @@ async function createProject(config, appConfig) {
         s.succeed('Inertia + React set up.');
 
         // JS test scaffolding lives under resources/js/ for Inertia (no separate frontend dir)
-        if (config.testing) TestingSetup.setupReact(projectDir, config.ts, 'resources/js');
+        if (config.testing) TestingSetup.setupReact(projectDir, config.ts, 'resources/js', { verbose: config.verbose });
       } catch (e) { s.fail('Inertia setup failed.'); throw e; }
     }
 
     // ── Testing (Pest) ────────────────────────────────────────────────────
     if (config.testing) {
-      const s = ora('Writing Pest health check test…').start();
+      const s = theme.spinner('pest', { text: 'Writing Pest health check test…' }).start();
       writeStub('pest-healthcheck.stub', path.join(projectDir, 'tests', 'Feature', 'HealthCheckTest.php'));
       s.succeed('Pest health check test written.');
     }
 
     // ── Docker ────────────────────────────────────────────────────────────
     if (config.docker) {
-      const s = ora('Generating Docker files…').start();
+      const s = theme.spinner('docker').start();
       DockerGenerator.generateForLaravel(projectDir, config);
       s.succeed('Docker files written.');
     }
 
     // ── CI ────────────────────────────────────────────────────────────────
     if (config.ci) {
-      const s = ora('Generating GitHub Actions workflow…').start();
+      const s = theme.spinner('ci').start();
       CiGenerator.generate(projectDir, config, 'laravel');
       s.succeed('CI workflow written.');
     }
@@ -468,7 +615,7 @@ async function createProject(config, appConfig) {
 
     // ── Git ───────────────────────────────────────────────────────────────
     if (!config.noGit) {
-      const s = ora('Initializing git…').start();
+      const s = theme.spinner('git').start();
       try {
         gitInit(projectDir, config);
         s.succeed('Git initialized.');
@@ -482,12 +629,16 @@ async function createProject(config, appConfig) {
     await offerPresetSave(config, appConfig);
 
   } catch (err) {
-    console.error(chalk.red(`\n✖  Scaffold failed: ${err.step || ''}`));
-    console.error(chalk.dim(`   ${err.message}`));
-    if (fs.existsSync(projectDir)) {
+    const cleaned = fs.existsSync(projectDir);
+    if (cleaned) {
       try { safeRmRf(projectDir, process.cwd()); } catch (_) {}
-      console.error(chalk.dim('   Partial project cleaned up.'));
     }
+    const body = [
+      chalk.bold(`Step:    `) + (err.step || 'unknown'),
+      chalk.bold(`Reason:  `) + err.message,
+      cleaned ? chalk.dim('Partial project cleaned up.') : '',
+    ].filter(Boolean).join('\n');
+    console.error('\n' + theme.failurePanel('Scaffold failed', body));
     process.exit(1);
   }
 }

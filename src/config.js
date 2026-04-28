@@ -59,6 +59,7 @@ function loadPreset(name, config) {
  * Prompt user to optionally save current run as a preset.
  */
 async function offerPresetSave(projectConfig, appConfig) {
+  if (projectConfig.yes) return;
   const { save } = await inquirer.prompt([{
     name: 'save',
     type: 'confirm',

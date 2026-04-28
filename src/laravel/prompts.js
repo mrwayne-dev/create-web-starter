@@ -37,37 +37,45 @@ async function runPrompts(authorName, defaults = {}) {
   let stack = defaults.stack && ['api','web','full','minimal'].includes(defaults.stack)
     ? defaults.stack : null;
   if (!stack) {
-    const ans = await inquirer.prompt([{
-      name: 'stack',
-      type: 'list',
-      message: 'Choose a Laravel stack:',
-      choices: [
-        { name: 'API       — JSON API only, no frontend (default)',       value: 'api'     },
-        { name: 'Web       — Blade views + full web routes',              value: 'web'     },
-        { name: 'Full      — API + Blade/Inertia, auth ready',            value: 'full'    },
-        { name: 'Minimal   — Bare Laravel install, you decide everything', value: 'minimal' }
-      ],
-      default: 'api'
-    }]);
-    stack = ans.stack;
+    if (defaults.yes) {
+      stack = 'api';
+    } else {
+      const ans = await inquirer.prompt([{
+        name: 'stack',
+        type: 'list',
+        message: 'Choose a Laravel stack:',
+        choices: [
+          { name: 'API       — JSON API only, no frontend (default)',       value: 'api'     },
+          { name: 'Web       — Blade views + full web routes',              value: 'web'     },
+          { name: 'Full      — API + Blade/Inertia, auth ready',            value: 'full'    },
+          { name: 'Minimal   — Bare Laravel install, you decide everything', value: 'minimal' }
+        ],
+        default: 'api'
+      }]);
+      stack = ans.stack;
+    }
   }
 
   // Frontend (skip for minimal/web-only stacks unless --frontend explicitly given)
   let frontend = defaults.frontend && ['none','react-vite','inertia'].includes(defaults.frontend)
     ? defaults.frontend : null;
-  if (!frontend && stack !== 'minimal') {
-    const ans = await inquirer.prompt([{
-      name: 'frontend',
-      type: 'list',
-      message: 'Frontend setup:',
-      choices: [
-        { name: 'None          — API only',                                    value: 'none'       },
-        { name: 'React (Vite)  — Decoupled SPA, Laravel as pure API',         value: 'react-vite' },
-        { name: 'Inertia       — Server-driven SPA, tightly coupled',          value: 'inertia'    }
-      ],
-      default: 'none'
-    }]);
-    frontend = ans.frontend;
+  if (!frontend && !['minimal', 'api'].includes(stack)) {
+    if (defaults.yes) {
+      frontend = 'none';
+    } else {
+      const ans = await inquirer.prompt([{
+        name: 'frontend',
+        type: 'list',
+        message: 'Frontend setup:',
+        choices: [
+          { name: 'None          — API only',                                    value: 'none'       },
+          { name: 'React (Vite)  — Decoupled SPA, Laravel as pure API',         value: 'react-vite' },
+          { name: 'Inertia       — Server-driven SPA, tightly coupled',          value: 'inertia'    }
+        ],
+        default: 'none'
+      }]);
+      frontend = ans.frontend;
+    }
   } else if (!frontend) {
     frontend = 'none';
   }
@@ -76,49 +84,59 @@ async function runPrompts(authorName, defaults = {}) {
   let auth = defaults.auth && ['sanctum','passport','none'].includes(defaults.auth)
     ? defaults.auth : null;
   if (!auth) {
-    const ans = await inquirer.prompt([{
-      name: 'auth',
-      type: 'list',
-      message: 'API authentication:',
-      choices: [
-        { name: 'Sanctum  — Token/session auth (recommended)',  value: 'sanctum'  },
-        { name: 'Passport — Full OAuth2 server',                value: 'passport' },
-        { name: 'None     — Add auth manually later',           value: 'none'     }
-      ],
-      default: 'sanctum'
-    }]);
-    auth = ans.auth;
+    if (defaults.yes) {
+      auth = 'sanctum';
+    } else {
+      const ans = await inquirer.prompt([{
+        name: 'auth',
+        type: 'list',
+        message: 'API authentication:',
+        choices: [
+          { name: 'Sanctum  — Token/session auth (recommended)',  value: 'sanctum'  },
+          { name: 'Passport — Full OAuth2 server',                value: 'passport' },
+          { name: 'None     — Add auth manually later',           value: 'none'     }
+        ],
+        default: 'sanctum'
+      }]);
+      auth = ans.auth;
+    }
   }
 
   // Database
   let db = defaults.db && ['mysql','pgsql','mongodb','sqlite'].includes(defaults.db)
     ? defaults.db : null;
   if (!db) {
-    const ans = await inquirer.prompt([{
-      name: 'db',
-      type: 'list',
-      message: 'Database driver:',
-      choices: [
-        { name: 'MySQL       (port 3306)',  value: 'mysql'   },
-        { name: 'PostgreSQL  (port 5432)',  value: 'pgsql'   },
-        { name: 'MongoDB     (port 27017)', value: 'mongodb' },
-        { name: 'SQLite      (file-based)', value: 'sqlite'  }
-      ],
-      default: 'mysql'
-    }]);
-    db = ans.db;
+    if (defaults.yes) {
+      db = 'mysql';
+    } else {
+      const ans = await inquirer.prompt([{
+        name: 'db',
+        type: 'list',
+        message: 'Database driver:',
+        choices: [
+          { name: 'MySQL       (port 3306)',  value: 'mysql'   },
+          { name: 'PostgreSQL  (port 5432)',  value: 'pgsql'   },
+          { name: 'MongoDB     (port 27017)', value: 'mongodb' },
+          { name: 'SQLite      (file-based)', value: 'sqlite'  }
+        ],
+        default: 'mysql'
+      }]);
+      db = ans.db;
+    }
   }
 
   // TypeScript (only if React frontend chosen)
   let ts = defaults.ts || false;
   if (!defaults.ts && (frontend === 'react-vite' || frontend === 'inertia')) {
-    const ans = await inquirer.prompt([{
-      name: 'ts',
-      type: 'confirm',
-      message: 'Use TypeScript for the React frontend?',
-      default: false
-    }]);
-    ts = ans.ts;
+    if (!defaults.yes) {
+      const ans = await inquirer.prompt([{
+        name: 'ts',
+        type: 'confirm',
+        message: 'Use TypeScript for the React frontend?',
+        default: false
+      }]);
+      ts = ans.ts;
+    }
   }
 
   // Extras (docker, ci, testing)
@@ -155,6 +173,7 @@ async function runPrompts(authorName, defaults = {}) {
     stack, frontend, auth, db, ts,
     docker, ci, testing,
     noGit:   defaults.noGit   || false,
+    yes:     defaults.yes     || false,
     dryRun:  defaults.dryRun  || false,
     verbose: defaults.verbose || false,
   };

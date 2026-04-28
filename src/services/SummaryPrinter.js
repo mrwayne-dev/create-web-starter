@@ -1,35 +1,20 @@
 'use strict';
 
-const chalk = require('chalk');
+const theme = require('../ui/theme');
+const { c } = theme;
 
 const DB_LABEL       = { mysql: 'MySQL (port 3306)', pgsql: 'PostgreSQL (port 5432)', mongodb: 'MongoDB (port 27017)', sqlite: 'SQLite' };
 const AUTH_LABEL     = { sanctum: 'Sanctum', passport: 'Passport', none: 'None', yes: 'Session-based', no: 'None' };
 const FRONTEND_LABEL = { 'react-vite': 'React (Vite)', inertia: 'React + Inertia', none: 'None (API only)' };
 
-// Strip ANSI escape codes to get the real printable width of a string.
-// Avoids adding a dependency for this one utility.
-const ANSI_RE = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><~]/g;
-function visibleLen(str) { return str.replace(ANSI_RE, '').length; }
-
 /**
- * Pad a string on the right to `targetLen` visible characters.
- * Works correctly even when the string contains ANSI color codes.
- */
-function padRight(str, targetLen) {
-  const pad = targetLen - visibleLen(str);
-  return pad > 0 ? str + ' '.repeat(pad) : str;
-}
-
-/**
- * Print a box-drawing summary after a successful scaffold.
+ * Print a Wayne-Manor-styled summary after a successful scaffold.
  *
  * @param {Object} config   Project config
  * @param {string} mode     'laravel' | 'php'
  */
 function print(config, mode) {
-  const name  = config.projectName;
-  const width = 45;
-  const line  = '─'.repeat(width);
+  const name = config.projectName;
 
   const rows = [];
   rows.push(['Mode',    mode === 'laravel' ? 'Laravel' : 'Custom PHP']);
@@ -51,30 +36,16 @@ function print(config, mode) {
   rows.push(['Git', config.noGit ? 'Skipped' : 'Initialized, first commit']);
 
   const labelWidth = Math.max(...rows.map(r => r[0].length));
+  const summary = rows
+    .map(([k, v]) => `${c.muted(k.padEnd(labelWidth))}   ${v}`)
+    .join('\n');
 
-  const G = chalk.bold.green;
-  const headerText = `   ${name} scaffolded successfully`;
+  const stepsBody = nextSteps(config, mode)
+    .map(s => `  ${c.code(s)}`)
+    .join('\n');
 
-  console.log(G(`\n ┌${line}┐`));
-  console.log(G(' │') + padRight(chalk.bold(headerText), width) + G('│'));
-  console.log(G(` ├${line}┤`));
-
-  for (const [label, value] of rows) {
-    const labelStr   = chalk.dim(label.padEnd(labelWidth));
-    const rowContent = `   ${labelStr}  ${value}`;
-    console.log(G(' │') + padRight(rowContent, width) + G('│'));
-  }
-
-  console.log(G(` ├${line}┤`));
-  console.log(G(' │') + padRight(chalk.bold('  Next steps:'), width) + G('│'));
-
-  const steps = nextSteps(config, mode);
-  for (const step of steps) {
-    const stepContent = chalk.cyan(`    ${step}`);
-    console.log(G(' │') + padRight(stepContent, width) + G(' │'));
-  }
-
-  console.log(G(` └${line}┘\n`));
+  const body = `${summary}\n\n${c.label('Next steps:')}\n${stepsBody}`;
+  console.log(theme.successPanel(`${name} scaffolded successfully`, body));
 }
 
 function nextSteps(config, mode) {
@@ -85,9 +56,9 @@ function nextSteps(config, mode) {
       'cp .env.example .env',
       'php artisan key:generate',
     ];
-    if (config.db !== 'sqlite') steps.push('php artisan migrate');
-    if (config.frontend === 'react-vite') steps.push('cd frontend && npm install && npm run dev');
-    else if (config.frontend === 'inertia') steps.push('npm install && npm run dev');
+    steps.push('php artisan migrate');
+    if (config.frontend === 'react-vite') steps.push('cd frontend && npm run dev');
+    else if (config.frontend === 'inertia') steps.push('npm run dev');
     steps.push('php artisan serve');
     if (config.docker) steps.push('# or: docker-compose up -d');
     return steps;

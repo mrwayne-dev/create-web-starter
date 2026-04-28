@@ -10,13 +10,29 @@ const ora   = require('ora');
  * @param {boolean} silent
  * @param {string}  [cwd]   Working directory override
  */
-function exec(cmd, step, silent = true, cwd = null) {
-  const opts = { silent };
+// Default per-command watchdog. Anything genuinely taking longer than this is
+// almost certainly a hung interactive prompt or a network stall — fail loudly
+// instead of leaving the user staring at a spinner.
+const DEFAULT_TIMEOUT_MS = 300000; // 5 min
+
+function exec(cmd, step, silent = true, cwd = null, timeoutMs = DEFAULT_TIMEOUT_MS) {
+  const opts = {
+    silent,
+    timeout: timeoutMs,
+    // Composer's solver can blow past PHP's default memory limit on big graphs
+    // (Pest + Laravel 11 + sanctum + ...) and stall. -1 removes the cap.
+    env: { ...process.env, COMPOSER_MEMORY_LIMIT: '-1' },
+  };
   if (cwd) opts.cwd = cwd;
   const result = shell.exec(cmd, opts);
   if (result.code !== 0) {
+    // Composer often writes errors to stdout, not stderr — fall back if stderr is empty
+    const detail = (result.stderr || result.stdout || '').trim();
+    const looksLikeTimeout = result.code === null || /timed out|ETIMEDOUT|killed/i.test(detail);
     throw Object.assign(
-      new Error(result.stderr || `Command failed: ${cmd}`),
+      new Error(looksLikeTimeout
+        ? `Timed out after ${Math.round(timeoutMs / 1000)}s: ${cmd}`
+        : (detail || `Command failed: ${cmd}`)),
       { step }
     );
   }
@@ -36,7 +52,7 @@ function composerRequire(packages, cwd, opts = {}) {
   const ignorePlatform = opts.ignorePlatformReqs && opts.ignorePlatformReqs.length
     ? ' ' + opts.ignorePlatformReqs.map(r => `--ignore-platform-req=${r}`).join(' ')
     : '';
-  const cmd = `composer require ${packages.join(' ')}${devFlag}${withAllDeps}${ignorePlatform} --prefer-dist --no-audit --working-dir="${cwd}"`;
+  const cmd = `composer require ${packages.join(' ')}${devFlag}${withAllDeps}${ignorePlatform} --prefer-dist --no-audit --no-interaction --no-progress --working-dir="${cwd}"`;
   exec(cmd, `composer require ${packages[0]}`, !opts.verbose);
 }
 

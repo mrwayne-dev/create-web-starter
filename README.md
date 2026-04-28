@@ -216,3 +216,7 @@ PHP, Composer, and Git are only required when scaffolding features that use them
 ## License
 
 MIT — [mrwayne-dev](https://github.com/mrwayne-dev)
+
+  cd ~/cps-test && rm -rf lara-inertia && node
+  /home/mrwayne/Documents/wayne/web_dev/create-web-starter/index.js lara-inertia --mode=laravel        
+  --stack=full --frontend=inertia --ts --auth=sanctum --db=mysql --testing --verbose

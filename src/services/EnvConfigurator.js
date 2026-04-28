@@ -28,7 +28,7 @@ function applyTokens(template, tokens) {
 }
 
 function dbPort(db) {
-  return DB_PORTS[db] || '3306';
+  return DB_PORTS[db] ?? '3306';
 }
 
 function dbName(projectName) {

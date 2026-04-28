@@ -64,7 +64,7 @@ function parseArgs() {
     ts:      argv.ts,
 
     // Meta
-    noGit:   argv['no-git'],
+    noGit:   argv.git === false, // minimist turns --no-git into argv.git=false, not argv['no-git']=true
     yes:     argv.yes,
     dryRun:  argv['dry-run'],
     verbose: argv.verbose,

@@ -4,7 +4,9 @@ const fs    = require('fs');
 const path  = require('path');
 const chalk = require('chalk');
 const ora   = require('ora');
+const shell = require('shelljs');
 const { exec } = require('../services/PackageInstaller');
+const theme = require('../ui/theme');
 
 /**
  * Add Laravel Sanctum to an existing Laravel project.
@@ -23,11 +25,21 @@ async function run(cli = {}) {
     process.exit(0);
   }
 
-  const s = ora('Installing laravel/sanctum…').start();
+  const s = theme.spinner('sanctum').start();
   try {
-    exec(`composer require laravel/sanctum --working-dir="${cwd}"`, 'composer require sanctum', !cli.verbose);
-    exec(`php artisan vendor:publish --provider="Laravel\\Sanctum\\SanctumServiceProvider"`, 'publish sanctum', !cli.verbose);
-    exec(`php artisan migrate`, 'migrate', !cli.verbose);
+    // Laravel 11+: `php artisan install:api` adds sanctum to composer.json, publishes
+    // its migrations, and registers middleware. Try it first; fall back to manual flow.
+    const installApi = shell.exec(`php artisan install:api --no-interaction`, { silent: !cli.verbose, cwd });
+    if (installApi.code !== 0) {
+      exec(
+        `composer require laravel/sanctum --prefer-dist --no-audit --no-interaction --working-dir="${cwd}"`,
+        'composer require sanctum',
+        !cli.verbose
+      );
+      exec(`php artisan vendor:publish --tag=sanctum-config --no-interaction`,     'publish sanctum config',     !cli.verbose, cwd);
+      exec(`php artisan vendor:publish --tag=sanctum-migrations --no-interaction`, 'publish sanctum migrations', !cli.verbose, cwd);
+    }
+    exec(`php artisan migrate --force --no-interaction`, 'migrate', !cli.verbose, cwd);
     s.succeed('Sanctum installed and migrated.');
   } catch (e) {
     s.fail(`Failed: ${e.message}`);

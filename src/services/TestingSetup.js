@@ -2,6 +2,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { exec } = require('./PackageInstaller');
 
 // ── PHPUnit config for Custom PHP ────────────────────────────────────────────
 
@@ -81,19 +82,35 @@ function setupPhp(projectDir, projectName) {
 }
 
 /**
- * Write Vitest setup for a React frontend.
- * @param {string}  frontendDir  Path to the React app root
+ * Write Vitest setup for a React frontend AND install required test deps.
+ * @param {string}  frontendDir  Path to the React app root (where package.json lives)
  * @param {boolean} useTs
  * @param {string}  srcDir       Source directory relative to frontendDir (default: 'src').
  *                               Pass 'resources/js' for Inertia projects.
+ * @param {Object}  opts         { verbose }
  */
-function setupReact(frontendDir, useTs = false, srcDir = 'src') {
+function setupReact(frontendDir, useTs = false, srcDir = 'src', opts = {}) {
   const ext     = useTs ? 'ts' : 'js';
   const testDir = path.join(frontendDir, srcDir, '__tests__');
   fs.mkdirSync(testDir, { recursive: true });
   fs.writeFileSync(path.join(frontendDir, `vitest.config.${ext}`),                    vitestConfig(useTs, srcDir));
   fs.writeFileSync(path.join(frontendDir, srcDir, `setupTests.${ext}`),               vitestSetup());
   fs.writeFileSync(path.join(testDir,     `App.test.${useTs ? 'tsx' : 'jsx'}`),       reactAppTest(useTs));
+
+  // Install Vitest + Testing Library — without these the generated test files cannot run.
+  // @vitejs/plugin-react may already be installed by the Inertia path; npm dedupes.
+  const deps = [
+    'vitest',
+    '@vitejs/plugin-react',
+    '@testing-library/react',
+    '@testing-library/jest-dom',
+    'jsdom',
+  ];
+  exec(
+    `npm install --save-dev ${deps.join(' ')} --prefix "${frontendDir}"`,
+    'install React test deps',
+    !opts.verbose
+  );
 }
 
 module.exports = { setupPhp, setupReact };

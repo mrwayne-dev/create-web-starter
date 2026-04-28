@@ -188,11 +188,14 @@ async function installPHPMailer(projectPath, config) {
   console.log(chalk.dim('  Installing PHPMailer via Composer...'));
 
   const result = shell.exec(
-    `${composerCmd} require phpmailer/phpmailer --working-dir="${projectPath}"`
+    `${composerCmd} require phpmailer/phpmailer --prefer-dist --no-audit --no-interaction --no-progress --working-dir="${projectPath}"`,
+    { silent: true, timeout: 180000, env: { ...process.env, COMPOSER_MEMORY_LIMIT: '-1' } }
   );
 
   if (result.code !== 0) {
+    const detail = (result.stderr || result.stdout || '').trim().split('\n').slice(-5).join('\n  ');
     console.log(chalk.yellow('  [!] PHPMailer installation failed.'));
+    if (detail) console.log(chalk.dim('  ' + detail));
     console.log(chalk.dim('  Try manually: cd ' + projectPath + ' && composer require phpmailer/phpmailer'));
   } else {
     console.log(chalk.green('  [ok] PHPMailer installed successfully.'));

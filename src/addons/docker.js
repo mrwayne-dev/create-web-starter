@@ -19,17 +19,23 @@ async function run(cli = {}) {
     process.exit(0);
   }
 
-  const { db } = await inquirer.prompt([{
-    name: 'db',
-    type: 'list',
-    message: 'Database service to include in Docker:',
-    choices: [
-      { name: 'MySQL',      value: 'mysql'   },
-      { name: 'PostgreSQL', value: 'pgsql'   },
-      { name: 'MongoDB',    value: 'mongodb' },
-      { name: 'None',       value: 'sqlite'  },
-    ]
-  }]);
+  // Respect --db / --yes — only prompt when neither is provided.
+  let db = ['mysql','pgsql','mongodb','sqlite'].includes(cli.db) ? cli.db : null;
+  if (!db && cli.yes) db = 'mysql';
+  if (!db) {
+    const ans = await inquirer.prompt([{
+      name: 'db',
+      type: 'list',
+      message: 'Database service to include in Docker:',
+      choices: [
+        { name: 'MySQL',      value: 'mysql'   },
+        { name: 'PostgreSQL', value: 'pgsql'   },
+        { name: 'MongoDB',    value: 'mongodb' },
+        { name: 'None',       value: 'sqlite'  },
+      ]
+    }]);
+    db = ans.db;
+  }
 
   const projectName = path.basename(cwd);
   const config = { projectName, db };

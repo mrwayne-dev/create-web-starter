@@ -63,8 +63,8 @@ async function runPrompts(authorName, defaults = {}) {
 
   // MVC and API force PHP backend — skip project type / complexity / php prompt
   if (framework === 'api' || framework === 'mvc') {
-    // In dry-run mode, skip interactive prompts and use empty defaults
-    if (defaults.dryRun) {
+    // Skip interactive prompts in dry-run or --yes mode
+    if (defaults.dryRun || defaults.yes) {
       return {
         projectName, authorName, framework,
         projectType: framework === 'mvc' ? 'custom' : 'api',
@@ -72,7 +72,8 @@ async function runPrompts(authorName, defaults = {}) {
         phpBackend: true,
         features: { contactForm: false, phpMailer: false, phosphorIcons: false, auth: false, admin: false, database: false },
         docker: defaults.docker || false, ci: defaults.ci || false, testing: defaults.testing || false,
-        noGit: defaults.noGit || false, dryRun: true, verbose: defaults.verbose || false,
+        noGit: defaults.noGit || false, yes: defaults.yes || false,
+        dryRun: defaults.dryRun || false, verbose: defaults.verbose || false,
       };
     }
 
@@ -119,6 +120,17 @@ async function runPrompts(authorName, defaults = {}) {
   }
 
   // Vanilla — full prompt flow
+  if (defaults.dryRun || defaults.yes) {
+    return {
+      projectName, authorName, framework,
+      projectType: 'portfolio', complexity: 'simple', phpBackend: true,
+      features: { contactForm: false, phpMailer: false, phosphorIcons: false, auth: false, admin: false, database: false },
+      docker: defaults.docker || false, ci: defaults.ci || false, testing: defaults.testing || false,
+      noGit: defaults.noGit || false, yes: defaults.yes || false,
+      dryRun: defaults.dryRun || false, verbose: defaults.verbose || false,
+    };
+  }
+
   // Step 3 — Project type
   const { projectType } = await inquirer.prompt([
     {
