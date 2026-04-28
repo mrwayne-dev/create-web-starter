@@ -1,6 +1,6 @@
 {
   "name": "create-php-starter",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Unified PHP + Laravel project scaffolding CLI. Scaffold raw PHP (Vanilla/MVC/API) or a full Laravel app with optional React frontend, auth, Docker, CI, and testing.",
   "main": "index.js",
   "bin": {
