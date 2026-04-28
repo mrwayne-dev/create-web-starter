@@ -229,7 +229,7 @@ function setVerbose(v) { _verbose = !!v; }
 function spinner(key, opts = {}) {
   const config = {
     text:    opts.text || pickVerb(key),
-    spinner: 'dots12',
+    spinner: 'dots',
     color:   'cyan',
     ...opts,
   };
@@ -250,7 +250,7 @@ async function playBatAnimation() {
   process.stdout.write('\x1B[?25l'); // hide cursor
   try {
     for (const line of BAT_ART) {
-      process.stdout.write(bat(line) + '\n');
+      process.stdout.write(chalk.white(line) + '\n');
       await sleep(40);
     }
     await sleep(300); // pause on full image
@@ -266,7 +266,7 @@ async function playBatAnimation() {
 // ── Banner ────────────────────────────────────────────────────────────────────
 // Two-section layout: bat as full-width hero, then greeting + two-column info.
 function banner(version, authorName = null, presets = {}) {
-  const batLines = BAT_ART.map(l => bat(l));
+  const batLines = BAT_ART.map(l => chalk.white(l));
 
   const greet = authorName
     ? accent.bold('Welcome back, ' + authorName + '!')
